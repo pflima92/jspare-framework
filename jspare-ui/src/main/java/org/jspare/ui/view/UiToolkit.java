@@ -66,6 +66,9 @@ public interface UiToolkit {
 	/** The Constant SUFIX_FILE. */
 	String SUFIX_PAGE_FILE = ".html";
 
+	/** The Constant CACHE_TEMPLATES. */
+	String CACHE_TEMPLATE = "ui.template.cache";
+
 	/**
 	 * Compile.
 	 *

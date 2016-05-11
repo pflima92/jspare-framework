@@ -25,8 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jspare.core.container.Inject;
-import org.jspare.core.context.ApplicationContext;
-import org.jspare.core.context.Context;
 import org.jspare.core.loader.ResourceLoader;
 import org.jspare.server.exception.LoadTemplateException;
 import org.jspare.server.exception.RenderableException;
@@ -164,10 +162,7 @@ public class JtwigUiToolkitImpl implements UiToolkit {
 	 */
 	private Template loadTemplateIfNecessary(String resource) throws IOException, NoSuchMethodException {
 
-		Context context = my(ApplicationContext.class).getContext();
-
-		boolean loadTemplates = context.containsParameter("loadTemplateIfNecessary") ? true
-				: Boolean.valueOf(String.valueOf(context.getParameter("loadTemplateIfNecessary")));
+		boolean loadTemplates = Boolean.valueOf(CONFIG.get(CACHE_TEMPLATE, true));
 
 		if (!loadTemplates) {
 
