@@ -1,0 +1,16 @@
+{
+	"applicationName": "JSpare Core Test",
+	
+	"version": "1.0.0",
+	
+	"parameters" : {
+	},
+	
+	"port" : 8080,
+	
+	"regitryComponents" : [
+	],
+	
+	"loader" : {
+	}
+}

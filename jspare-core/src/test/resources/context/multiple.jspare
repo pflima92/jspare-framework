@@ -1,0 +1,8 @@
+{
+	"applicationName": "JSpare Core Test Custom",
+	"version": "1.0.0",
+	"registryComponents": 
+	[
+		"org.jspare.core.context.additional.multiple.*"
+	]
+}

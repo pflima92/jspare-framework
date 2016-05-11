@@ -1,0 +1,13 @@
+{
+	"applicationName": "JSpare Core Test",
+	"version": "1.0.0",
+	"parameters": 
+	{
+		"param1": "value"
+	},
+
+	"registryComponents": 
+	[
+		"illegal.package.Teste"
+	]
+}

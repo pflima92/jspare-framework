@@ -1,0 +1,24 @@
+{
+	"applicationName": "JSpare Core Test Custom",
+	"version": "1.0.0",
+	"parameters": 
+	{
+		"customParam": "value"
+	},
+
+	"registryComponents": 
+	[
+		"org.jspare.core.context.additional.CmptAutoLoaderOneImpl",
+		"org.jspare.core.context.additional.CmptAutoLoaderTwoImpl",
+		"org.jspare.core.context.additional.more.*"
+	],
+
+	"loader": 
+	{
+		"resources": 
+		{
+			"factory": "org.jspare.core.loader.PropertiesLoader",
+			"resourcePath": "config/config.ini"
+		}
+	}
+}
