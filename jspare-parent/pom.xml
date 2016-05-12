@@ -173,4 +173,12 @@
 
 	</dependencies>
 
+	<distributionManagement>
+		<repository>
+			<id>bintray-jspare-maven</id>
+			<name>jspare-maven</name>
+			<url>https://api.bintray.com/maven/jspare/maven/framework/;publish=1</url>
+		</repository>
+	</distributionManagement>
+
 </project>
