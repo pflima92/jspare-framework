@@ -34,14 +34,14 @@ public class UserController extends Controller {
 
 		if (!userService.saveUser(user)) {
 
-			response.entity("Error on save").businessError();
+			response.conflict();
 			return;
 		}
 
 		response.success("Saved with success");
 	}
 
-	@Command("user/{id}")
+	@Command("users/{id}")
 	public void findUser(@Parameter("id") String id) {
 
 		User user = userService.findUserById(Integer.parseInt(id));

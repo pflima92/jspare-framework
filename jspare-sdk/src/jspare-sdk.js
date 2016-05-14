@@ -95,6 +95,7 @@
 
 		cReq.open('POST', buildUrl(id, parameters), true);
 		cReq.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+		cReq.setRequestHeader('Accept', 'application/json; charset=utf-8');
 		
 		if(headers)
 			for(h in headers) cReq.setRequestHeader(h, headers[h]);

@@ -49,9 +49,9 @@ public interface Response extends Cloneable {
 	Response addClientResource(String name, String value);
 
 	/**
-	 * Business error.
+	 * Conflict
 	 */
-	void businessError();
+	void conflict();
 
 	/**
 	 * Cache.

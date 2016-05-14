@@ -121,7 +121,7 @@ public class JettyResponse implements Response {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Response#getTransaction()
 	 */
 	@Getter
@@ -155,7 +155,7 @@ public class JettyResponse implements Response {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Response#addClientResource(java.lang.String,
 	 * java.lang.String)
 	 */
@@ -173,7 +173,7 @@ public class JettyResponse implements Response {
 	 * @see org.jspare.server.Response#businessError()
 	 */
 	@Override
-	public void businessError() {
+	public void conflict() {
 
 		this.status = Status.BUSINESS_ERROR;
 		end();
@@ -193,7 +193,7 @@ public class JettyResponse implements Response {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
@@ -277,7 +277,7 @@ public class JettyResponse implements Response {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Response#entity(java.lang.Object)
 	 */
 	@Override
@@ -394,7 +394,7 @@ public class JettyResponse implements Response {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Response#getSessionContext()
 	 */
 	@Override
@@ -441,7 +441,7 @@ public class JettyResponse implements Response {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Response#redirect(java.lang.String)
 	 */
 	@Override
