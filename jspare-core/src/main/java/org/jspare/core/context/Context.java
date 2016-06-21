@@ -94,7 +94,7 @@ import lombok.Getter;
  *            the version
  * @param parameters
  *            the parameters
- * @param registryComponents
+ * @param components
  *            the registry components
  * @param providers
  *            the providers
@@ -172,7 +172,7 @@ public class Context extends MySupport {
 	private Map<String, Object> parameters;
 
 	/** The registry components. */
-	private List<String> registryComponents;
+	private List<String> components;
 
 	/** The providers. */
 	private Map<String, Map<String, String>> providers;
@@ -280,6 +280,6 @@ public class Context extends MySupport {
 	 */
 	protected Optional<List<String>> getRegistryComponents() {
 
-		return Optional.ofNullable(registryComponents);
+		return Optional.ofNullable(components);
 	}
 }
