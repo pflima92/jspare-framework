@@ -172,6 +172,13 @@
 		</dependency>
 
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>jspare-repository</id>
+			<url>http://dl.bintray.com/jspare/maven</url>
+		</repository>
+	</repositories>
 
 	<distributionManagement>
 		<repository>
