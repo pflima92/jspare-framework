@@ -6,7 +6,7 @@
 		"customParam": "value"
 	},
 
-	"registryComponents": 
+	"components": 
 	[
 		"org.jspare.core.context.additional.CmptAutoLoaderOneImpl",
 		"org.jspare.core.context.additional.CmptAutoLoaderTwoImpl",
