@@ -4,3 +4,7 @@ The JSpare is a framework written in Java that aims to increase productivity and
 
 ## JSpare References
 See documentation [here](http://jspare.org/framework)
+
+[![Build Status](https://travis-ci.org/jspare-framework/framework.svg?branch=master)](https://travis-ci.org/jspare-framework/framework)
+
+[![Coverage Status](https://coveralls.io/repos/github/jspare-framework/framework/badge.svg?branch=master)](https://coveralls.io/github/jspare-framework/framework?branch=master)
