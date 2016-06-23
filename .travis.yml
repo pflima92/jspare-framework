@@ -6,4 +6,6 @@ addons:
   apt:
     packages:
       - oracle-java8-installer
-script: maven test
+script: mvn test
+after_success:
+  - mvn clean cobertura:cobertura coveralls:report
