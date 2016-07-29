@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.context.additional.multiple;
+package org.jspare.core.container.test.application.qualified;
 
 import org.jspare.core.container.Component;
 
@@ -24,6 +24,6 @@ import org.jspare.core.container.Component;
  * @since 30/03/2016
  */
 @Component
-public interface Multiple {
+public interface Qualified {
 
 }

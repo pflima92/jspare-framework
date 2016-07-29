@@ -15,185 +15,22 @@
  */
 package org.jspare.core.container;
 
-import static org.jspare.core.container.Environment.my;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.jspare.core.context.ApplicationContext;
-import org.jspare.core.exception.EnvironmentException;
 import org.jspare.core.exception.InfraException;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class AbstractBootstrap {
+public abstract class Application {
 
-	/**
-	 * Gets the application context.
-	 *
-	 * @return the application context
-	 */
+	private static final List<Builder> builders = new ArrayList<>();
 
-	/**
-	 * Gets the application context.
-	 *
-	 * @return the application context
-	 */
+	public Application builder(Builder builder) {
 
-	/**
-	 * Gets the application context.
-	 *
-	 * @return the application context
-	 */
-
-	/**
-	 * Gets the application context.
-	 *
-	 * @return the application context
-	 */
-	@Getter
-	protected static ApplicationContext applicationContext = my(ApplicationContext.class);
-
-	/** The custom application context. */
-	protected String customApplicationContext;
-
-	/** The load application context. */
-	protected boolean loadApplicationContext = true;
-
-	/** The load bundles. */
-	protected boolean loadBundles = true;
-
-	/** The bundles. */
-	protected List<Class<? extends Bundle>> bundles = new ArrayList<>();
-
-	/**
-	 * Adds the bundle.
-	 *
-	 * @param bundle
-	 *            the bundle
-	 * @return the abstract bootstrap
-	 */
-	public AbstractBootstrap addBundle(Class<? extends Bundle> bundle) {
-
-		this.bundles.add(bundle);
+		builders.add(builder);
 		return this;
-	}
-
-	/**
-	 * Adds the bundles.
-	 *
-	 * @param bundles
-	 *            the bundles
-	 * @return the abstract bootstrap
-	 */
-	@SuppressWarnings("unchecked")
-	public AbstractBootstrap addBundles(Class<? extends Bundle>... bundles) {
-
-		this.bundles.addAll(Arrays.asList(bundles));
-		return this;
-	}
-
-	/**
-	 * Custom application context.
-	 *
-	 * @param customApplicationContext
-	 *            the custom application context
-	 * @return the abstract bootstrap
-	 */
-	public AbstractBootstrap customApplicationContext(String customApplicationContext) {
-		this.customApplicationContext = customApplicationContext;
-		return this;
-	}
-
-	/**
-	 * Load.
-	 *
-	 * @return the abstract bootstrap
-	 */
-	public AbstractBootstrap load() {
-		log.info("Starting bootstrap");
-		try {
-
-			if (loadApplicationContext) {
-
-				log.info("Loading default Application Context");
-				if (StringUtils.isEmpty(customApplicationContext)) {
-					getApplicationContext().load();
-				} else {
-					getApplicationContext().load(customApplicationContext);
-				}
-			}
-
-			if (loadBundles) {
-
-				log.info("Instantiate and Registry Bundles packages");
-				instantiateAndRegistry();
-			}
-
-			return this;
-		} catch (Exception e) {
-
-			throw new EnvironmentException(e);
-		}
-	}
-
-	/**
-	 * Load application context.
-	 *
-	 * @param loadApplicationContext
-	 *            the load application context
-	 * @return the abstract bootstrap
-	 */
-	public AbstractBootstrap loadApplicationContext(boolean loadApplicationContext) {
-		this.loadApplicationContext = loadApplicationContext;
-		return this;
-	}
-
-	/**
-	 * Load bundle.
-	 *
-	 * @param bundle
-	 *            the bundle
-	 * @return the abstract bootstrap
-	 */
-	public AbstractBootstrap loadBundle(Bundle bundle) {
-		bundle.registryComponents();
-		return this;
-	}
-
-	/**
-	 * Load bundles.
-	 *
-	 * @param loadBundles
-	 *            the load bundles
-	 * @return the abstract bootstrap
-	 */
-	public AbstractBootstrap loadBundles(boolean loadBundles) {
-		this.loadBundles = loadBundles;
-		return this;
-	}
-
-	/**
-	 * My support.
-	 */
-	public void mySupport() {
-
-		ContainerUtils.processInjection(this.getClass(), this);
-	}
-
-	/**
-	 * Start.
-	 *
-	 * @throws InfraException
-	 *             the infra exception
-	 */
-	public void start() throws InfraException {
-
-		mySupport();
 	}
 
 	/**
@@ -208,20 +45,37 @@ public abstract class AbstractBootstrap {
 		System.exit(status);
 	}
 
+	protected void load() {
+	}
+
 	/**
-	 * Instantiate and registry.
+	 * My support.
 	 */
-	protected void instantiateAndRegistry() {
+	protected void mySupport() {
 
-		bundles.forEach(clazz -> {
+		ContainerUtils.processInjection(this.getClass(), this);
+	}
 
-			try {
-				Bundle instance = clazz.newInstance();
-				instance.registryComponents();
-			} catch (InstantiationException | IllegalAccessException e) {
+	/**
+	 * Start.
+	 *
+	 * @throws InfraException
+	 *             the infra exception
+	 */
+	protected void start() throws InfraException {
 
-				throw new EnvironmentException(e);
-			}
-		});
+		log.info("Loading Application");
+		load();
+
+		log.info("Starting bootstrap");
+		mySupport();
+
+		log.info("Instantiate and Registry Bundles packages");
+		buildAll();
+	}
+
+	private void buildAll() {
+
+		builders.forEach(b -> b.build());
 	}
 }

@@ -21,7 +21,7 @@ package org.jspare.core.exception;
  * @author pflima
  * @since 05/10/2015
  */
-public class SerializationException extends InfraException {
+public class SerializationException extends InfraRuntimeException {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

@@ -13,17 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.test.application.qualified;
+package org.jspare.core.container;
 
-import org.jspare.core.container.Qualifier;
+import org.jspare.core.exception.InfraException;
+import org.junit.Before;
 
-/**
- * The Class MultipleTwo.
- *
- * @author pflima
- * @since 30/03/2016
- */
-@Qualifier("MultipleTwo")
-public class QualifiedTwo implements Qualified {
+public abstract class AbstractApplicationTest {
 
+	@Before
+	public void setup() throws InfraException {
+
+		// Simulate static main invocation
+		new BootstrapUnitTest().start();
+	}
+
+	protected abstract ApplicationBuilder toLoad();
+
+	class BootstrapUnitTest extends Application {
+
+		@Override
+		protected void load() {
+
+			builder(toLoad());
+		}
+	}
 }

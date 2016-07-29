@@ -19,66 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-/**
- * Instantiates a new key.
- *
- * @param clazzInterface
- *            the clazz interface
- * @param qualifier
- *            the qualifier
- */
-
-/**
- * Instantiates a new key.
- *
- * @param clazzInterface
- *            the clazz interface
- * @param qualifier
- *            the qualifier
- */
-
-/**
- * Instantiates a new key.
- *
- * @param clazzInterface
- *            the clazz interface
- * @param qualifier
- *            the qualifier
- */
-
-/**
- * Instantiates a new key.
- *
- * @param clazzInterface
- *            the clazz interface
- * @param qualifier
- *            the qualifier
- */
 @AllArgsConstructor
-
-/*
- * (non-Javadoc)
- *
- * @see java.lang.Object#hashCode()
- */
-
-/*
- * (non-Javadoc)
- *
- * @see java.lang.Object#hashCode()
- */
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#hashCode()
- */
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#hashCode()
- */
 @EqualsAndHashCode
 public class Key {
 
@@ -87,44 +28,8 @@ public class Key {
 	 *
 	 * @return the clazz interface
 	 */
-
-	/**
-	 * Gets the clazz interface.
-	 *
-	 * @return the clazz interface
-	 */
-
-	/**
-	 * Gets the clazz interface.
-	 *
-	 * @return the clazz interface
-	 */
-
-	/**
-	 * Gets the clazz interface.
-	 *
-	 * @return the clazz interface
-	 */
 	@Getter
 	private final Class<?> clazzInterface;
-
-	/**
-	 * Gets the qualifier.
-	 *
-	 * @return the qualifier
-	 */
-
-	/**
-	 * Gets the qualifier.
-	 *
-	 * @return the qualifier
-	 */
-
-	/**
-	 * Gets the qualifier.
-	 *
-	 * @return the qualifier
-	 */
 
 	/**
 	 * Gets the qualifier.

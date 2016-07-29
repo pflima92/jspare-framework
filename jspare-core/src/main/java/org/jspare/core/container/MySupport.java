@@ -21,8 +21,8 @@ package org.jspare.core.container;
  *
  * <h2>Important:</h2>
  * <ul>
- * <li>For {@link AbstractBootstrap} the ContainerUtils .processInjection never
- * is called. This class use for supply, super start method.</li>
+ * <li>For {@link Application} the ContainerUtils .processInjection never is
+ * called. This class use for supply, super start method.</li>
  * </ul>
  *
  * @author pflima

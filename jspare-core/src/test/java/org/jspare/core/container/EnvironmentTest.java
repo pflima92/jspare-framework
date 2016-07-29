@@ -23,14 +23,14 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.jspare.core.container.additional.annotation.ClassInjected;
-import org.jspare.core.container.additional.notcomponent.NotCmpt;
-import org.jspare.core.container.additional.notcomponent.NotCmptImpl;
-import org.jspare.core.container.additional.qualifier.CmptQualifierOneImpl;
-import org.jspare.core.container.additional.qualifier.CmptQualifierTwoImpl;
-import org.jspare.core.container.additional.usage.Cmpt;
-import org.jspare.core.container.additional.usage.CmptImpl;
-import org.jspare.core.container.additional.usage.CmptOtherImpl;
+import org.jspare.core.container.test.annotation.ClassInjected;
+import org.jspare.core.container.test.notcomponent.NotCmpt;
+import org.jspare.core.container.test.notcomponent.NotCmptImpl;
+import org.jspare.core.container.test.qualifier.CmptQualifierOneImpl;
+import org.jspare.core.container.test.qualifier.CmptQualifierTwoImpl;
+import org.jspare.core.container.test.usage.Cmpt;
+import org.jspare.core.container.test.usage.CmptImpl;
+import org.jspare.core.container.test.usage.CmptOtherImpl;
 import org.jspare.core.exception.EnvironmentException;
 import org.junit.Test;
 

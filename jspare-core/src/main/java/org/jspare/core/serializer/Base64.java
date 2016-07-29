@@ -13,17 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.test.application.qualified;
+package org.jspare.core.serializer;
 
-import org.jspare.core.container.Qualifier;
+import org.jspare.core.container.Component;
+import org.jspare.core.exception.SerializationException;
 
-/**
- * The Class MultipleTwo.
- *
- * @author pflima
- * @since 30/03/2016
- */
-@Qualifier("MultipleTwo")
-public class QualifiedTwo implements Qualified {
+@Component
+public interface Base64 {
 
+	<T> T fromBase64(String data) throws SerializationException;
+
+	String toBase64(Object instance) throws SerializationException;
+
+	String toBase64(byte[] bytes) throws SerializationException;
 }

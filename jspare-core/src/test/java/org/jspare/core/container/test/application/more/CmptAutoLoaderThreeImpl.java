@@ -13,10 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.context.additional.more;
+package org.jspare.core.container.test.application.more;
 
 import org.jspare.core.container.Qualifier;
-import org.jspare.core.context.additional.CmptAutoLoader;
+import org.jspare.core.container.test.application.CmptAutoLoader;
 
 /**
  * The Class CmptAutoLoaderThreeImpl.

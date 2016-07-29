@@ -16,9 +16,14 @@
 package org.jspare.core.serializer;
 
 import static org.jspare.core.container.Environment.my;
-import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
+
+import org.junit.Assert;
 import org.junit.Test;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * The Class SerializerTest.
@@ -26,19 +31,33 @@ import org.junit.Test;
  * @author pflima
  * @since 05/10/2015
  */
-public class JsonSerializerTest {
+public class Base64SerializerTest {
 
 	/**
-	 * Checks if is valid json test.
+	 * Serialization test.
+	 *
+	 * @throws Throwable
+	 *             the throwable
 	 */
 	@Test
-	public void isValidJsonTest() {
+	public void serializationTest() throws Throwable {
 
-		Json json = my(Json.class);
+		Base64 base64 = my(Base64.class);
 
-		String validJson = "{ \"name\" : \"jspare\"}", invalidJson = "name = jspare";
+		ToSerialize bean1 = new ToSerialize("A", "B");
+		String data = base64.toBase64(bean1);
+		ToSerialize bean2 = base64.fromBase64(data);
 
-		assertTrue(json.isValidJson(validJson));
-		assertTrue(!json.isValidJson(invalidJson));
+		Assert.assertEquals(bean1, bean2);
 	}
+}
+
+@Data
+@AllArgsConstructor
+class ToSerialize implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private transient String a01;
+	private final String a02;
 }

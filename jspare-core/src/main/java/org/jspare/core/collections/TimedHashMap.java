@@ -27,15 +27,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Passive TimedHashMap Impl
+ * The Class TimedHashMap.
  *
- * The Timer alghoritm is applied when the map is accessed, validating internal
- * timestamps.
- *
+ * @author pflima
  * @param <K>
  *            the key type
  * @param <V>
  *            the value type
+ * @since 26/07/2016
  */
 public class TimedHashMap<K, V> implements TimedMap<K, V> {
 

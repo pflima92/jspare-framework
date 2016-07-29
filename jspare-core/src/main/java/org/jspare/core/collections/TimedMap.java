@@ -25,7 +25,7 @@ import java.util.Map;
  *            the key type
  * @param <V>
  *            the value type
- * @since 30/03/2016
+ * @since 26/07/2016
  */
 public interface TimedMap<K, V> extends Map<K, V> {
 

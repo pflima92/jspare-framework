@@ -27,6 +27,9 @@ import org.jspare.core.util.Perform;
 @Component
 public interface ComponentScanner {
 
+	/** The Constant ALL_SCAN_QUOTE. */
+	String ALL_SCAN_QUOTE = ".*";
+
 	/**
 	 * Scan and execute.
 	 *

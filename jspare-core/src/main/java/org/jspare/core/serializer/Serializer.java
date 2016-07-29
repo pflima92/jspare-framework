@@ -13,17 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.test.application.qualified;
+package org.jspare.core.serializer;
 
-import org.jspare.core.container.Qualifier;
+import org.jspare.core.container.Component;
 
-/**
- * The Class MultipleTwo.
- *
- * @author pflima
- * @since 30/03/2016
- */
-@Qualifier("MultipleTwo")
-public class QualifiedTwo implements Qualified {
+@Component
+public interface Serializer {
 
+	<T> T convert(Class<T> clazz, String value);
 }

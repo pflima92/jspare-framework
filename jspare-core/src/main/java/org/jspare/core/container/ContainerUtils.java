@@ -32,9 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ContainerUtils {
 
-	/** The Constant ALL_SCAN_QUOTE. */
-	private static final String ALL_SCAN_QUOTE = ".*";
-
 	/** The Constant SUFIX_DEFAULT_IMPL. */
 	private static final String SUFIX_DEFAULT_IMPL = "Impl";
 
@@ -202,7 +199,7 @@ public class ContainerUtils {
 	 */
 	protected static void performComponentScanner(String componentScanner) throws EnvironmentException {
 		// Validate if component contain all scan quote.
-		if (!componentScanner.endsWith(ALL_SCAN_QUOTE)) {
+		if (!componentScanner.endsWith(ComponentScanner.ALL_SCAN_QUOTE)) {
 			try {
 
 				Class<?> clazz = Class.forName(componentScanner);

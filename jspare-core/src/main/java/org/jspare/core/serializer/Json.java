@@ -13,17 +13,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.test.annotation;
+package org.jspare.core.serializer;
+
+import java.lang.reflect.Type;
 
 import org.jspare.core.container.Component;
+import org.jspare.core.exception.SerializationException;
 
-/**
- * The Interface CmptWithAnnotation.
- *
- * @author pflima
- * @since 30/03/2016
- */
 @Component
-public interface CmptWithAnnotation {
+public interface Json {
 
+	<T> T fromJSON(Object jsonObject, Class<T> clazz) throws SerializationException;
+
+	<T> T fromJSON(Object jsonObject, Type type) throws SerializationException;
+
+	<T> T fromJSON(String json, Class<T> clazz) throws SerializationException;
+
+	<T> T fromJSON(String json, Type type) throws SerializationException;
+
+	boolean isValidJson(String json);
+
+	Json registryJsonConverter(Object converter) throws SerializationException;
+
+	String toJSON(Object instance) throws SerializationException;
 }

@@ -16,8 +16,8 @@
 package org.jspare.core.serializer;
 
 import static org.jspare.core.container.Environment.my;
-import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -26,19 +26,29 @@ import org.junit.Test;
  * @author pflima
  * @since 05/10/2015
  */
-public class JsonSerializerTest {
+public class ConvertSerializerTest {
 
 	/**
-	 * Checks if is valid json test.
+	 * Convert test.
+	 *
+	 * @throws Throwable
+	 *             the throwable
 	 */
 	@Test
-	public void isValidJsonTest() {
+	public void convertTest() throws Throwable {
 
-		Json json = my(Json.class);
+		Serializer s = my(Serializer.class);
 
-		String validJson = "{ \"name\" : \"jspare\"}", invalidJson = "name = jspare";
+		long result01 = s.convert(Long.class, "12345");
+		Assert.assertEquals(result01, 12345);
 
-		assertTrue(json.isValidJson(validJson));
-		assertTrue(!json.isValidJson(invalidJson));
+		double result02 = s.convert(Double.class, "123.45");
+		Assert.assertEquals(result02, 123.45, 0.0001);
+
+		boolean result03 = s.convert(Boolean.class, "true");
+		Assert.assertTrue(result03);
+
+		boolean result04 = s.convert(Boolean.class, "false");
+		Assert.assertFalse(result04);
 	}
 }

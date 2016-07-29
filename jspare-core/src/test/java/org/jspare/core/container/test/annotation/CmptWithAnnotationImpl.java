@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.additional.annotation;
+package org.jspare.core.container.test.annotation;
 
 /**
  * The Class CmptWithAnnotationImpl.

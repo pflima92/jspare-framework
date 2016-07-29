@@ -27,5 +27,4 @@ public enum Scope {
 	APPLICATION,
 	/** The factory. */
 	FACTORY
-
 }

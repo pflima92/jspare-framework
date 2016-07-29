@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.context.additional.multiple;
+package org.jspare.core.container.test.application.qualified;
 
 /**
  * The Class MultipleImpl.
@@ -21,6 +21,6 @@ package org.jspare.core.context.additional.multiple;
  * @author pflima
  * @since 30/03/2016
  */
-public class MultipleImpl implements Multiple {
+public class QualifiedImpl implements Qualified {
 
 }

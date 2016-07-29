@@ -13,10 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.additional.usage;
+package org.jspare.core.container.test.usage;
 
 import org.jspare.core.container.Inject;
-import org.jspare.core.container.additional.annotation.CmptWithAnnotation;
+import org.jspare.core.container.test.annotation.CmptWithAnnotation;
 
 /**
  * The Class CmptImpl.

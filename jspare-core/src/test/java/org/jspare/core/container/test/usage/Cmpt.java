@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.additional.usage;
+package org.jspare.core.container.test.usage;
 
 import org.jspare.core.container.Component;
 

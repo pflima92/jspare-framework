@@ -13,17 +13,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.container.test.application.qualified;
-
-import org.jspare.core.container.Qualifier;
+package org.jspare.core.container;
 
 /**
- * The Class MultipleTwo.
+ * The Interface Builder.
  *
  * @author pflima
- * @since 30/03/2016
+ * @since 26/07/2016
  */
-@Qualifier("MultipleTwo")
-public class QualifiedTwo implements Qualified {
+@FunctionalInterface
+public interface Builder {
 
+	/**
+	 * Invoke build of resource.
+	 */
+	void build();
 }

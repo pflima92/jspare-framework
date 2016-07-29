@@ -155,24 +155,6 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 *
 	 * @return the data
 	 */
-
-	/**
-	 * Gets the data.
-	 *
-	 * @return the data
-	 */
-
-	/**
-	 * Gets the data.
-	 *
-	 * @return the data
-	 */
-
-	/**
-	 * Gets the data.
-	 *
-	 * @return the data
-	 */
 	@Getter
 	private T data;
 
@@ -181,44 +163,8 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	 *
 	 * @return the parent
 	 */
-
-	/**
-	 * Gets the parent.
-	 *
-	 * @return the parent
-	 */
-
-	/**
-	 * Gets the parent.
-	 *
-	 * @return the parent
-	 */
-
-	/**
-	 * Gets the parent.
-	 *
-	 * @return the parent
-	 */
 	@Getter
 	private TreeNode<T> parent;
-
-	/**
-	 * Gets the children.
-	 *
-	 * @return the children
-	 */
-
-	/**
-	 * Gets the children.
-	 *
-	 * @return the children
-	 */
-
-	/**
-	 * Gets the children.
-	 *
-	 * @return the children
-	 */
 
 	/**
 	 * Gets the children.

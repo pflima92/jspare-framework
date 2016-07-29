@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.core.context.additional;
+package org.jspare.core.container.test.application;
 
 import org.jspare.core.container.Qualifier;
 

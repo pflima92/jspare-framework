@@ -15,6 +15,8 @@
  */
 package org.jspare.core.loader;
 
+import static org.jspare.core.commons.Definitions.DEFAULT_CHARSET;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -73,14 +75,14 @@ public class ResourceLoaderImpl implements ResourceLoader {
 		File file = new File(path);
 		if (file.exists()) {
 
-			content = FileUtils.readFileToString(file);
+			content = FileUtils.readFileToString(file, DEFAULT_CHARSET);
 		}
 
 		if (StringUtils.isEmpty(content)) {
 			@Cleanup
 			InputStream in = getClass().getResourceAsStream(String.format("%s%s", File.separator, path));
 			if (in != null) {
-				content = IOUtils.toString(in);
+				content = IOUtils.toString(in, DEFAULT_CHARSET);
 			}
 		}
 
