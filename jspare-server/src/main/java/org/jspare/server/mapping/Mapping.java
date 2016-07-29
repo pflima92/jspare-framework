@@ -29,15 +29,8 @@ import org.apache.commons.lang.StringUtils;
  * @since 30/03/2016
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Command {
-
-	/**
-	 * Type.
-	 *
-	 * @return the type
-	 */
-	Type type() default Type.ANY;
+@Target({ ElementType.METHOD, ElementType.TYPE })
+public @interface Mapping {
 
 	/**
 	 * Value.

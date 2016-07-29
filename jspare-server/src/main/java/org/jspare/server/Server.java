@@ -15,16 +15,16 @@
  */
 package org.jspare.server;
 
+import org.jspare.core.container.Component;
+
 /**
  * The Interface Server.
  *
  * @author pflima
  * @since 30/03/2016
  */
+@Component
 public interface Server {
-
-	/** The default port. */
-	int DEFAULT_PORT = 8080;
 
 	/**
 	 * Certificates.
@@ -66,6 +66,8 @@ public interface Server {
 	 * @return the server
 	 */
 	Server port(int port);
+
+	int port();
 
 	/**
 	 * Router.

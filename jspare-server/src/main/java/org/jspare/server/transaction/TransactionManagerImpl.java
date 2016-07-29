@@ -17,6 +17,8 @@ package org.jspare.server.transaction;
 
 import static org.jspare.core.container.Environment.CONFIG;
 import static org.jspare.core.container.Environment.factory;
+import static org.jspare.server.commons.Definitions.TRANSACTION_TIME_TO_LIVE_DEFAULT;
+import static org.jspare.server.commons.Definitions.TRANSACTION_TIME_TO_LIVE_KEY;
 
 import java.util.Map;
 import java.util.Optional;
@@ -32,12 +34,6 @@ import org.jspare.core.collections.TimedHashMap;
  */
 public class TransactionManagerImpl implements TransactionManager {
 
-	/** The Constant TIME_TO_LIVE_KEY. */
-	private static final String TIME_TO_LIVE_KEY = "server.transaction.live";
-
-	/** The Constant TIME_TO_LIVE_DEFAULT_VALUE. */
-	private static final long TIME_TO_LIVE_DEFAULT_VALUE = 5l;
-
 	/** The transactions. */
 	private static Map<String, Transaction> transactions;
 
@@ -46,14 +42,14 @@ public class TransactionManagerImpl implements TransactionManager {
 	 */
 	public TransactionManagerImpl() {
 
-		long timeToLive = Long.parseLong(CONFIG.get(TIME_TO_LIVE_KEY, TIME_TO_LIVE_DEFAULT_VALUE));
+		long timeToLive = Long.parseLong(CONFIG.get(TRANSACTION_TIME_TO_LIVE_KEY, TRANSACTION_TIME_TO_LIVE_DEFAULT));
 
 		transactions = new TimedHashMap<>(TimeUnit.MINUTES, timeToLive);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.jspare.server.transaction.TransactionManager#end(java.lang.String)
 	 */
@@ -83,7 +79,7 @@ public class TransactionManagerImpl implements TransactionManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.jspare.server.transaction.TransactionManager#registryTransaction()
 	 */
@@ -97,7 +93,7 @@ public class TransactionManagerImpl implements TransactionManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.jspare.server.transaction.TransactionManager#yield(java.lang.String,
 	 * org.jspare.server.transaction.Transaction)

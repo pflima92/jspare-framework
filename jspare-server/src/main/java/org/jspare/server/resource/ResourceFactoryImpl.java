@@ -13,33 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.transport;
+package org.jspare.server.resource;
 
-/**
- * The Interface Media.
- *
- * @author pflima
- * @since 30/03/2016
- */
-@FunctionalInterface
-public interface Media {
+public class ResourceFactoryImpl implements ResourceFactory {
 
-	/**
-	 * Of.
-	 *
-	 * @param value
-	 *            the value
-	 * @return the media
-	 */
-	public static Media of(String value) {
+	@Override
+	public <T> T create(Resource<T> resource) {
 
-		return () -> value;
+		return resource.generate();
 	}
-
-	/**
-	 * Gets the value.
-	 *
-	 * @return the value
-	 */
-	String getValue();
 }

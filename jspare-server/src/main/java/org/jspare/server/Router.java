@@ -18,10 +18,11 @@ package org.jspare.server;
 import java.util.List;
 import java.util.Optional;
 
-import org.jspare.server.apification.Apification;
+import org.jspare.core.container.Component;
 import org.jspare.server.controller.CommandData;
 import org.jspare.server.filter.Filter;
 import org.jspare.server.handler.ResourceHandler;
+import org.jspare.server.transport.Status;
 
 /**
  * The Interface Router.
@@ -29,25 +30,8 @@ import org.jspare.server.handler.ResourceHandler;
  * @author pflima
  * @since 30/03/2016
  */
+@Component
 public interface Router {
-
-	/**
-	 * Adds the apification resource.
-	 *
-	 * @param apification
-	 *            the apification
-	 * @return the router
-	 */
-	Router addApificationResource(Apification apification);
-
-	/**
-	 * Adds the apification resource.
-	 *
-	 * @param apificationClazz
-	 *            the apification clazz
-	 * @return the router
-	 */
-	Router addApificationResource(Class<? extends Apification> apificationClazz);
 
 	/**
 	 * Adds the error handler.

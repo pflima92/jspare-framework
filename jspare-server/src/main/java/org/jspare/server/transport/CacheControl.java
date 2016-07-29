@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server;
+package org.jspare.server.transport;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,34 +32,6 @@ public interface CacheControl {
 	 * @param value
 	 *            the value
 	 */
-
-	/**
-	 * Instantiates a new cache accessor.
-	 *
-	 * @param value
-	 *            the value
-	 */
-
-	/**
-	 * Instantiates a new cache accessor.
-	 *
-	 * @param value
-	 *            the value
-	 */
-
-	/**
-	 * Instantiates a new cache accessor.
-	 *
-	 * @param value
-	 *            the value
-	 */
-
-	/**
-	 * Instantiates a new cache accessor.
-	 *
-	 * @param value
-	 *            the value
-	 */
 	@AllArgsConstructor
 	public enum CacheAccessor {
 
@@ -67,30 +39,6 @@ public interface CacheControl {
 		PUBLIC("public"),
 		/** The private. */
 		PRIVATE("private");
-
-		/**
-		 * Gets the value.
-		 *
-		 * @return the value
-		 */
-
-		/**
-		 * Gets the value.
-		 *
-		 * @return the value
-		 */
-
-		/**
-		 * Gets the value.
-		 *
-		 * @return the value
-		 */
-
-		/**
-		 * Gets the value.
-		 *
-		 * @return the value
-		 */
 
 		/**
 		 * Gets the value.

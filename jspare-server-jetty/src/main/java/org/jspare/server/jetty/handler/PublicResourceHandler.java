@@ -24,13 +24,14 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jspare.core.loader.ResourceLoader;
-import org.jspare.server.CacheControl;
-import org.jspare.server.CacheControl.CacheAccessor;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
 import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.jetty.http.HttpMediaType;
 import org.jspare.server.mapping.Type;
+import org.jspare.server.transport.CacheControl;
+import org.jspare.server.transport.Status;
+import org.jspare.server.transport.CacheControl.CacheAccessor;
 
 /**
  * The Class PublicResourceHandler.
@@ -65,23 +66,12 @@ public class PublicResourceHandler implements ResourceHandler {
 			InputStream resource = my(ResourceLoader.class).readFileToInputStream(path);
 
 			resolveMediaType(request, response);
-			response.cache(CacheControl.of(CacheAccessor.PUBLIC, 3600)).entity(IOUtils.toByteArray(resource)).success();
+			response.cache(CacheControl.of(CacheAccessor.PUBLIC, 3600)).entity(IOUtils.toByteArray(resource)).status(Status.OK).end();
 
 		} catch (IOException e) {
 
-			response.notFound();
+			response.status(Status.NOT_FOUND).end();
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.handler.ResourceHandler#getCommandType()
-	 */
-	@Override
-	public Type getType() {
-
-		return Type.RETRIEVE;
 	}
 
 	/*
@@ -93,6 +83,17 @@ public class PublicResourceHandler implements ResourceHandler {
 	public String getCommand() {
 
 		return String.format("%s%s", CONFIG.get(PUBLIC_RESOURCE_PATH_KEY, PUBLIC_RESOURCE_PATH), DEFAULT_SUFIX_PATTERN);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.jspare.server.handler.ResourceHandler#getCommandType()
+	 */
+	@Override
+	public Type[] getTypes() {
+
+		return new Type[] { Type.GET };
 	}
 
 	/**

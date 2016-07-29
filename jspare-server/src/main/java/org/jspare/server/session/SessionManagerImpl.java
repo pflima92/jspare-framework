@@ -16,6 +16,8 @@
 package org.jspare.server.session;
 
 import static org.jspare.core.container.Environment.CONFIG;
+import static org.jspare.server.commons.Definitions.SESSION_TIMEOUT_DEFAULT;
+import static org.jspare.server.commons.Definitions.SESSION_TIMEOUT_KEY;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -33,12 +35,6 @@ import org.jspare.core.collections.TimedMap;
  */
 public class SessionManagerImpl implements SessionManager {
 
-	/** The Constant DEFAULT_SESSION_TIMEOUT_KEY. */
-	private final static String DEFAULT_SESSION_TIMEOUT_KEY = "server.session.timeout";
-
-	/** The Constant DEFAULT_SESSION_TIMEOUT. */
-	private final static Integer DEFAULT_SESSION_TIMEOUT = 20;
-
 	/** The session context map. */
 	private final TimedMap<String, SessionContext> sessionContextMap;
 
@@ -52,7 +48,7 @@ public class SessionManagerImpl implements SessionManager {
 
 		this.generator = new SessionIdentifierGenerator();
 		this.sessionContextMap = new TimedHashMap<>(TimeUnit.MINUTES,
-				Integer.parseInt((CONFIG.get(DEFAULT_SESSION_TIMEOUT_KEY, DEFAULT_SESSION_TIMEOUT.toString()))));
+				Integer.parseInt((CONFIG.get(SESSION_TIMEOUT_KEY, SESSION_TIMEOUT_DEFAULT.toString()))));
 
 	}
 
@@ -71,7 +67,7 @@ public class SessionManagerImpl implements SessionManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.jspare.server.session.SessionManager#invalidate(java.lang.String)
 	 */
@@ -96,7 +92,7 @@ public class SessionManagerImpl implements SessionManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.session.SessionManager#renew(java.lang.String)
 	 */
 	@Override
@@ -112,7 +108,7 @@ public class SessionManagerImpl implements SessionManager {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.jspare.server.session.SessionManager#updateSession(java.lang.String,
 	 * org.jspare.server.session.SessionContext)

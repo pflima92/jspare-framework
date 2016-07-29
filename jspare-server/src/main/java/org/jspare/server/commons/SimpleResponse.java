@@ -13,33 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.transport;
+package org.jspare.server.commons;
 
-/**
- * The Interface Media.
- *
- * @author pflima
- * @since 30/03/2016
- */
-@FunctionalInterface
-public interface Media {
+import java.util.List;
 
-	/**
-	 * Of.
-	 *
-	 * @param value
-	 *            the value
-	 * @return the media
-	 */
-	public static Media of(String value) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
-		return () -> value;
-	}
+@Data
+@Accessors(fluent = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class SimpleResponse {
 
-	/**
-	 * Gets the value.
-	 *
-	 * @return the value
-	 */
-	String getValue();
+	private String result = "OK";
+	private String message;
+	private List<String> reasons;
 }

@@ -20,7 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jspare.server.CacheControl.CacheAccessor;
+import org.jspare.server.transport.CacheControl.CacheAccessor;
 
 /**
  * The Interface Cache.

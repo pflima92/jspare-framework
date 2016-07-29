@@ -13,33 +13,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.transport;
+package org.jspare.server.mapping;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * The Interface Media.
+ * The Interface Command.
  *
  * @author pflima
  * @since 30/03/2016
  */
-@FunctionalInterface
-public interface Media {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Method {
 
 	/**
-	 * Of.
+	 * Value.
 	 *
-	 * @param value
-	 *            the value
-	 * @return the media
+	 * @return the string
 	 */
-	public static Media of(String value) {
-
-		return () -> value;
-	}
-
-	/**
-	 * Gets the value.
-	 *
-	 * @return the value
-	 */
-	String getValue();
+	Type[] value();
 }

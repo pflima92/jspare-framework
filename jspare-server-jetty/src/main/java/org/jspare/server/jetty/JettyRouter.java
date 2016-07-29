@@ -26,13 +26,13 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.jspare.core.exception.InfraRuntimeException;
 import org.jspare.server.Router;
-import org.jspare.server.Status;
-import org.jspare.server.apification.Apification;
 import org.jspare.server.controller.CommandData;
 import org.jspare.server.exception.InvalidControllerException;
 import org.jspare.server.filter.Filter;
 import org.jspare.server.handler.ResourceHandler;
-import org.jspare.server.mapping.Command;
+import org.jspare.server.mapping.Mapping;
+import org.jspare.server.mapping.Type;
+import org.jspare.server.transport.Status;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -56,54 +56,17 @@ public class JettyRouter implements Router {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Router#getResourceHandlers()
 	 */
 	@Getter
 	private final List<ResourceHandler> resourceHandlers = new ArrayList<>();
-
-	/** The apification resources. */
-	private final List<Apification> apificationResources = new ArrayList<>();
 
 	/** The before route filters. */
 	private final List<Filter> beforeRouteFilters = new ArrayList<>();
 
 	/** The after route filters. */
 	private final List<Filter> afterRouteFilters = new ArrayList<>();
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Router#addApificationResource(org.jspare.server.
-	 * apification.Apification)
-	 */
-	@Override
-	public Router addApificationResource(Apification apification) {
-
-		this.apificationResources.add(apification);
-
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Router#addApificationResource(java.lang.Class)
-	 */
-	@Override
-	public Router addApificationResource(Class<? extends Apification> apificationClazz) {
-
-		try {
-
-			Apification apification = apificationClazz.newInstance();
-			this.addApificationResource(apification);
-			return this;
-		} catch (Exception e) {
-
-			String errorMessage = String.format("Cannot instantiate Apification Resource mapped by [%s]", apificationClazz.getName());
-			throw new InfraRuntimeException(errorMessage, e);
-		}
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -180,7 +143,7 @@ public class JettyRouter implements Router {
 	@Override
 	public Router addResourceHandler(ResourceHandler resourceHandler) {
 
-		log.info("Founded mapping: TYPE: [{}] ALIAS: [{}]", resourceHandler.getType(), resourceHandler.getCommand());
+		log.info("Founded mapping: TYPE: [{}] ALIAS: [{}]", resourceHandler.getTypes(), resourceHandler.getCommand());
 
 		this.resourceHandlers.add(resourceHandler);
 		return this;
@@ -233,6 +196,17 @@ public class JettyRouter implements Router {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see org.jspare.server.Router#isValidCommand(java.lang.Class)
+	 */
+	@Override
+	public boolean isValidCommand(Class<?> clazz) {
+
+		return clazz.getName().endsWith(CONTROLLER_SUFIX);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see org.jspare.server.Router#registryAfterRouteFilter(org.jspare.server.
 	 * filter.Filter)
 	 */
@@ -264,8 +238,12 @@ public class JettyRouter implements Router {
 	 *            the cmd data
 	 */
 	private void addCommand(CommandData cmdData) {
-		log.info("Founded mapping: TYPE: [{}] ALIAS: [{}]", cmdData.getType(), cmdData.getCommand());
-		this.commandMap.put(cmdData.getKey(), cmdData);
+
+		for (Type type : cmdData.getTypes()) {
+
+			log.info("Founded mapping: TYPE: [{}] ALIAS: [{}]", type, cmdData.getCommand());
+			this.commandMap.put(cmdData.getKey(), cmdData);
+		}
 	}
 
 	/**
@@ -285,7 +263,7 @@ public class JettyRouter implements Router {
 
 		Method method : cmdClazz.getDeclaredMethods()) {
 
-			if (method.isAnnotationPresent(Command.class)) {
+			if (method.isAnnotationPresent(Mapping.class)) {
 
 				CommandData cmdData = new CommandData(cmdClazz, method);
 				addCommand(cmdData);
@@ -299,16 +277,5 @@ public class JettyRouter implements Router {
 				}
 			}
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jspare.server.Router#isValidCommand(java.lang.Class)
-	 */
-	@Override
-	public boolean isValidCommand(Class<?> clazz) {
-
-		return clazz.getName().endsWith(CONTROLLER_SUFIX);
 	}
 }

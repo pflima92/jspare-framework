@@ -50,5 +50,5 @@ public interface ResourceHandler {
 	 *
 	 * @return the command type
 	 */
-	Type getType();
+	Type[] getTypes();
 }

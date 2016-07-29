@@ -18,8 +18,8 @@ package org.jspare.server.jetty.bundle;
 import static org.jspare.core.container.Environment.registryComponent;
 
 import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyHolder;
-import org.jspare.server.jetty.JettyServerFactory;
+import org.jspare.server.jetty.JettyRouter;
+import org.jspare.server.jetty.JettyServer;
 
 /**
  * The Class ServerBundle.
@@ -31,13 +31,13 @@ public class JettyServerBundle implements Bundle {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.core.container.Bundle#registryComponents()
 	 */
 	@Override
 	public void registryComponents() {
 
-		registryComponent(JettyHolder.class);
-		registryComponent(JettyServerFactory.class);
+		registryComponent(JettyServer.class);
+		registryComponent(JettyRouter.class);
 	}
 }

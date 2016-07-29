@@ -29,8 +29,6 @@ public interface SessionManager {
 	/**
 	 * Gets the session context.
 	 *
-	 * XXX Validate necessity of throw new ExpiredSessionExcpetion.
-	 *
 	 * @param sessionId
 	 *            the session id
 	 * @return the session context

@@ -13,33 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.transport;
+package org.jspare.server.jetty.commons;
 
-/**
- * The Interface Media.
- *
- * @author pflima
- * @since 30/03/2016
- */
-@FunctionalInterface
-public interface Media {
+import org.jspare.server.commons.Definitions;
 
-	/**
-	 * Of.
-	 *
-	 * @param value
-	 *            the value
-	 * @return the media
-	 */
-	public static Media of(String value) {
+public interface JettyDefinitions extends Definitions {
 
-		return () -> value;
-	}
+	String SERVER_MIN_POOL_THREADS_KEY = "server.threads.min";
+	Integer SERVER_MIN_POOL_THREADS_DEFAULT = 13;
+	String SERVER_MAX_POOL_THREADS_KEY = "server.threads.max";
+	Integer SERVER_MAX_POOL_THREADS_DEFAULT = 13;
+	String SERVER_DAEMON_KEY = "server.daemon";
 
-	/**
-	 * Gets the value.
-	 *
-	 * @return the value
-	 */
-	String getValue();
 }

@@ -27,57 +27,7 @@ import lombok.Data;
  * @author pflima
  * @since 10/05/2016
  */
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#toString()
- */
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#toString()
- */
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#toString()
- */
 @Data
-
-/**
- * Instantiates a new yield.
- *
- * @param tid
- *            the tid
- * @param bind
- *            the bind
- * @param context
- *            the context
- */
-
-/**
- * Instantiates a new yield.
- *
- * @param tid
- *            the tid
- * @param bind
- *            the bind
- * @param context
- *            the context
- */
-
-/**
- * Instantiates a new yield.
- *
- * @param tid
- *            the tid
- * @param bind
- *            the bind
- * @param context
- *            the context
- */
 @AllArgsConstructor
 public class Yield {
 

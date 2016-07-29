@@ -15,16 +15,18 @@
  */
 package org.jspare.server.transaction;
 
+import static org.jspare.core.container.Environment.CONFIG;
 import static org.jspare.core.container.Environment.my;
+import static org.jspare.server.commons.Definitions.YIELD_ENABLE_KEY;
 
 import java.lang.reflect.Parameter;
 
 import org.apache.commons.lang.StringUtils;
+import org.jspare.core.exception.InfraRuntimeException;
 import org.jspare.core.exception.SerializationException;
-import org.jspare.core.serializer.Serializer;
+import org.jspare.core.serializer.Json;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
-import org.jspare.server.Status;
 import org.jspare.server.controller.CommandData;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.controller.ControllerFactory;
@@ -32,6 +34,7 @@ import org.jspare.server.exception.NoSuchCallerException;
 import org.jspare.server.filter.Filter;
 import org.jspare.server.mapping.Model;
 import org.jspare.server.transaction.model.Yield;
+import org.jspare.server.transport.Status;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -40,29 +43,6 @@ import lombok.extern.slf4j.Slf4j;
 public class TransactionExecutorImpl implements TransactionExecutor {
 
 	/** The caller. */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.jspare.server.transaction.TransactionExecutor#setCaller(java.lang.
-	 * Object)
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jspare.server.transaction.TransactionExecutor#setCaller(java.lang.
-	 * Object)
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.jspare.server.transaction.TransactionExecutor#setCaller(java.lang.
-	 * Object)
-	 */
 	@Setter
 	private Object caller;
 
@@ -71,6 +51,13 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 
 	/** The response. */
 	private Response response;
+
+	private boolean hasYield;
+
+	public TransactionExecutorImpl() {
+
+		hasYield = Boolean.valueOf(CONFIG.get(YIELD_ENABLE_KEY, Boolean.FALSE));
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -94,58 +81,15 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 	@Override
 	public void doIt(CommandData cmd, Request request, Response response) throws InterruptedException {
 
+		if (!hasYield) {
+
+			execute(cmd, request, response);
+			return;
+		}
+
 		process = new Thread(() -> {
 
-			try {
-
-				for (Filter f : cmd.getBeforeFilters()) {
-					f.doIt(request, response);
-				}
-
-				// Inject Request and Response if is Available
-				Object newInstance = my(ControllerFactory.class).instantiate(cmd.getCmdClazz());
-
-				if (newInstance instanceof Controller) {
-
-					request.setController((Controller) newInstance);
-					((Controller) newInstance).setRequest(request);
-					((Controller) newInstance).setResponse(response);
-				}
-
-				Object[] parameters = new Object[cmd.getMethod().getParameterCount()];
-				int i = 0;
-				for (Parameter parameter : cmd.getMethod().getParameters()) {
-
-					parameters[i] = resolveParameter(parameter, request, response);
-					i++;
-				}
-
-				cmd.getMethod().invoke(newInstance, parameters);
-
-				for (Filter f : cmd.getAfterFilters()) {
-					f.doIt(request, response);
-				}
-
-				response.end();
-
-				my(TransactionManager.class).end(request.getTransaction().getId());
-
-			} catch (Exception e) {
-
-				log.error("Fail execute", e);
-				response.systemError(e);
-			} finally {
-
-				this.response = response;
-
-				try {
-					notifyFinish(response);
-
-				} catch (Exception e) {
-
-					log.error("Fail execute", e);
-				}
-			}
+			execute(cmd, request, response);
 
 		}, "jspare-server-executor");
 
@@ -153,6 +97,59 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 
 			process.start();
 			caller.wait();
+		}
+	}
+
+	private void execute(CommandData cmd, Request request, Response response) {
+		try {
+
+			for (Filter f : cmd.getBeforeFilters()) {
+				f.doIt(request, response);
+			}
+
+			// Inject Request and Response if is Available
+			Object newInstance = my(ControllerFactory.class).instantiate(cmd.getCmdClazz());
+
+			if (newInstance instanceof Controller) {
+
+				request.setController((Controller) newInstance);
+				((Controller) newInstance).setRequest(request);
+				((Controller) newInstance).setResponse(response);
+			}
+
+			Object[] parameters = new Object[cmd.getMethod().getParameterCount()];
+			int i = 0;
+			for (Parameter parameter : cmd.getMethod().getParameters()) {
+
+				parameters[i] = resolveParameter(parameter, request, response);
+				i++;
+			}
+
+			cmd.getMethod().invoke(newInstance, parameters);
+
+			for (Filter f : cmd.getAfterFilters()) {
+				f.doIt(request, response);
+			}
+
+			response.end();
+
+			my(TransactionManager.class).end(request.getTransaction().getId());
+
+		} catch (Exception e) {
+
+			log.error("Fail execute", e);
+			response.status(Status.INTERNAL_SERVER_ERROR).end();
+		} finally {
+
+			this.response = response;
+
+			try {
+				notifyFinish(response);
+
+			} catch (Exception e) {
+
+				log.error("Fail execute", e);
+			}
 		}
 	}
 
@@ -220,6 +217,11 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 	@Override
 	public void yield(Request request, Response response, String bind) {
 
+		if (!hasYield) {
+
+			throw new InfraRuntimeException("Yield is not enabled on environment, please put key server.yield.enable = true");
+		}
+
 		my(TransactionManager.class).yield(bind, request.getTransaction());
 
 		Yield yield = new Yield(request.getTransaction().getId(), bind, request.getTransaction().getContext());
@@ -237,7 +239,8 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 
 		} catch (NoSuchCallerException | InterruptedException e) {
 
-			response.systemError(e);
+			log.error("Error on yield process", e);
+			response.status(Status.INTERNAL_SERVER_ERROR).end();
 		}
 	}
 
@@ -272,7 +275,7 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 
 			try {
 
-				return my(Serializer.class).fromJSON(String.valueOf(request.getEntity().get()), parameter.getType());
+				return my(Json.class).fromJSON(String.valueOf(request.getEntity().get()), parameter.getType());
 			} catch (SerializationException e) {
 
 				log.warn("Invalid content of entity for class [{}] on parameter [{}]", parameter.getClass(), parameter.getName());

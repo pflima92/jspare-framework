@@ -23,10 +23,10 @@ package org.jspare.server.mapping;
  */
 public enum Type {
 
-	/** The any. */
-	ANY,
-	/** The retrieve. */
-	RETRIEVE,
-	/** The send. */
-	SEND
+	GET, POST, HEAD, PUT, OPTIONS, DELETE, TRACE, CONNECT, MOVE, PROXY, PRI;
+
+	public String asString() {
+
+		return toString();
+	}
 }

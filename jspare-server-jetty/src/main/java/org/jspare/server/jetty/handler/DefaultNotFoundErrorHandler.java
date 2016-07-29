@@ -19,6 +19,7 @@ import org.jspare.server.Request;
 import org.jspare.server.Response;
 import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.mapping.Type;
+import org.jspare.server.transport.Status;
 
 /**
  * The Class DefaultNotFoundErrorHandler.
@@ -29,11 +30,11 @@ import org.jspare.server.mapping.Type;
 public class DefaultNotFoundErrorHandler implements ResourceHandler {
 
 	/** The command value. */
-	private final String COMMAND_VALUE = "/error/404";
+	private final String COMMAND_VALUE = "/errors/404";
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.jspare.server.handler.ResourceHandler#doIt(org.jspare.server.Request,
 	 * org.jspare.server.Response)
@@ -46,29 +47,29 @@ public class DefaultNotFoundErrorHandler implements ResourceHandler {
 		builder.append("<h1>404 - Page Not Found</h1>");
 		builder.append("</body></html>");
 
-		response.entity(builder.toString()).notFound();
+		response.entity(builder.toString()).status(Status.NOT_FOUND).end();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.jspare.server.handler.ResourceHandler#getCommandType()
-	 */
-	@Override
-	public Type getType() {
-
-		return Type.ANY;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.handler.ResourceHandler#getCommandValue()
 	 */
 	@Override
 	public String getCommand() {
 
 		return COMMAND_VALUE;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.jspare.server.handler.ResourceHandler#getCommandType()
+	 */
+	@Override
+	public Type[] getTypes() {
+
+		return new Type[] { Type.GET };
 	}
 
 }

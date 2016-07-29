@@ -24,6 +24,7 @@ import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.session.SessionContext;
 import org.jspare.server.transaction.Transaction;
+import org.jspare.server.transport.Media;
 
 /**
  * The Interface Request.
@@ -53,7 +54,7 @@ public interface Request {
 	 *            the name
 	 * @return the client resource
 	 */
-	String getClientResource(String name);
+	String getCookie(String name);
 
 	/**
 	 * Gets the command alias.
@@ -98,7 +99,7 @@ public interface Request {
 	 *
 	 * @return the headers string
 	 */
-	Map<String, String> getHeadersString();
+	Map<String, String> getHeadersAsString();
 
 	/**
 	 * Gets the locale.
@@ -141,12 +142,7 @@ public interface Request {
 	 */
 	String getPath();
 
-	/**
-	 * Gets the security context.
-	 *
-	 * @return the security context
-	 */
-	SecurityContext getSecurityContext();
+	String getRemoteAddr();
 
 	/**
 	 * Gets the session context.
@@ -183,9 +179,4 @@ public interface Request {
 	 *            the new controller
 	 */
 	void setController(Controller controller);
-
-	/**
-	 * Sets the security context.
-	 */
-	void setSecurityContext();
 }

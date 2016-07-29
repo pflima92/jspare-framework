@@ -21,15 +21,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
-import org.jspare.server.CacheControl;
 import org.jspare.server.exception.InvalidControllerException;
 import org.jspare.server.filter.Filter;
 import org.jspare.server.filter.RequestFilter;
 import org.jspare.server.filter.ResponseFilter;
 import org.jspare.server.mapping.Cache;
-import org.jspare.server.mapping.Command;
+import org.jspare.server.mapping.Mapping;
 import org.jspare.server.mapping.Start;
 import org.jspare.server.mapping.Type;
+import org.jspare.server.transport.CacheControl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,161 +40,7 @@ import lombok.Data;
  * @author pflima
  * @since 22/04/2016
  */
-/*
- * (non-Javadoc)
- *
- * @see java.lang.Object#toString()
- */
-
-/*
- * (non-Javadoc)
- *
- * @see java.lang.Object#toString()
- */
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#toString()
- */
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#toString()
- */
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#toString()
- */
 @Data
-
-/**
- * Instantiates a new command data.
- *
- * @param cmdClazz
- *            the cmd clazz
- * @param method
- *            the method
- * @param command
- *            the command
- * @param type
- *            the type
- * @param afterFilters
- *            the after filters
- * @param beforeFilters
- *            the before filters
- * @param targetMedias
- *            the target medias
- * @param cacheControl
- *            the cache control
- * @param startCommand
- *            the start command
- * @param apified
- *            the apified
- */
-
-/**
- * Instantiates a new command data.
- *
- * @param cmdClazz
- *            the cmd clazz
- * @param method
- *            the method
- * @param command
- *            the command
- * @param type
- *            the type
- * @param afterFilters
- *            the after filters
- * @param beforeFilters
- *            the before filters
- * @param targetMedias
- *            the target medias
- * @param cacheControl
- *            the cache control
- * @param startCommand
- *            the start command
- * @param apified
- *            the apified
- */
-
-/**
- * Instantiates a new command data.
- *
- * @param cmdClazz
- *            the cmd clazz
- * @param method
- *            the method
- * @param command
- *            the command
- * @param type
- *            the type
- * @param afterFilters
- *            the after filters
- * @param beforeFilters
- *            the before filters
- * @param targetMedias
- *            the target medias
- * @param cacheControl
- *            the cache control
- * @param startCommand
- *            the start command
- * @param apified
- *            the apified
- */
-
-/**
- * Instantiates a new command data.
- *
- * @param cmdClazz
- *            the cmd clazz
- * @param method
- *            the method
- * @param command
- *            the command
- * @param type
- *            the type
- * @param afterFilters
- *            the after filters
- * @param beforeFilters
- *            the before filters
- * @param targetMedias
- *            the target medias
- * @param cacheControl
- *            the cache control
- * @param startCommand
- *            the start command
- * @param apified
- *            the apified
- */
-
-/**
- * Instantiates a new command data.
- *
- * @param cmdClazz
- *            the cmd clazz
- * @param method
- *            the method
- * @param command
- *            the command
- * @param type
- *            the type
- * @param afterFilters
- *            the after filters
- * @param beforeFilters
- *            the before filters
- * @param targetMedias
- *            the target medias
- * @param cacheControl
- *            the cache control
- * @param startCommand
- *            the start command
- * @param apified
- *            the apified
- */
 @AllArgsConstructor
 public class CommandData implements Cloneable {
 
@@ -208,7 +54,7 @@ public class CommandData implements Cloneable {
 	private String command;
 
 	/** The type. */
-	private Type type;
+	private Type[] types = { Type.GET };
 
 	/** The after filters. */
 	private List<Filter> afterFilters = new ArrayList<>();
@@ -275,11 +121,14 @@ public class CommandData implements Cloneable {
 	 */
 	private void buildCommandData() {
 
-		Command command = method.getAnnotation(Command.class);
+		Mapping command = method.getAnnotation(Mapping.class);
 
 		this.command = StringUtils.isEmpty(command.value()) ? method.getName() : command.value();
 
-		this.type = command.type();
+		if (method.isAnnotationPresent(org.jspare.server.mapping.Method.class)) {
+
+			this.types = method.getAnnotation(org.jspare.server.mapping.Method.class).value();
+		}
 
 		if (method.isAnnotationPresent(ResponseFilter.class)) {
 

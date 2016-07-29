@@ -15,6 +15,7 @@
  */
 package org.jspare.server.jetty;
 
+import static org.jspare.core.commons.Definitions.DEFAULT_CHARSET;
 import static org.jspare.core.container.Environment.my;
 
 import java.io.IOException;
@@ -33,20 +34,17 @@ import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.jetty.http.HttpMethod;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.jspare.core.collections.MultiValueHashMap;
 import org.jspare.core.collections.MultiValueMap;
-import org.jspare.core.exception.NotImplementedException;
-import org.jspare.server.Media;
 import org.jspare.server.Request;
-import org.jspare.server.SecurityContext;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.session.SessionContext;
 import org.jspare.server.session.SessionManager;
 import org.jspare.server.transaction.Transaction;
 import org.jspare.server.transaction.TransactionManager;
+import org.jspare.server.transport.Media;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -60,14 +58,14 @@ public class JettyRequest implements Request {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Request#getController()
 	 */
 	@Getter
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.jspare.server.Request#setController(org.jspare.server.controller.
 	 * Controller)
@@ -108,25 +106,13 @@ public class JettyRequest implements Request {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Request#getBasePath()
 	 */
 	@Override
 	public String getBasePath() {
 
 		return context.getUriInfo().getBaseUri().toString();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jspare.server.Request#getClientResource(java.lang.String)
-	 */
-	@Override
-	public String getClientResource(String name) {
-
-		Cookie cookie = this.context.getCookies().get(name);
-		return cookie != null ? cookie.getValue() : StringUtils.EMPTY;
 	}
 
 	/*
@@ -138,6 +124,18 @@ public class JettyRequest implements Request {
 	public String getCommandAlias() {
 
 		return this.context.getHeaderString(HD_ALIAS);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.jspare.server.Request#getClientResource(java.lang.String)
+	 */
+	@Override
+	public String getCookie(String name) {
+
+		Cookie cookie = this.context.getCookies().get(name);
+		return cookie != null ? cookie.getValue() : StringUtils.EMPTY;
 	}
 
 	/*
@@ -184,7 +182,7 @@ public class JettyRequest implements Request {
 	 * @see org.jspare.server.Request#getHeadersString()
 	 */
 	@Override
-	public Map<String, String> getHeadersString() {
+	public Map<String, String> getHeadersAsString() {
 
 		Map<String, String> mHd = new HashMap<>();
 		context.getHeaders().entrySet().forEach(es -> {
@@ -195,7 +193,7 @@ public class JettyRequest implements Request {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Request#getLocale()
 	 */
 	@Override
@@ -263,20 +261,15 @@ public class JettyRequest implements Request {
 		return context.getUriInfo().getPath();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getSecurityContext()
-	 */
 	@Override
-	public SecurityContext getSecurityContext() {
+	public String getRemoteAddr() {
 
-		throw new NotImplementedException();
+		return getHeader("X-FORWARDED-FOR").orElse(null);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Request#getSessionContext()
 	 */
 	@Override
@@ -315,24 +308,7 @@ public class JettyRequest implements Request {
 	@Override
 	public Type getType() {
 
-		if (context.getMethod().equalsIgnoreCase(HttpMethod.GET.asString())) {
-			return Type.RETRIEVE;
-		}
-		if (context.getMethod().equalsIgnoreCase(HttpMethod.POST.asString())) {
-			return Type.SEND;
-		}
-		return Type.ANY;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#setSecurityContext()
-	 */
-	@Override
-	public void setSecurityContext() {
-		// TODO Auto-generated method stub
-
+		return Type.valueOf(context.getMethod());
 	}
 
 	/**
@@ -372,7 +348,7 @@ public class JettyRequest implements Request {
 
 			if (context.hasEntity()) {
 
-				return IOUtils.toString(context.getEntityStream());
+				return IOUtils.toString(context.getEntityStream(), DEFAULT_CHARSET);
 			}
 
 		} catch (IOException e) {
@@ -388,7 +364,7 @@ public class JettyRequest implements Request {
 	 */
 	private String buildSessionId() {
 
-		String sessionId = getClientResource(JettyServer.SESSION_ID_KEY);
+		String sessionId = getCookie(JettyServer.SESSION_ID_KEY);
 		if (StringUtils.isEmpty(sessionId) || !my(SessionManager.class).renew(sessionId)) {
 
 			SessionContext session = my(SessionManager.class).nextSessionContext();

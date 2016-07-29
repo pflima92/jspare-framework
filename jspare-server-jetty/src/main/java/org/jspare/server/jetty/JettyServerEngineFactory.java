@@ -16,6 +16,8 @@
 
 package org.jspare.server.jetty;
 
+import static org.jspare.core.container.Environment.CONFIG;
+
 import java.net.URI;
 import java.util.Optional;
 import java.util.concurrent.ThreadFactory;
@@ -37,6 +39,7 @@ import org.glassfish.jersey.process.JerseyProcessingUncaughtExceptionHandler;
 import org.glassfish.jersey.server.ContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spi.Container;
+import org.jspare.server.jetty.commons.JettyDefinitions;
 
 import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -61,15 +64,19 @@ public final class JettyServerEngineFactory {
 		 * Instantiates a new jetty connector thread pool.
 		 */
 		public JettyConnectorThreadPool() {
+
 			setName("jspare-server-thread");
-			setMinThreads(50);
-			setDaemon(false);
+			setMinThreads(Integer
+					.valueOf(CONFIG.get(JettyDefinitions.SERVER_MIN_POOL_THREADS_KEY, JettyDefinitions.SERVER_MIN_POOL_THREADS_DEFAULT)));
+			setMaxThreads(Integer
+					.valueOf(CONFIG.get(JettyDefinitions.SERVER_MAX_POOL_THREADS_KEY, JettyDefinitions.SERVER_MAX_POOL_THREADS_DEFAULT)));
+			setDaemon(Boolean.valueOf(CONFIG.get(JettyDefinitions.SERVER_DAEMON_KEY, Boolean.FALSE)));
 			setDetailedDump(true);
 		}
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see
 		 * org.eclipse.jetty.util.thread.QueuedThreadPool#newThread(java.lang.
 		 * Runnable)

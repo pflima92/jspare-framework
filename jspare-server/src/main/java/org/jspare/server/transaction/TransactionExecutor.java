@@ -27,9 +27,6 @@ import org.jspare.server.exception.NoSuchCallerException;
  *
  * Responsible to execute a single request.
  *
- * XXX Today, one TransactionExecutor follow the Factory Design Pattern and was
- * designed to solve one operation, change for pool of executors on future.
- *
  * @author pflima
  * @since 08/05/2016
  */

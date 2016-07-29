@@ -15,7 +15,7 @@
  */
 package org.jspare.server.jetty.http;
 
-import org.jspare.server.Media;
+import org.jspare.server.transport.Media;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -79,17 +79,6 @@ public enum HttpMediaType implements Media {
 	ALL("*/*");
 
 	/** The value. */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jspare.server.Media#getValue()
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jspare.server.Media#getValue()
-	 */
 	@Getter
 	private final String value;
 

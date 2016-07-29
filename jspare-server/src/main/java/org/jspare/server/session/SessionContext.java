@@ -15,7 +15,6 @@
  */
 package org.jspare.server.session;
 
-import static org.jspare.core.container.Environment.CONFIG;
 import static org.jspare.core.container.Environment.my;
 
 import java.time.LocalDateTime;
@@ -35,19 +34,19 @@ import lombok.RequiredArgsConstructor;
  */
 /*
  * (non-Javadoc)
- * 
+ *
  * @see java.lang.Object#toString()
  */
 
 /*
  * (non-Javadoc)
- * 
+ *
  * @see java.lang.Object#toString()
  */
 
 /*
  * (non-Javadoc)
- * 
+ *
  * @see java.lang.Object#toString()
  */
 @Data
@@ -121,9 +120,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class SessionContext {
 
-	/** The Constant DEFAULT_LANGUAGE_KEY. */
-	private final static String DEFAULT_LANGUAGE_KEY = "ui.language.default";
-
 	/** The session id. */
 	private final String sessionId;
 
@@ -131,7 +127,7 @@ public class SessionContext {
 	private final LocalDateTime createDateTime;
 
 	/** The language. */
-	private Locale language;
+	private Locale language = Locale.getDefault();
 
 	/** The context map. */
 	private Map<Object, Object> contextMap = new HashMap<>();
@@ -163,10 +159,6 @@ public class SessionContext {
 	 */
 	public Locale getLanguage() {
 
-		if (language == null) {
-
-			language = new Locale(CONFIG.get(DEFAULT_LANGUAGE_KEY, Locale.getDefault().toString()));
-		}
 		return language;
 	}
 

@@ -13,7 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server;
+package org.jspare.server.transport;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * The Enum Status.
@@ -21,25 +24,42 @@ package org.jspare.server;
  * @author pflima
  * @since 30/03/2016
  */
+@AllArgsConstructor
 public enum Status {
 
-	/** The business error. */
-	BUSINESS_ERROR,
-	/** The forbidden. */
-	FORBIDDEN,
-	/** The invalid. */
-	INVALID,
-	/** The not found. */
-	NOT_FOUND,
+	CONTINUE(100),
+	OK(200),
+	NO_CONTENT(204),
+	RESET_CONTENT(205),
+	PARTIAL_CONTENT(206),
+	MOVED_PERMANENTLY(301),
+	MOVED_TEMPORARILY(302),
+	NOT_MODIFIED(304),
+	USE_PROXY(305),
+	TEMPORARY_REDIRECT(307),
+	BAD_REQUEST(400),
+	UNAUTHORIZED(401),
+	PAYMENT_REQUIRED(402),
+	FORBIDDEN(403),
+	NOT_FOUND(404),
+	METHOD_NOT_ALLOWED(405),
+	NOT_ACCEPTABLE(406),
+	PROXY_AUTHENTICATION_REQUIRED(407),
+	REQUEST_TIMEOUT(408),
+	CONFLICT(409),
+	PRECONDITION_FAILED(412),
+	UNSUPPORTED_MEDIA_TYPE(415),
+	INTERNAL_SERVER_ERROR(500),
+	NOT_IMPLEMENTED(501),
+	BAD_GATEWAY(502),
+	SERVICE_UNAVAILABLE(503),
+	YIELD(600);
 
-	/** The redirect. */
-	REDIRECT,
-	/** The success. */
-	SUCCESS,
-	/** The system error. */
-	SYSTEM_ERROR,
-	/** The unauthorized. */
-	UNAUTHORIZED,
-	/** The yeld. */
-	YIELD;
+	@Getter
+	private final int code;
+
+	public String asString() {
+
+		return toString();
+	}
 }
