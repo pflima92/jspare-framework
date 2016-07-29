@@ -17,10 +17,10 @@ package org.jspare.server.container;
 
 import static org.jspare.core.container.Environment.my;
 import static org.jspare.core.scanner.ComponentScanner.ALL_SCAN_QUOTE;
-import static org.jspare.server.commons.Definitions.CERTIFICATE_KEYSTORE_KEY;
-import static org.jspare.server.commons.Definitions.CERTIFICATE_KEYSTORE_PASSWORD_KEY;
-import static org.jspare.server.commons.Definitions.SERVER_PORT_KEY;
-import static org.jspare.server.commons.Definitions.YIELD_ENABLE_KEY;
+import static org.jspare.server.commons.ServerDefinitions.CERTIFICATE_KEYSTORE_KEY;
+import static org.jspare.server.commons.ServerDefinitions.CERTIFICATE_KEYSTORE_PASSWORD_KEY;
+import static org.jspare.server.commons.ServerDefinitions.SERVER_PORT_KEY;
+import static org.jspare.server.commons.ServerDefinitions.YIELD_ENABLE_KEY;
 
 import java.util.ArrayList;
 import java.util.Arrays;

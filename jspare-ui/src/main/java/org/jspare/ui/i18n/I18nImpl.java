@@ -16,6 +16,8 @@
 package org.jspare.ui.i18n;
 
 import static org.jspare.core.container.Environment.CONFIG;
+import static org.jspare.ui.commons.UiDefinitions.I18N_ROOT_FOLDER;
+import static org.jspare.ui.commons.UiDefinitions.I18N_ROOT_FOLDER_KEY;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -36,15 +38,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class I18nImpl implements I18n {
 
-	/** The Constant I18N_ROOT_FOLDER_KEY. */
-	private final static String I18N_ROOT_FOLDER_KEY = "ui.i18n.root";
-
-	/** The Constant I18N_ROOT_FOLDER. */
-	private final static String I18N_ROOT_FOLDER = "i18n/app";
-
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.i18n.I18n#get(java.lang.String, java.util.Locale)
 	 */
 	@Override
@@ -55,7 +51,7 @@ public class I18nImpl implements I18n {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.i18n.I18n#get(java.lang.String, java.lang.String,
 	 * java.util.Locale)
 	 */
@@ -67,7 +63,7 @@ public class I18nImpl implements I18n {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.i18n.I18n#values(java.util.Locale)
 	 */
 	@Override
@@ -78,7 +74,7 @@ public class I18nImpl implements I18n {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.i18n.I18n#values(java.lang.String, java.util.Locale)
 	 */
 	@Override

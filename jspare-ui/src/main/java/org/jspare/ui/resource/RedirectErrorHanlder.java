@@ -18,6 +18,7 @@ package org.jspare.ui.resource;
 import org.jspare.server.Request;
 import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.mapping.Type;
+import org.jspare.server.transport.Status;
 
 import lombok.AllArgsConstructor;
 
@@ -52,7 +53,7 @@ public class RedirectErrorHanlder implements ResourceHandler {
 	@Override
 	public void doIt(Request request, org.jspare.server.Response response) {
 
-		response.redirect(route);
+		response.status(Status.MOVED_TEMPORARILY).end();
 	}
 
 	/*
@@ -72,7 +73,8 @@ public class RedirectErrorHanlder implements ResourceHandler {
 	 * @see org.jspare.server.handler.ResourceHandler#getType()
 	 */
 	@Override
-	public Type getType() {
-		return Type.ANY;
+	public Type[] getTypes() {
+
+		return new Type[] { Type.GET };
 	}
 }

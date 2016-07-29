@@ -30,45 +30,6 @@ import org.jspare.server.exception.RenderableException;
 @Component
 public interface UiToolkit {
 
-	/** The assets root folder key. */
-	String ASSETS_ROOT_FOLDER_KEY = "ui.root.assets";
-
-	/** The assets root folder. */
-	String ASSETS_ROOT_FOLDER = "public/assets/";
-
-	/** The images root folder key. */
-	String IMAGES_ROOT_FOLDER_KEY = "ui.root.images";
-
-	/** The images root folder. */
-	String IMAGES_ROOT_FOLDER = "images/";
-
-	/** The script root folder key. */
-	String SCRIPT_ROOT_FOLDER_KEY = "ui.root.js";
-
-	/** The script root folder. */
-	String SCRIPT_ROOT_FOLDER = "js/";
-
-	/** The styles root folder key. */
-	String STYLES_ROOT_FOLDER_KEY = "ui.root.css";
-
-	/** The styles root folder. */
-	String STYLES_ROOT_FOLDER = "css/";
-
-	/** The Constant ROOT_FILE_KEY. */
-	String ROOT_FILE_KEY = "ui.root.file";
-
-	/** The Constant ROOT_FILE. */
-	String ROOT_FILE = "pages/";
-
-	/** The Constant SUFIX_FILE_KEY. */
-	String SUFIX_FILE_KEY = "ui.sufix.file";
-
-	/** The Constant SUFIX_FILE. */
-	String SUFIX_PAGE_FILE = ".html";
-
-	/** The Constant CACHE_TEMPLATES. */
-	String CACHE_TEMPLATE = "ui.template.cache";
-
 	/**
 	 * Compile.
 	 *

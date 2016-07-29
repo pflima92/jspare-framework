@@ -16,8 +16,8 @@
 package org.jspare.server.session;
 
 import static org.jspare.core.container.Environment.CONFIG;
-import static org.jspare.server.commons.Definitions.SESSION_TIMEOUT_DEFAULT;
-import static org.jspare.server.commons.Definitions.SESSION_TIMEOUT_KEY;
+import static org.jspare.server.commons.ServerDefinitions.SESSION_TIMEOUT_DEFAULT;
+import static org.jspare.server.commons.ServerDefinitions.SESSION_TIMEOUT_KEY;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

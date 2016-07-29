@@ -15,8 +15,12 @@
  */
 package org.jspare.ui.view;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.jspare.core.commons.Definitions.DEFAULT_CHARSET;
 import static org.jspare.core.container.Environment.CONFIG;
+import static org.jspare.ui.commons.UiDefinitions.ROOT_FILE;
+import static org.jspare.ui.commons.UiDefinitions.ROOT_FILE_KEY;
+import static org.jspare.ui.commons.UiDefinitions.SUFIX_FILE_KEY;
+import static org.jspare.ui.commons.UiDefinitions.SUFIX_PAGE_FILE;
 
 import java.io.IOException;
 import java.util.Map;
@@ -25,8 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 
 import org.jspare.core.container.Inject;
-import org.jspare.core.context.ApplicationContext;
-import org.jspare.core.context.Context;
 import org.jspare.core.loader.ResourceLoader;
 import org.jspare.server.exception.LoadTemplateException;
 import org.jspare.server.exception.RenderableException;
@@ -65,7 +67,7 @@ public class UiToolkitImpl implements UiToolkit {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.jspare.ui.view.Template#apply(java.util.Map)
 		 */
 		@Override
@@ -76,12 +78,12 @@ public class UiToolkitImpl implements UiToolkit {
 
 				result = result.replaceAll(QUOTE.concat(entry.getKey()), Matcher.quoteReplacement(entry.getValue().toString()));
 			}
-			return new String(result.getBytes(UTF_8), UTF_8);
+			return new String(result.getBytes(DEFAULT_CHARSET), DEFAULT_CHARSET);
 		}
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.jspare.ui.view.Template#setContent(java.lang.Object)
 		 */
 		@Override
@@ -91,24 +93,8 @@ public class UiToolkitImpl implements UiToolkit {
 
 	}
 
-	/** The Constant ROOT_FILE_KEY. */
-	private final static String ROOT_FILE_KEY = "ui.root.file";
-
-	/** The Constant SUFIX_FILE_KEY. */
-	private final static String SUFIX_FILE_KEY = "ui.sufix.file";
-
-	/** The Constant ROOT_FILE. */
-	private final static String ROOT_FILE = "/pages/";
-
-	/** The Constant SUFIX_FILE. */
-	private final static String SUFIX_FILE = ".html";
-
 	/** The templates. */
 	private Map<String, SimpleTemplate> templates = new ConcurrentHashMap<>();
-
-	/** The application context. */
-	@Inject
-	private ApplicationContext applicationContext;
 
 	/** The resource loader. */
 	@Inject
@@ -116,7 +102,7 @@ public class UiToolkitImpl implements UiToolkit {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.UiToolkit#compile(org.jspare.ui.view.Template,
 	 * java.util.Map)
 	 */
@@ -128,7 +114,7 @@ public class UiToolkitImpl implements UiToolkit {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.UiToolkit#convert2Template(java.lang.String)
 	 */
 	@Override
@@ -139,7 +125,7 @@ public class UiToolkitImpl implements UiToolkit {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.UiToolkit#loadTemplate(java.lang.String)
 	 */
 	@Override
@@ -165,17 +151,15 @@ public class UiToolkitImpl implements UiToolkit {
 	 */
 	private Template loadTempateIfNecessary(String resource) throws IOException {
 
-		if (!resource.endsWith(CONFIG.get(SUFIX_FILE_KEY, SUFIX_FILE))) {
+		if (!resource.endsWith(CONFIG.get(SUFIX_FILE_KEY, SUFIX_PAGE_FILE))) {
 
-			resource += CONFIG.get(SUFIX_FILE_KEY, SUFIX_FILE);
+			resource += CONFIG.get(SUFIX_FILE_KEY, SUFIX_PAGE_FILE);
 		}
 
 		resource = CONFIG.get(ROOT_FILE_KEY, ROOT_FILE) + resource;
 
-		Context context = applicationContext.getContext();
-
-		boolean loadTemplates = context.containsParameter("loadTemplateIfNecessary") ? true
-				: Boolean.valueOf(String.valueOf(context.getParameter("loadTemplateIfNecessary")));
+		// TODO CACHE TEMPLATES
+		boolean loadTemplates = false;
 		if (!loadTemplates) {
 
 			return new SimpleTemplate(resourceLoader.readFileToString(resource));

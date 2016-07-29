@@ -17,11 +17,11 @@ package org.jspare.ui.resource;
 
 import static org.jspare.core.container.Environment.my;
 
-import org.jspare.server.Media;
 import org.jspare.server.Request;
-import org.jspare.server.Status;
 import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.mapping.Type;
+import org.jspare.server.transport.Media;
+import org.jspare.server.transport.Status;
 import org.jspare.ui.view.View;
 
 import lombok.AllArgsConstructor;
@@ -82,7 +82,7 @@ public class PageErrorHanlder implements ResourceHandler {
 	 * @see org.jspare.server.handler.ResourceHandler#getType()
 	 */
 	@Override
-	public Type getType() {
-		return Type.ANY;
+	public Type[] getTypes() {
+		return new Type[] { Type.GET };
 	}
 }

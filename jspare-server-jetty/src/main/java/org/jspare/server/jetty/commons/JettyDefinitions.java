@@ -15,9 +15,9 @@
  */
 package org.jspare.server.jetty.commons;
 
-import org.jspare.server.commons.Definitions;
+import org.jspare.server.commons.ServerDefinitions;
 
-public interface JettyDefinitions extends Definitions {
+public interface JettyDefinitions extends ServerDefinitions {
 
 	String SERVER_MIN_POOL_THREADS_KEY = "server.threads.min";
 	Integer SERVER_MIN_POOL_THREADS_DEFAULT = 13;

@@ -15,11 +15,14 @@
  */
 package org.jspare.web.container;
 
-import org.jspare.core.container.AbstractBootstrap;
-import org.jspare.server.Status;
-import org.jspare.server.container.ServerBoostrap;
+import static org.jspare.core.container.Environment.my;
+
+import org.jspare.core.container.Application;
+import org.jspare.core.container.ApplicationBuilder;
+import org.jspare.core.exception.InfraException;
+import org.jspare.server.Server;
+import org.jspare.server.container.ApplicationServerBuilder;
 import org.jspare.server.jetty.bundle.JettyServerBundle;
-import org.jspare.server.jetty.handler.DefaultNotFoundErrorHandler;
 import org.jspare.server.jetty.handler.PublicResourceHandler;
 import org.jspare.ui.jtwig.JtwigBundle;
 
@@ -29,50 +32,21 @@ import org.jspare.ui.jtwig.JtwigBundle;
  * @author pflima
  * @since 10/05/2016
  */
-public class WebBootstrap extends ServerBoostrap {
+public abstract class BootstrapWeb extends Application {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jspare.server.container.ServerBoostrap#load()
-	 */
 	@Override
-	public AbstractBootstrap load() {
+	protected void load() {
 
-		// All Bundles need be registered before load Boostrap
-		loadBundles();
-
-		super.load();
-
-		// After load Boostrap the resources can be readed
-		loadResourceHandlers();
-		loadErrorHanlders();
-
-		return this;
+		builder(ApplicationBuilder.create().addBundle(JettyServerBundle.class).addBundle(JtwigBundle.class));
+		builder(ApplicationServerBuilder.create(this).resourceHandlers(PublicResourceHandler.class));
 	}
 
-	/**
-	 * Load bundles.
-	 */
-	protected void loadBundles() {
+	@Override
+	protected void start() throws InfraException {
 
-		addBundle(JettyServerBundle.class);
-		addBundle(JtwigBundle.class);
-	}
+		super.start();
 
-	/**
-	 * Load resource handlers.
-	 */
-	protected void loadResourceHandlers() {
-
-		getRouter().addResourceHandler(PublicResourceHandler.class);
-	}
-
-	/**
-	 * Load error hanlders.
-	 */
-	protected void loadErrorHanlders() {
-
-		getRouter().addErrorHandler(Status.NOT_FOUND, DefaultNotFoundErrorHandler.class);
+		Server server = my(Server.class);
+		server.start();
 	}
 }

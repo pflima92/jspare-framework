@@ -17,7 +17,7 @@ package org.jspare.server.commons;
 
 import java.io.File;
 
-public interface Definitions extends org.jspare.core.commons.Definitions {
+public interface ServerDefinitions extends org.jspare.core.commons.Definitions {
 
 	/** The Constant SERVER_PORT_KEY. */
 	String SERVER_PORT_KEY = "server.default.port";

@@ -17,8 +17,8 @@ package org.jspare.server.transaction;
 
 import static org.jspare.core.container.Environment.CONFIG;
 import static org.jspare.core.container.Environment.factory;
-import static org.jspare.server.commons.Definitions.TRANSACTION_TIME_TO_LIVE_DEFAULT;
-import static org.jspare.server.commons.Definitions.TRANSACTION_TIME_TO_LIVE_KEY;
+import static org.jspare.server.commons.ServerDefinitions.TRANSACTION_TIME_TO_LIVE_DEFAULT;
+import static org.jspare.server.commons.ServerDefinitions.TRANSACTION_TIME_TO_LIVE_KEY;
 
 import java.util.Map;
 import java.util.Optional;

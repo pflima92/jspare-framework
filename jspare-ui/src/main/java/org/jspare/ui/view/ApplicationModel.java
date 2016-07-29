@@ -16,6 +16,14 @@
 package org.jspare.ui.view;
 
 import static org.jspare.core.container.Environment.CONFIG;
+import static org.jspare.ui.commons.UiDefinitions.ASSETS_ROOT_FOLDER;
+import static org.jspare.ui.commons.UiDefinitions.ASSETS_ROOT_FOLDER_KEY;
+import static org.jspare.ui.commons.UiDefinitions.IMAGES_ROOT_FOLDER;
+import static org.jspare.ui.commons.UiDefinitions.IMAGES_ROOT_FOLDER_KEY;
+import static org.jspare.ui.commons.UiDefinitions.SCRIPT_ROOT_FOLDER;
+import static org.jspare.ui.commons.UiDefinitions.SCRIPT_ROOT_FOLDER_KEY;
+import static org.jspare.ui.commons.UiDefinitions.STYLES_ROOT_FOLDER;
+import static org.jspare.ui.commons.UiDefinitions.STYLES_ROOT_FOLDER_KEY;
 
 import org.jspare.server.Request;
 
@@ -24,7 +32,7 @@ import lombok.Data;
 
 /*
  * (non-Javadoc)
- * 
+ *
  * @see java.lang.Object#toString()
  */
 @Data
@@ -53,7 +61,7 @@ public class ApplicationModel {
 	 */
 	public String asset(String src) {
 
-		return getPath() + CONFIG.get(UiToolkit.ASSETS_ROOT_FOLDER_KEY, UiToolkit.ASSETS_ROOT_FOLDER) + src;
+		return getPath() + CONFIG.get(ASSETS_ROOT_FOLDER_KEY, ASSETS_ROOT_FOLDER) + src;
 	}
 
 	/**
@@ -91,7 +99,7 @@ public class ApplicationModel {
 	 */
 	public String image(String src) {
 
-		return asset(CONFIG.get(UiToolkit.IMAGES_ROOT_FOLDER_KEY, UiToolkit.IMAGES_ROOT_FOLDER)) + src;
+		return asset(CONFIG.get(IMAGES_ROOT_FOLDER_KEY, IMAGES_ROOT_FOLDER)) + src;
 	}
 
 	/**
@@ -103,7 +111,7 @@ public class ApplicationModel {
 	 */
 	public String script(String src) {
 
-		return asset(CONFIG.get(UiToolkit.SCRIPT_ROOT_FOLDER_KEY, UiToolkit.SCRIPT_ROOT_FOLDER)) + src;
+		return asset(CONFIG.get(SCRIPT_ROOT_FOLDER_KEY, SCRIPT_ROOT_FOLDER)) + src;
 	}
 
 	/**
@@ -115,7 +123,7 @@ public class ApplicationModel {
 	 */
 	public String style(String src) {
 
-		return asset(CONFIG.get(UiToolkit.STYLES_ROOT_FOLDER_KEY, UiToolkit.STYLES_ROOT_FOLDER)) + src;
+		return asset(CONFIG.get(STYLES_ROOT_FOLDER_KEY, STYLES_ROOT_FOLDER)) + src;
 	}
 
 }

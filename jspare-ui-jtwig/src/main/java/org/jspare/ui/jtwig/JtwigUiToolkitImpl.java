@@ -17,6 +17,11 @@ package org.jspare.ui.jtwig;
 
 import static org.jspare.core.container.Environment.CONFIG;
 import static org.jspare.core.container.Environment.my;
+import static org.jspare.ui.commons.UiDefinitions.CACHE_TEMPLATE;
+import static org.jspare.ui.commons.UiDefinitions.ROOT_FILE;
+import static org.jspare.ui.commons.UiDefinitions.ROOT_FILE_KEY;
+import static org.jspare.ui.commons.UiDefinitions.SUFIX_FILE_KEY;
+import static org.jspare.ui.commons.UiDefinitions.SUFIX_PAGE_FILE;
 
 import java.io.IOException;
 import java.util.HashMap;

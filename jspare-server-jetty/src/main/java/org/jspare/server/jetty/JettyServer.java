@@ -17,13 +17,13 @@ package org.jspare.server.jetty;
 
 import static org.jspare.core.container.Environment.CONFIG;
 import static org.jspare.core.container.Environment.my;
-import static org.jspare.server.commons.Definitions.CERTIFICATE_ENABLE;
-import static org.jspare.server.commons.Definitions.CERTIFICATE_KEYSTORE_KEY;
-import static org.jspare.server.commons.Definitions.CERTIFICATE_KEYSTORE_PASSWORD;
-import static org.jspare.server.commons.Definitions.CERTIFICATE_KEYSTORE_PASSWORD_KEY;
-import static org.jspare.server.commons.Definitions.CERTIFICATE_KEYSTORE_PATH;
-import static org.jspare.server.commons.Definitions.SERVER_PORT_DEFAULT;
-import static org.jspare.server.commons.Definitions.SERVER_PORT_KEY;
+import static org.jspare.server.commons.ServerDefinitions.CERTIFICATE_ENABLE;
+import static org.jspare.server.commons.ServerDefinitions.CERTIFICATE_KEYSTORE_KEY;
+import static org.jspare.server.commons.ServerDefinitions.CERTIFICATE_KEYSTORE_PASSWORD;
+import static org.jspare.server.commons.ServerDefinitions.CERTIFICATE_KEYSTORE_PASSWORD_KEY;
+import static org.jspare.server.commons.ServerDefinitions.CERTIFICATE_KEYSTORE_PATH;
+import static org.jspare.server.commons.ServerDefinitions.SERVER_PORT_DEFAULT;
+import static org.jspare.server.commons.ServerDefinitions.SERVER_PORT_KEY;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;

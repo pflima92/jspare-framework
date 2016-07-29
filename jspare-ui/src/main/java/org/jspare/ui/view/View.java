@@ -19,7 +19,7 @@ import java.util.Map;
 
 import org.jspare.core.container.Component;
 import org.jspare.core.container.Scope;
-import org.jspare.server.Renderable;
+import org.jspare.server.transport.Renderable;
 
 /**
  * The Interface View.

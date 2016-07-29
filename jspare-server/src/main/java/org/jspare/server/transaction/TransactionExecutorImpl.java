@@ -17,7 +17,7 @@ package org.jspare.server.transaction;
 
 import static org.jspare.core.container.Environment.CONFIG;
 import static org.jspare.core.container.Environment.my;
-import static org.jspare.server.commons.Definitions.YIELD_ENABLE_KEY;
+import static org.jspare.server.commons.ServerDefinitions.YIELD_ENABLE_KEY;
 
 import java.lang.reflect.Parameter;
 
