@@ -29,9 +29,9 @@ import java.util.List;
 import org.jspare.core.container.ApplicationBuilder;
 import org.jspare.core.exception.NotImplementedException;
 import org.jspare.core.scanner.ComponentScanner;
-import org.jspare.server.Router;
 import org.jspare.server.Server;
 import org.jspare.server.handler.ResourceHandler;
+import org.jspare.server.router.Router;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -16,6 +16,7 @@
 package org.jspare.server;
 
 import org.jspare.core.container.Component;
+import org.jspare.server.router.Router;
 
 /**
  * The Interface Server.

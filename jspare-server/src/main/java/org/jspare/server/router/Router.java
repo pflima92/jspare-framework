@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server;
+package org.jspare.server.router;
 
 import java.util.List;
 import java.util.Optional;

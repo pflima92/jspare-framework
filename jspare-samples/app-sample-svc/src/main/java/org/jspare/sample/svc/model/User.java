@@ -13,29 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty.bundle;
+package org.jspare.sample.svc.model;
 
-import static org.jspare.core.container.Environment.registryComponent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyServer;
+@Data
+@AllArgsConstructor
+public class User {
 
-/**
- * The Class ServerBundle.
- *
- * @author pflima
- * @since 30/03/2016
- */
-public class JettyServerBundle implements Bundle {
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.core.container.Bundle#registryComponents()
-	 */
-	@Override
-	public void registryComponents() {
-
-		registryComponent(JettyServer.class);
-	}
+	private long personId;
+	private String name;
 }

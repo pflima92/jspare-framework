@@ -13,16 +13,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.web.sample.controller;
+package org.jspare.sample.svc.controller;
 
 import java.util.List;
 
 import org.jspare.core.container.Inject;
+import org.jspare.sample.svc.model.User;
+import org.jspare.sample.svc.service.UserService;
+import org.jspare.server.commons.SimpleResponse;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Mapping;
 import org.jspare.server.mapping.Parameter;
-import org.jspare.web.sample.model.User;
-import org.jspare.web.sample.service.UserService;
 
 public class UserController extends Controller {
 
@@ -38,7 +39,7 @@ public class UserController extends Controller {
 			return;
 		}
 
-		success("Saved with success");
+		success(new SimpleResponse());
 	}
 
 	@Mapping("users/{id}")

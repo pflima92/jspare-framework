@@ -16,13 +16,12 @@
 package org.jspare.web.sample;
 
 import org.jspare.core.exception.InfraException;
-import org.jspare.web.container.WebBootstrap;
+import org.jspare.web.container.BootstrapWeb;
 
-public class Bootstrap extends WebBootstrap {
+public class Bootstrap extends BootstrapWeb {
 
 	public static void main(String[] args) throws InfraException {
 
-		Bootstrap bootstrap = new Bootstrap();
-		bootstrap.load().start();
+		new Bootstrap().start();
 	}
 }

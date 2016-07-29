@@ -10,13 +10,13 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>jspare-web</artifactId>
+	<artifactId>jspare-web-mvc</artifactId>
 
 	<dependencies>
 
 		<dependency>
 			<groupId>org.jspare</groupId>
-			<artifactId>jspare-server-jetty</artifactId>
+			<artifactId>jspare-web-svc</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		

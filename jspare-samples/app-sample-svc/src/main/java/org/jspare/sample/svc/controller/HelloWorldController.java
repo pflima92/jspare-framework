@@ -13,29 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty.bundle;
+package org.jspare.sample.svc.controller;
 
-import static org.jspare.core.container.Environment.registryComponent;
+import org.jspare.server.controller.Controller;
+import org.jspare.server.mapping.Mapping;
 
-import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyServer;
+public class HelloWorldController extends Controller {
 
-/**
- * The Class ServerBundle.
- *
- * @author pflima
- * @since 30/03/2016
- */
-public class JettyServerBundle implements Bundle {
+	@Mapping
+	public void helloWorld() {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.core.container.Bundle#registryComponents()
-	 */
-	@Override
-	public void registryComponents() {
-
-		registryComponent(JettyServer.class);
+		success("Hello World");
 	}
 }

@@ -13,29 +13,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty.bundle;
+package org.jspare.sample.svc.service;
 
-import static org.jspare.core.container.Environment.registryComponent;
+import java.util.List;
 
-import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyServer;
+import org.jspare.core.container.Component;
+import org.jspare.sample.svc.model.User;
 
-/**
- * The Class ServerBundle.
- *
- * @author pflima
- * @since 30/03/2016
- */
-public class JettyServerBundle implements Bundle {
+@Component
+public interface UserService {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.core.container.Bundle#registryComponents()
-	 */
-	@Override
-	public void registryComponents() {
+	boolean saveUser(User user);
 
-		registryComponent(JettyServer.class);
-	}
+	User findUserById(int id);
+
+	List<User> listUsers();
 }

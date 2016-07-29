@@ -21,10 +21,13 @@
 		<module>jspare-core</module>
 		<module>jspare-server</module>
 		<module>jspare-server-jetty</module>
+		<module>jspare-server-vertx</module>
 		<module>jspare-security</module>
 		<module>jspare-ui</module>
 		<module>jspare-ui-jtwig</module>
-		<module>jspare-web</module>
+		<module>jspare-web-svc</module>
+		<module>jspare-web-mvc</module>
+		<module>jspare-web-microsvc</module>
 	</modules>
 
 	<properties>

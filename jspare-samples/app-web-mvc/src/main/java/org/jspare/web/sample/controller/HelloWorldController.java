@@ -16,13 +16,13 @@
 package org.jspare.web.sample.controller;
 
 import org.jspare.server.controller.Controller;
-import org.jspare.server.mapping.Command;
+import org.jspare.server.mapping.Mapping;
 
 public class HelloWorldController extends Controller {
 
-	@Command
+	@Mapping
 	public void helloWorld() {
 
-		response.success("<h1>Hello World</h1>");
+		success("Hello World");
 	}
 }

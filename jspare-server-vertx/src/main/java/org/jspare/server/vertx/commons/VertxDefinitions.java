@@ -13,29 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty.bundle;
+package org.jspare.server.vertx.commons;
 
-import static org.jspare.core.container.Environment.registryComponent;
+import org.jspare.server.commons.ServerDefinitions;
 
-import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyServer;
+public interface VertxDefinitions extends ServerDefinitions {
 
-/**
- * The Class ServerBundle.
- *
- * @author pflima
- * @since 30/03/2016
- */
-public class JettyServerBundle implements Bundle {
+	String SERVER_MIN_POOL_THREADS_KEY = "server.threads.min";
+	Integer SERVER_MIN_POOL_THREADS_DEFAULT = 13;
+	String SERVER_MAX_POOL_THREADS_KEY = "server.threads.max";
+	Integer SERVER_MAX_POOL_THREADS_DEFAULT = 13;
+	String SERVER_DAEMON_KEY = "server.daemon";
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.core.container.Bundle#registryComponents()
-	 */
-	@Override
-	public void registryComponents() {
-
-		registryComponent(JettyServer.class);
-	}
 }

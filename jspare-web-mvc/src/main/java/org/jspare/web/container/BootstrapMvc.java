@@ -13,29 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty.bundle;
+package org.jspare.web.container;
 
-import static org.jspare.core.container.Environment.registryComponent;
-
-import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyServer;
+import org.jspare.core.container.ApplicationBuilder;
+import org.jspare.ui.jtwig.JtwigBundle;
 
 /**
- * The Class ServerBundle.
+ * The Class WebBootstrap.
  *
  * @author pflima
- * @since 30/03/2016
+ * @since 10/05/2016
  */
-public class JettyServerBundle implements Bundle {
+public abstract class BootstrapMvc extends BootstrapWeb {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.core.container.Bundle#registryComponents()
-	 */
 	@Override
-	public void registryComponents() {
+	protected void load() {
 
-		registryComponent(JettyServer.class);
+		super.load();
+
+		builder(ApplicationBuilder.create().addBundle(JtwigBundle.class));
 	}
 }

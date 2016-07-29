@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.web.container;
+package org.jspare.sample.svc;
 
 import static org.jspare.core.container.Environment.my;
 
@@ -21,24 +21,19 @@ import org.jspare.core.container.Application;
 import org.jspare.core.container.ApplicationBuilder;
 import org.jspare.core.exception.InfraException;
 import org.jspare.server.Server;
-import org.jspare.server.container.ApplicationServerBuilder;
 import org.jspare.server.jetty.bundle.JettyServerBundle;
-import org.jspare.server.jetty.handler.PublicResourceHandler;
-import org.jspare.ui.jtwig.JtwigBundle;
 
-/**
- * The Class WebBootstrap.
- *
- * @author pflima
- * @since 10/05/2016
- */
-public abstract class BootstrapWeb extends Application {
+public class Bootstrap extends Application {
+
+	public static void main(String[] args) throws InfraException {
+
+		new Bootstrap().start();
+	}
 
 	@Override
 	protected void load() {
 
-		builder(ApplicationBuilder.create().addBundle(JettyServerBundle.class).addBundle(JtwigBundle.class));
-		builder(ApplicationServerBuilder.create(this).resourceHandlers(PublicResourceHandler.class));
+		builder(ApplicationBuilder.create().addBundle(JettyServerBundle.class));
 	}
 
 	@Override
@@ -47,6 +42,7 @@ public abstract class BootstrapWeb extends Application {
 		super.start();
 
 		Server server = my(Server.class);
+		server.port(8090);
 		server.start();
 	}
 }

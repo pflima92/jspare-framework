@@ -15,16 +15,16 @@
  */
 package org.jspare.web.sample.controller;
 
-import org.jspare.server.mapping.Command;
+import org.jspare.server.mapping.Mapping;
 import org.jspare.ui.controller.UIController;
 
 public class ViewController extends UIController {
 
-	@Command
+	@Mapping
 	public void home() {
 
 		view.add("title", "JSpare");
 
-		response.success(view.route("home"));
+		success(view.route("home"));
 	}
 }

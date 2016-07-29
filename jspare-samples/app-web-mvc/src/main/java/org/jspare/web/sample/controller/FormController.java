@@ -13,29 +13,26 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty.bundle;
+package org.jspare.web.sample.controller;
 
-import static org.jspare.core.container.Environment.registryComponent;
+import org.jspare.server.mapping.Mapping;
+import org.jspare.server.mapping.Method;
+import org.jspare.server.mapping.Type;
+import org.jspare.ui.controller.UIController;
 
-import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyServer;
+public class FormController extends UIController {
 
-/**
- * The Class ServerBundle.
- *
- * @author pflima
- * @since 30/03/2016
- */
-public class JettyServerBundle implements Bundle {
+	@Mapping("/form/view")
+	public void view() {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.core.container.Bundle#registryComponents()
-	 */
-	@Override
-	public void registryComponents() {
+		success(view.route("form"));
+	}
 
-		registryComponent(JettyServer.class);
+	@Method(Type.POST)
+	@Mapping(value = "/form/view")
+	public void receive() {
+		String name = request.getParameter("name");
+		String message = String.format("Hello %s!", name);
+		success(message);
 	}
 }

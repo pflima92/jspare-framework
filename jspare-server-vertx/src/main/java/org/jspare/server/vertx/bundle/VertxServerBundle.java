@@ -13,12 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty.bundle;
+package org.jspare.server.vertx.bundle;
 
 import static org.jspare.core.container.Environment.registryComponent;
 
 import org.jspare.core.container.Bundle;
-import org.jspare.server.jetty.JettyServer;
+import org.jspare.server.vertx.VertxServer;
 
 /**
  * The Class ServerBundle.
@@ -26,7 +26,7 @@ import org.jspare.server.jetty.JettyServer;
  * @author pflima
  * @since 30/03/2016
  */
-public class JettyServerBundle implements Bundle {
+public class VertxServerBundle implements Bundle {
 
 	/*
 	 * (non-Javadoc)
@@ -36,6 +36,6 @@ public class JettyServerBundle implements Bundle {
 	@Override
 	public void registryComponents() {
 
-		registryComponent(JettyServer.class);
+		registryComponent(VertxServer.class);
 	}
 }

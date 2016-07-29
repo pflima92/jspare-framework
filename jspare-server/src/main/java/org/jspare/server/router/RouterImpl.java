@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.jetty;
+package org.jspare.server.router;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -25,20 +25,20 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.jspare.core.exception.InfraRuntimeException;
-import org.jspare.server.Router;
 import org.jspare.server.controller.CommandData;
 import org.jspare.server.exception.InvalidControllerException;
 import org.jspare.server.filter.Filter;
 import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.mapping.Mapping;
 import org.jspare.server.mapping.Type;
+import org.jspare.server.router.Router;
 import org.jspare.server.transport.Status;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class JettyRouter implements Router {
+public class RouterImpl implements Router {
 
 	/** The Constant CONTROLLER_SUFIX. */
 	private static final String CONTROLLER_SUFIX = "Controller";
