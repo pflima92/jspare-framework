@@ -24,7 +24,7 @@ import org.jspare.ui.jtwig.JtwigBundle;
  * @author pflima
  * @since 10/05/2016
  */
-public abstract class BootstrapMvc extends BootstrapWeb {
+public abstract class ApplicationMvc extends Service {
 
 	@Override
 	protected void load() {

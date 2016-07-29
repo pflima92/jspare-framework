@@ -29,7 +29,7 @@ import org.jspare.server.vertx.bundle.VertxServerBundle;
  * @author pflima
  * @since 10/05/2016
  */
-public abstract class BootstrapWeb extends Application {
+public abstract class Microservice extends Application {
 
 	@Override
 	protected void load() {
