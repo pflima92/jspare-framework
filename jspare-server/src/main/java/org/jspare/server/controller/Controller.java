@@ -17,12 +17,23 @@ package org.jspare.server.controller;
 
 import static org.jspare.core.container.Environment.my;
 
+import java.lang.annotation.ElementType;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.jspare.core.serializer.Json;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
+import org.jspare.server.exception.BeanValidationException;
 import org.jspare.server.exception.RenderableException;
 import org.jspare.server.session.SessionContext;
 import org.jspare.server.transport.Media;
@@ -57,12 +68,12 @@ public abstract class Controller {
 	@Setter
 	protected Response response;
 
-	protected Optional<String> getHeader(String name) {
+	public Optional<String> getHeader(String name) {
 
 		return request.getHeader(name);
 	}
 
-	protected <T> T getParameter(String name) {
+	public <T> T getParameter(String name) {
 
 		return request.getParameter(name);
 	}
@@ -70,7 +81,7 @@ public abstract class Controller {
 	/**
 	 * Bad gateway.
 	 */
-	protected void badGateway() {
+	public void badGateway() {
 
 		response.status(Status.BAD_GATEWAY).end();
 	}
@@ -78,7 +89,7 @@ public abstract class Controller {
 	/**
 	 * Bad request.
 	 */
-	protected void badRequest() {
+	public void badRequest() {
 
 		response.status(Status.BAD_REQUEST).end();
 	}
@@ -89,10 +100,10 @@ public abstract class Controller {
 	 * @param object
 	 *            the object
 	 */
-	protected void badRequest(Object object) {
+	public void badRequest(Object object) {
 
 		String content = my(Json.class).toJSON(object);
-		response.status(Status.BAD_REQUEST).entity(content).end();
+		response.status(Status.BAD_REQUEST).media(Media.of("application/json")).entity(content).end();
 	}
 
 	/**
@@ -101,7 +112,7 @@ public abstract class Controller {
 	 * @param content
 	 *            the content
 	 */
-	protected void badRequest(String content) {
+	public void badRequest(String content) {
 
 		response.status(Status.BAD_REQUEST).entity(content).end();
 	}
@@ -109,7 +120,7 @@ public abstract class Controller {
 	/**
 	 * Conflict.
 	 */
-	protected void conflict() {
+	public void conflict() {
 
 		response.status(Status.CONFLICT).end();
 	}
@@ -120,7 +131,7 @@ public abstract class Controller {
 	 * @param object
 	 *            the object
 	 */
-	protected void conflict(Object object) {
+	public void conflict(Object object) {
 
 		String content = my(Json.class).toJSON(object);
 		response.status(Status.CONFLICT).entity(content).end();
@@ -132,7 +143,7 @@ public abstract class Controller {
 	 * @param content
 	 *            the content
 	 */
-	protected void conflict(String content) {
+	public void conflict(String content) {
 
 		response.status(Status.CONFLICT).entity(content).end();
 	}
@@ -140,7 +151,7 @@ public abstract class Controller {
 	/**
 	 * Error.
 	 */
-	protected void error() {
+	public void error() {
 
 		response.status(Status.INTERNAL_SERVER_ERROR).end();
 	}
@@ -151,7 +162,7 @@ public abstract class Controller {
 	 * @param e
 	 *            the e
 	 */
-	protected void error(Exception e) {
+	public void error(Exception e) {
 
 		response.status(Status.INTERNAL_SERVER_ERROR).entity(e).end();
 	}
@@ -162,7 +173,7 @@ public abstract class Controller {
 	 * @param content
 	 *            the content
 	 */
-	protected void error(String content) {
+	public void error(String content) {
 
 		response.status(Status.INTERNAL_SERVER_ERROR).entity(content).end();
 	}
@@ -170,7 +181,7 @@ public abstract class Controller {
 	/**
 	 * Forbidden.
 	 */
-	protected void forbidden() {
+	public void forbidden() {
 
 		response.status(Status.FORBIDDEN).end();
 	}
@@ -181,7 +192,7 @@ public abstract class Controller {
 	 * @param object
 	 *            the object
 	 */
-	protected void forbidden(Object object) {
+	public void forbidden(Object object) {
 
 		String content = my(Json.class).toJSON(object);
 		response.status(Status.FORBIDDEN).entity(content).end();
@@ -193,7 +204,7 @@ public abstract class Controller {
 	 * @param content
 	 *            the content
 	 */
-	protected void forbidden(String content) {
+	public void forbidden(String content) {
 
 		response.status(Status.FORBIDDEN).entity(content).end();
 	}
@@ -203,7 +214,7 @@ public abstract class Controller {
 	 *
 	 * @return the context
 	 */
-	protected Map<String, Object> getContext() {
+	public Map<String, Object> getContext() {
 
 		return request.getTransaction().getContext();
 	}
@@ -213,7 +224,7 @@ public abstract class Controller {
 	 *
 	 * @return the session
 	 */
-	protected SessionContext getSession() {
+	public SessionContext getSession() {
 
 		return request.getSessionContext();
 	}
@@ -221,7 +232,7 @@ public abstract class Controller {
 	/**
 	 * No content.
 	 */
-	protected void noContent() {
+	public void noContent() {
 
 		response.status(Status.NO_CONTENT).end();
 	}
@@ -229,7 +240,7 @@ public abstract class Controller {
 	/**
 	 * Not acceptable.
 	 */
-	protected void notAcceptable() {
+	public void notAcceptable() {
 
 		response.status(Status.NOT_FOUND).end();
 	}
@@ -237,7 +248,7 @@ public abstract class Controller {
 	/**
 	 * Not found.
 	 */
-	protected void notFound() {
+	public void notFound() {
 
 		response.status(Status.NOT_FOUND).end();
 	}
@@ -245,7 +256,7 @@ public abstract class Controller {
 	/**
 	 * Not implemented.
 	 */
-	protected void notImplemented() {
+	public void notImplemented() {
 
 		response.status(Status.NOT_IMPLEMENTED).end();
 	}
@@ -253,7 +264,7 @@ public abstract class Controller {
 	/**
 	 * Pre condition failed.
 	 */
-	protected void preConditionFailed() {
+	public void preConditionFailed() {
 
 		response.status(Status.PRECONDITION_FAILED).end();
 	}
@@ -264,7 +275,7 @@ public abstract class Controller {
 	 * @param object
 	 *            the object
 	 */
-	protected void preConditionFailed(Object object) {
+	public void preConditionFailed(Object object) {
 
 		String content = my(Json.class).toJSON(object);
 		response.status(Status.PRECONDITION_FAILED).entity(content).end();
@@ -276,7 +287,7 @@ public abstract class Controller {
 	 * @param content
 	 *            the content
 	 */
-	protected void preConditionFailed(String content) {
+	public void preConditionFailed(String content) {
 
 		response.status(Status.PRECONDITION_FAILED).entity(content).end();
 	}
@@ -287,7 +298,7 @@ public abstract class Controller {
 	 * @param target
 	 *            the target
 	 */
-	protected void redirect(String target) {
+	public void redirect(String target) {
 
 		response.status(Status.MOVED_PERMANENTLY).entity(target).end();
 	}
@@ -295,7 +306,7 @@ public abstract class Controller {
 	/**
 	 * Success.
 	 */
-	protected void success() {
+	public void success() {
 
 		response.status(Status.OK).end();
 	}
@@ -306,7 +317,7 @@ public abstract class Controller {
 	 * @param object
 	 *            the object
 	 */
-	protected void success(Object object) {
+	public void success(Object object) {
 
 		String content = my(Json.class).toJSON(object);
 		response.status(Status.OK).entity(content).end();
@@ -318,7 +329,7 @@ public abstract class Controller {
 	 * @param renderable
 	 *            the renderable
 	 */
-	protected void success(Renderable renderable) {
+	public void success(Renderable renderable) {
 
 		String content;
 		try {
@@ -336,7 +347,7 @@ public abstract class Controller {
 	 * @param content
 	 *            the content
 	 */
-	protected void success(String content) {
+	public void success(String content) {
 
 		if (my(Json.class).isValidJson(content)) {
 			response.media(Media.of("application/json"));
@@ -348,7 +359,7 @@ public abstract class Controller {
 	/**
 	 * Unauthorized.
 	 */
-	protected void unauthorized() {
+	public void unauthorized() {
 
 		response.status(Status.UNAUTHORIZED).end();
 	}
@@ -359,7 +370,7 @@ public abstract class Controller {
 	 * @param object
 	 *            the object
 	 */
-	protected void unauthorized(Object object) {
+	public void unauthorized(Object object) {
 
 		String content = my(Json.class).toJSON(object);
 		response.status(Status.UNAUTHORIZED).entity(content).end();
@@ -371,7 +382,7 @@ public abstract class Controller {
 	 * @param content
 	 *            the content
 	 */
-	protected void unauthorized(String content) {
+	public void unauthorized(String content) {
 
 		response.status(Status.UNAUTHORIZED).entity(content).end();
 	}
@@ -379,9 +390,27 @@ public abstract class Controller {
 	/**
 	 * Unvailable.
 	 */
-	protected void unvailable() {
+	public void unvailable() {
 
 		response.status(Status.SERVICE_UNAVAILABLE).end();
+	}
+
+	public void validate(Object... objects) throws BeanValidationException{
+
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		Set<ConstraintViolation<Object>> resolutions = new HashSet<>();
+		for (Object bean : objects) {
+			if(bean == null) {
+				resolutions.add(ConstraintViolationImpl.forBeanValidation("invalid required parameters", null, "invalid required parameters", null, null, bean, bean, PathImpl.createPathFromString("parameter"), null, ElementType.PARAMETER, bean));
+				continue;
+			}
+			resolutions.addAll(validator.validate(bean));
+		}
+		if(!resolutions.isEmpty()){
+			
+			throw new BeanValidationException(resolutions);
+		}
 	}
 
 	/**
@@ -390,9 +419,8 @@ public abstract class Controller {
 	 * @param bind
 	 *            the bind
 	 */
-	protected void yield(String bind) {
+	public void yield(String bind) {
 
 		request.getTransaction().getExecutor().yield(request, response, bind);
 	}
-
 }
