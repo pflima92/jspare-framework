@@ -20,5 +20,6 @@
 
 	<modules>
 		<module>app-web-mvc</module>
+		<module>app-sample-svc</module>
 	</modules>
 </project>
