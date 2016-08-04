@@ -26,9 +26,11 @@ import org.jspare.core.exception.InfraRuntimeException;
 import org.jspare.core.exception.SerializationException;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
+import org.jspare.server.commons.SimpleResponse;
 import org.jspare.server.controller.CommandData;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.controller.ControllerFactory;
+import org.jspare.server.exception.BeanValidationException;
 import org.jspare.server.exception.NoSuchCallerException;
 import org.jspare.server.filter.Filter;
 import org.jspare.server.mapping.Model;
@@ -123,7 +125,20 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 				parameters[i] = resolveParameter(parameter, request, response);
 				i++;
 			}
+			
+			//Validate default parameters
+			if (newInstance instanceof Controller) {
+				
+				try {
+					
+					((Controller) newInstance).validate(parameters);
+				} catch (BeanValidationException e) {
 
+					((Controller) newInstance).badRequest(SimpleResponse.invalidConstraints(e.getVioledConstraints()));
+					return;
+				}
+			}
+			
 			cmd.getMethod().invoke(newInstance, parameters);
 
 			for (Filter f : cmd.getAfterFilters()) {
@@ -134,9 +149,9 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 
 			my(TransactionManager.class).end(request.getTransaction().getId());
 
-		} catch (Exception e) {
+		} catch (Throwable t) {
 
-			log.error("Fail execute", e);
+			log.error("Fail execute", t);
 			response.status(Status.INTERNAL_SERVER_ERROR).end();
 		} finally {
 

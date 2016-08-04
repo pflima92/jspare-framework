@@ -15,7 +15,11 @@
  */
 package org.jspare.server.commons;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,10 +34,29 @@ public class SimpleResponse {
 
 	private String result = "OK";
 	private String message;
-	private List<String> reasons;
+	private List<Reason> reasons;
 
 	public static SimpleResponse ok() {
 
 		return new SimpleResponse();
+	}
+	
+	public static SimpleResponse invalidConstraints(Set<ConstraintViolation<Object>> violedConstraints){
+		
+		SimpleResponse simpleError = new SimpleResponse().result("ERROR").message("Invalid constraints");
+		violedConstraints.forEach(v -> simpleError.reason(new Reason(v.getPropertyPath().toString(), v.getMessage())));
+		return simpleError;
+	} 
+	
+	public SimpleResponse reason(Reason reason){
+		
+		getReasons().add(reason);
+		return this;
+	}
+	
+	public List<Reason> getReasons(){
+		
+		if(reasons == null) reasons = new ArrayList<>();
+		return reasons;
 	}
 }
