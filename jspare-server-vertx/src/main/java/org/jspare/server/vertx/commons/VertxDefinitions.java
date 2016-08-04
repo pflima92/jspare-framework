@@ -19,10 +19,4 @@ import org.jspare.server.commons.ServerDefinitions;
 
 public interface VertxDefinitions extends ServerDefinitions {
 
-	String SERVER_MIN_POOL_THREADS_KEY = "server.threads.min";
-	Integer SERVER_MIN_POOL_THREADS_DEFAULT = 13;
-	String SERVER_MAX_POOL_THREADS_KEY = "server.threads.max";
-	Integer SERVER_MAX_POOL_THREADS_DEFAULT = 13;
-	String SERVER_DAEMON_KEY = "server.daemon";
-
 }

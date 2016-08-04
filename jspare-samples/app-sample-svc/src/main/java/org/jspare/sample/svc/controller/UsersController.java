@@ -23,14 +23,19 @@ import org.jspare.sample.svc.service.UserService;
 import org.jspare.server.commons.SimpleResponse;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Mapping;
+import org.jspare.server.mapping.Method;
+import org.jspare.server.mapping.Namespace;
 import org.jspare.server.mapping.Parameter;
+import org.jspare.server.mapping.Type;
 
-public class UserController extends Controller {
+@Namespace
+public class UsersController extends Controller {
 
 	@Inject
 	private UserService userService;
 
 	@Mapping
+	@Method(Type.POST)
 	public void saveUser(User user) {
 
 		if (!userService.saveUser(user)) {
@@ -39,10 +44,10 @@ public class UserController extends Controller {
 			return;
 		}
 
-		success(new SimpleResponse());
+		success(SimpleResponse.ok());
 	}
 
-	@Mapping("users/{id}")
+	@Mapping("{id}")
 	public void findUser(@Parameter("id") String id) {
 
 		User user = userService.findUserById(Integer.parseInt(id));
@@ -54,11 +59,5 @@ public class UserController extends Controller {
 
 		List<User> users = userService.listUsers();
 		success(users);
-	}
-
-	@Mapping("users")
-	public void users() {
-
-		listUsers();
 	}
 }

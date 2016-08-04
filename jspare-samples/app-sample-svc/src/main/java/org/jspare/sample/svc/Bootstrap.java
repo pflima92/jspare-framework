@@ -15,34 +15,13 @@
  */
 package org.jspare.sample.svc;
 
-import static org.jspare.core.container.Environment.my;
-
-import org.jspare.core.container.Application;
-import org.jspare.core.container.ApplicationBuilder;
 import org.jspare.core.exception.InfraException;
-import org.jspare.server.Server;
-import org.jspare.server.jetty.bundle.JettyServerBundle;
+import org.jspare.web.container.Service;
 
-public class Bootstrap extends Application {
+public class Bootstrap extends Service {
 
 	public static void main(String[] args) throws InfraException {
 
 		new Bootstrap().start();
-	}
-
-	@Override
-	protected void load() {
-
-		builder(ApplicationBuilder.create().addBundle(JettyServerBundle.class));
-	}
-
-	@Override
-	protected void start() throws InfraException {
-
-		super.start();
-
-		Server server = my(Server.class);
-		server.port(8090);
-		server.start();
 	}
 }

@@ -15,25 +15,40 @@
  */
 package org.jspare.server.commons;
 
-import java.util.List;
+import static org.jspare.core.commons.Definitions.DEFAULT_CHARSET;
+import static org.jspare.core.container.Environment.my;
+
+import org.jspare.core.serializer.Json;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
-@Data
-@Accessors(fluent = true)
-@NoArgsConstructor
 @AllArgsConstructor
-public class SimpleResponse {
+public class Entity {
 
-	private String result = "OK";
-	private String message;
-	private List<String> reasons;
+	private final byte[] content;
 
-	public static SimpleResponse ok() {
+	public boolean hasValue() {
 
-		return new SimpleResponse();
+		return content != null;
+	}
+
+	public <T> T as(Class<?> clazz) {
+		String content = asString();
+		return my(Json.class).fromJSON(content, clazz);
+	}
+
+	public String asString() {
+
+		return new String(content, DEFAULT_CHARSET);
+	}
+
+	public byte[] asBytes() {
+
+		return content;
+	}
+
+	public static Entity empty() {
+
+		return new Entity(null);
 	}
 }

@@ -20,9 +20,11 @@ import static org.jspare.core.container.Environment.my;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang.StringUtils;
 import org.jspare.core.serializer.Json;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
+import org.jspare.server.commons.Entity;
 import org.jspare.server.exception.RenderableException;
 import org.jspare.server.session.SessionContext;
 import org.jspare.server.transport.Media;
@@ -65,6 +67,19 @@ public abstract class Controller {
 	protected <T> T getParameter(String name) {
 
 		return request.getParameter(name);
+	}
+
+	protected Entity entity() {
+
+		return request.getEntity();
+	}
+
+	protected String body() {
+		if (!request.getEntity().hasValue()) {
+
+			return StringUtils.EMPTY;
+		}
+		return request.getEntity().asString();
 	}
 
 	/**
@@ -302,6 +317,14 @@ public abstract class Controller {
 
 	/**
 	 * Success.
+	 */
+	protected void success(byte[] bytes) {
+
+		response.entity(bytes).status(Status.OK).end();
+	}
+
+	/**
+	 * Success.
 	 *
 	 * @param object
 	 *            the object
@@ -309,7 +332,7 @@ public abstract class Controller {
 	protected void success(Object object) {
 
 		String content = my(Json.class).toJSON(object);
-		response.status(Status.OK).entity(content).end();
+		response.status(Status.OK).media(Media.of("application/json")).entity(content).end();
 	}
 
 	/**

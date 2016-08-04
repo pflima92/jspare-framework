@@ -15,10 +15,10 @@
  */
 package org.jspare.server.jetty;
 
-import static org.jspare.core.commons.Definitions.DEFAULT_CHARSET;
 import static org.jspare.core.container.Environment.my;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -38,6 +38,7 @@ import org.glassfish.jersey.server.ContainerRequest;
 import org.jspare.core.collections.MultiValueHashMap;
 import org.jspare.core.collections.MultiValueMap;
 import org.jspare.server.Request;
+import org.jspare.server.commons.Entity;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.session.SessionContext;
@@ -46,6 +47,7 @@ import org.jspare.server.transaction.Transaction;
 import org.jspare.server.transaction.TransactionManager;
 import org.jspare.server.transport.Media;
 
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -56,20 +58,7 @@ public class JettyRequest implements Request {
 	/** The context. */
 	private final ContainerRequestContext context;
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getController()
-	 */
 	@Getter
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.jspare.server.Request#setController(org.jspare.server.controller.
-	 * Controller)
-	 */
 	@Setter
 	private Controller controller;
 
@@ -88,7 +77,8 @@ public class JettyRequest implements Request {
 	private final Map<String, String> parameters;
 
 	/** The entity. */
-	private final String entity;
+	@Getter
+	private final Entity entity;
 
 	/**
 	 * Instantiates a new jetty request.
@@ -99,7 +89,7 @@ public class JettyRequest implements Request {
 	public JettyRequest(final ContainerRequestContext context) {
 		this.context = context;
 		this.parameters = buidMapParameters();
-		this.entity = buildBody();
+		this.entity = buildEntity();
 		this.transaction = buildTransaction();
 		this.sessionId = buildSessionId();
 	}
@@ -136,17 +126,6 @@ public class JettyRequest implements Request {
 
 		Cookie cookie = this.context.getCookies().get(name);
 		return cookie != null ? cookie.getValue() : StringUtils.EMPTY;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getEntity()
-	 */
-	@Override
-	public Optional<Object> getEntity() {
-
-		return Optional.ofNullable(entity);
 	}
 
 	/*
@@ -342,19 +321,21 @@ public class JettyRequest implements Request {
 	 *
 	 * @return the string
 	 */
-	private String buildBody() {
+	private Entity buildEntity() {
 
 		try {
 
 			if (context.hasEntity()) {
 
-				return IOUtils.toString(context.getEntityStream(), DEFAULT_CHARSET);
+				@Cleanup
+				InputStream inputStream = context.getEntityStream();
+				return new Entity(IOUtils.toByteArray(inputStream));
 			}
 
 		} catch (IOException e) {
 			log.error("No content on  body request", e);
 		}
-		return StringUtils.EMPTY;
+		return Entity.empty();
 	}
 
 	/**

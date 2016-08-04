@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.jspare.core.collections.MultiValueMap;
+import org.jspare.server.commons.Entity;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.session.SessionContext;
@@ -76,7 +77,7 @@ public interface Request {
 	 *
 	 * @return the entity
 	 */
-	Optional<Object> getEntity();
+	Entity getEntity();
 
 	/**
 	 * Gets the header.

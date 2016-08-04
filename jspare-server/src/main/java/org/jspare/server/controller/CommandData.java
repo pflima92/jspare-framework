@@ -27,6 +27,7 @@ import org.jspare.server.filter.RequestFilter;
 import org.jspare.server.filter.ResponseFilter;
 import org.jspare.server.mapping.Cache;
 import org.jspare.server.mapping.Mapping;
+import org.jspare.server.mapping.Namespace;
 import org.jspare.server.mapping.Start;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.transport.CacheControl;
@@ -121,9 +122,7 @@ public class CommandData implements Cloneable {
 	 */
 	private void buildCommandData() {
 
-		Mapping command = method.getAnnotation(Mapping.class);
-
-		this.command = StringUtils.isEmpty(command.value()) ? method.getName() : command.value();
+		this.command = buildCommandValue();
 
 		if (method.isAnnotationPresent(org.jspare.server.mapping.Method.class)) {
 
@@ -150,6 +149,36 @@ public class CommandData implements Cloneable {
 		}
 
 		startCommand = method.isAnnotationPresent(Start.class);
+	}
+
+	private String buildCommandValue() {
+
+		Mapping command = method.getAnnotation(Mapping.class);
+		String namespace = extractNamespace();
+		String commandValue = command.value();
+
+		if (StringUtils.isEmpty(commandValue) && StringUtils.isEmpty(namespace)) {
+
+			return method.getName();
+		}
+
+		return String.format("%s%s", namespace, commandValue);
+
+	}
+
+	private String extractNamespace() {
+
+		if (!cmdClazz.isAnnotationPresent(Namespace.class)) {
+
+			return StringUtils.EMPTY;
+		}
+
+		String value = StringUtils.EMPTY;
+		Namespace namespace = cmdClazz.getAnnotation(Namespace.class);
+		value = namespace.value().equals(StringUtils.EMPTY)
+				? cmdClazz.getSimpleName().substring(0, cmdClazz.getSimpleName().indexOf("Controller")) : namespace.value();
+
+		return String.format("%s/", value).toLowerCase();
 	}
 
 	/**

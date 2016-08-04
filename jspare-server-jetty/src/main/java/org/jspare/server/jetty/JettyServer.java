@@ -186,9 +186,9 @@ public class JettyServer implements Server {
 					try {
 						if (request.getTransaction().getStatus().is(TransactionStatus.YIELD)) {
 
-							if (request.getEntity().isPresent() && !StringUtils.isEmpty((String) request.getEntity().get())) {
+							if (request.getEntity().hasValue() && !StringUtils.isEmpty(request.getEntity().asString())) {
 
-								Yield yieldData = my(Json.class).fromJSON((String) request.getEntity().get(), Yield.class);
+								Yield yieldData = my(Json.class).fromJSON(request.getEntity().asString(), Yield.class);
 								request.getTransaction().getContext().putAll(yieldData.getContext());
 							}
 

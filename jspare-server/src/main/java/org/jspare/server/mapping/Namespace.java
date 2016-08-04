@@ -26,21 +26,27 @@ import org.jspare.server.controller.Controller;
 import org.jspare.server.router.Router;
 
 /**
- * The Mapping Annotation.
+ * The Namespace Annotation.
  *
  * <p>
- * The {@link Mapping} annotation is used for mapping on endpoint of one
- * {@link Controller}. When one method mapped with this annotation and
- * registered on {@link Router} when yor {@link Server} will be started your
- * mappings will be refected.
+ * The namespace annotation is used for mapping one namespace of one
+ * {@link Controller}. When one type are annotatedwith this annotation and
+ * registered on {@link Router} when your {@link Server} will be started your
+ * mappings will be registered with prefix defined on value field, if your field
+ * are empty the convetion that follow will be used:
+ *
+ * <br>
+ * [Prefix]Controller ==> [prefix]/[your mapping] <b>e.g: UsersController ==>
+ * users/</b>
+ *
  * </p>
  *
  * @author pflima
  * @since 30/03/2016
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
-public @interface Mapping {
+@Target({ ElementType.TYPE })
+public @interface Namespace {
 
 	/**
 	 * Value.

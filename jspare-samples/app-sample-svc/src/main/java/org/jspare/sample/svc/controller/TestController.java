@@ -15,17 +15,30 @@
  */
 package org.jspare.sample.svc.controller;
 
-import org.jspare.server.commons.SimpleResponse;
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Mapping;
-import org.jspare.server.mapping.Start;
+import org.jspare.server.mapping.Method;
+import org.jspare.server.mapping.Namespace;
+import org.jspare.server.mapping.Type;
 
-public class HelloWorldController extends Controller {
+@Namespace("tests")
+public class TestController extends Controller {
 
-	@Start
-	@Mapping
-	public void helloWorld() {
+	@Method(Type.POST)
+	@Mapping("formUpload")
+	public void upload() {
 
-		success(SimpleResponse.ok());
+		byte[] image = entity().asBytes();
+		try {
+			FileUtils.writeByteArrayToFile(new File("test.zip"), image);
+		} catch (IOException e) {
+
+			error(e);
+		}
+		success(image);
 	}
 }

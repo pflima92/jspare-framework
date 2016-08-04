@@ -24,7 +24,6 @@ import java.lang.reflect.Parameter;
 import org.apache.commons.lang.StringUtils;
 import org.jspare.core.exception.InfraRuntimeException;
 import org.jspare.core.exception.SerializationException;
-import org.jspare.core.serializer.Json;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
 import org.jspare.server.controller.CommandData;
@@ -275,7 +274,7 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 
 			try {
 
-				return my(Json.class).fromJSON(String.valueOf(request.getEntity().get()), parameter.getType());
+				return request.getEntity().as(parameter.getType());
 			} catch (SerializationException e) {
 
 				log.warn("Invalid content of entity for class [{}] on parameter [{}]", parameter.getClass(), parameter.getName());
