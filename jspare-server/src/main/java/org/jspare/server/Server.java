@@ -59,6 +59,8 @@ public interface Server {
 	 */
 	Server name(String name);
 
+	int port();
+
 	/**
 	 * Port.
 	 *
@@ -67,8 +69,6 @@ public interface Server {
 	 * @return the server
 	 */
 	Server port(int port);
-
-	int port();
 
 	/**
 	 * Router.

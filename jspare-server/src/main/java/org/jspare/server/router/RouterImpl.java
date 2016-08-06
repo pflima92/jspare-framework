@@ -31,7 +31,7 @@ import org.jspare.server.filter.Filter;
 import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.mapping.Mapping;
 import org.jspare.server.mapping.Type;
-import org.jspare.server.router.Router;
+import org.jspare.server.resource.Resource;
 import org.jspare.server.transport.Status;
 
 import lombok.Getter;
@@ -51,6 +51,16 @@ public class RouterImpl implements Router {
 
 	/** The error handler map. */
 	private final Map<Status, ResourceHandler> errorHandlerMap = new ConcurrentHashMap<>();
+
+	/**
+	 * The Resources used on server
+	 */
+	private final List<Resource<?>> resources = new ArrayList<>();
+
+	/**
+	 * The class of resources used on server
+	 */
+	private final List<Class<? extends Resource<?>>> resourcesClazz = new ArrayList<>();
 
 	/** The resource handler map. */
 
@@ -117,6 +127,19 @@ public class RouterImpl implements Router {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see
+	 * org.jspare.server.router.Router#addResource(org.jspare.server.resource.
+	 * Resource)
+	 */
+	@Override
+	public void addResource(Resource<?> resource) {
+
+		this.resources.add(resource);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see org.jspare.server.Router#addResourceHandler(java.lang.Class)
 	 */
 	@Override
@@ -143,7 +166,7 @@ public class RouterImpl implements Router {
 	@Override
 	public Router addResourceHandler(ResourceHandler resourceHandler) {
 
-		log.info("Founded mapping: TYPE: [{}] ALIAS: [{}]", resourceHandler.getTypes(), resourceHandler.getCommand());
+		log.info("Founded mapping: TYPE: {} ALIAS: [{}]", resourceHandler.getTypes(), resourceHandler.getCommand());
 
 		this.resourceHandlers.add(resourceHandler);
 		return this;
@@ -191,6 +214,17 @@ public class RouterImpl implements Router {
 	public List<CommandData> getMappings() {
 
 		return commandMap.values().stream().collect(Collectors.toList());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.jspare.server.router.Router#getResources()
+	 */
+	@Override
+	public List<Resource<?>> getResources() {
+
+		return this.resources;
 	}
 
 	/*
@@ -277,5 +311,18 @@ public class RouterImpl implements Router {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void addResourceClazz(Class<? extends Resource<?>> resource) {
+
+		this.resourcesClazz.add(resource);
+
+	}
+
+	@Override
+	public List<Class<? extends Resource<?>>> getResourcesClazz() {
+
+		return this.resourcesClazz;
 	}
 }

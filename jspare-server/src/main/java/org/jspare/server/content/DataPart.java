@@ -13,26 +13,56 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.commons;
+package org.jspare.server.content;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * Instantiates a new reason.
- *
- * @param name
- *            the name
- * @param message
- *            the message
+/*
+ * (non-Javadoc)
+ * 
+ * @see java.lang.Object#toString()
  */
 @Data
+
+/**
+ * Instantiates a new data part.
+ *
+ * @param reader
+ *            the reader
+ * @param entity
+ *            the entity
+ * @param name
+ *            the name
+ * @param contentDisposition
+ *            the content disposition
+ */
 @AllArgsConstructor
-public class Reason {
+public class DataPart {
+
+	/** The reader. */
+	private final Reader reader;
+
+	/** The entity. */
+	private Object entity;
 
 	/** The name. */
 	private String name;
 
-	/** The message. */
-	private String message;
+	/** The content disposition. */
+	private ContentDisposition contentDisposition;
+
+	/**
+	 * Gets the entity as.
+	 *
+	 * @param <T>
+	 *            the generic type
+	 * @param clazz
+	 *            the clazz
+	 * @return the entity as
+	 */
+	public <T> T getEntityAs(Class<?> clazz) {
+
+		return reader.read(clazz);
+	}
 }

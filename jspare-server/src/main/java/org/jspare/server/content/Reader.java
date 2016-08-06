@@ -13,26 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.commons;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
+package org.jspare.server.content;
 
 /**
- * Instantiates a new reason.
+ * The Interface Reader.
  *
- * @param name
- *            the name
- * @param message
- *            the message
+ * @author pflima
+ * @since 06/08/2016
  */
-@Data
-@AllArgsConstructor
-public class Reason {
+@FunctionalInterface
+public interface Reader {
 
-	/** The name. */
-	private String name;
-
-	/** The message. */
-	private String message;
+	/**
+	 * Read.
+	 *
+	 * @param <T>
+	 *            the generic type
+	 * @param clazz
+	 *            the clazz
+	 * @return the t
+	 */
+	<T> T read(Class<?> clazz);
 }

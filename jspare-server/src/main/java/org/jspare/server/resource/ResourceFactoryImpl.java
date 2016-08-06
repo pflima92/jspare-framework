@@ -15,11 +15,35 @@
  */
 package org.jspare.server.resource;
 
+import org.jspare.core.exception.InfraRuntimeException;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ResourceFactoryImpl implements ResourceFactory {
 
 	@Override
 	public <T> T create(Resource<T> resource) {
 
 		return resource.generate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jspare.server.resource.ResourceFactory#create(java.lang.Class)
+	 */
+	@Override
+	public <T> T create(Class<? extends Resource<T>> clazz) {
+
+		try {
+
+			Resource<T> resource = clazz.newInstance();
+			return create(resource);
+		} catch (InstantiationException | IllegalAccessException e) {
+
+			log.error("Error on create resource factory", e);
+			throw new InfraRuntimeException(e);
+		}
 	}
 }

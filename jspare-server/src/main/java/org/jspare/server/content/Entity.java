@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.server.commons;
+package org.jspare.server.content;
 
 import static org.jspare.core.commons.Definitions.DEFAULT_CHARSET;
 import static org.jspare.core.container.Environment.my;
@@ -25,21 +25,16 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Entity {
 
-	private final byte[] content;
+	public static Entity empty() {
 
-	public boolean hasValue() {
-
-		return content != null;
+		return new Entity(null);
 	}
+
+	private final byte[] content;
 
 	public <T> T as(Class<?> clazz) {
 		String content = asString();
 		return my(Json.class).fromJSON(content, clazz);
-	}
-
-	public String asString() {
-
-		return new String(content, DEFAULT_CHARSET);
 	}
 
 	public byte[] asBytes() {
@@ -47,8 +42,13 @@ public class Entity {
 		return content;
 	}
 
-	public static Entity empty() {
+	public String asString() {
 
-		return new Entity(null);
+		return new String(content, DEFAULT_CHARSET);
+	}
+
+	public boolean hasValue() {
+
+		return content != null;
 	}
 }

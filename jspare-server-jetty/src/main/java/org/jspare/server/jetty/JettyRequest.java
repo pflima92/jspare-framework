@@ -19,8 +19,10 @@ import static org.jspare.core.container.Environment.my;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,15 +32,21 @@ import java.util.stream.Collectors;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.jspare.core.collections.MultiValueHashMap;
 import org.jspare.core.collections.MultiValueMap;
 import org.jspare.server.Request;
-import org.jspare.server.commons.Entity;
+import org.jspare.server.content.ContentDisposition;
+import org.jspare.server.content.DataPart;
+import org.jspare.server.content.Entity;
+import org.jspare.server.content.Reader;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.session.SessionContext;
@@ -74,7 +82,7 @@ public class JettyRequest implements Request {
 	private final Transaction transaction;
 
 	/** The parameters. */
-	private final Map<String, String> parameters;
+	private final Map<String, Object> parameters;
 
 	/** The entity. */
 	@Getter
@@ -295,25 +303,46 @@ public class JettyRequest implements Request {
 	 *
 	 * @return the map
 	 */
-	private Map<String, String> buidMapParameters() {
-		javax.ws.rs.core.Form form = null;
+	private Map<String, Object> buidMapParameters() {
+
+		Map<String, Object> mapParameters = new HashMap<>();
 		if (context instanceof ContainerRequest) {
+
 			ContainerRequest request = (ContainerRequest) context;
-			if (request.hasEntity() && javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE.getSubtype()
-					.equals(request.getMediaType().getSubtype())) {
+			if (isType(request, MediaType.APPLICATION_FORM_URLENCODED_TYPE)) {
 				request.bufferEntity();
-				form = request.readEntity(Form.class);
+				mapParameters.putAll(request.readEntity(Form.class).asMap());
+			}
+			if (isType(request, MediaType.MULTIPART_FORM_DATA_TYPE)) {
+				request.bufferEntity();
+				FormDataMultiPart multiPart = request.readEntity(FormDataMultiPart.class);
+				mapParameters.putAll(multiPart.getFields().keySet().stream().collect(Collectors.toMap(String::toString,
+						key -> multiPart.getFields(key).size() > 1 ? multiPart.getFields(key) : multiPart.getField(key))));
+
+				multiPart.getFields().keySet().forEach(key -> {
+
+					List<DataPart> parts = new ArrayList<>();
+					parts.addAll(multiPart.getFields(key).stream().map(bodyPart -> wrapDataPart(bodyPart)).collect(Collectors.toList()));
+
+					if (parts.size() > 1) {
+
+						mapParameters.put(key, parts);
+					} else {
+
+						mapParameters.put(key, parts.stream().findFirst().orElse(null));
+					}
+				});
+
 			}
 		}
+
 		MultivaluedHashMap<String, String> requestParams = new MultivaluedHashMap<String, String>();
 		requestParams.putAll(context.getUriInfo().getPathParameters());
 		requestParams.putAll(context.getUriInfo().getQueryParameters());
-		if (form != null) {
-			requestParams.putAll(form.asMap());
-		}
+		mapParameters
+				.putAll(requestParams.keySet().stream().collect(Collectors.toMap(String::toString, key -> requestParams.getFirst(key))));
 
-		return requestParams.keySet().stream().collect(Collectors.toMap(String::toString, key -> requestParams.getFirst(key)));
-
+		return mapParameters;
 	}
 
 	/**
@@ -371,5 +400,26 @@ public class JettyRequest implements Request {
 		}
 
 		return my(TransactionManager.class).registryTransaction();
+	}
+
+	private boolean isType(ContainerRequest request, MediaType mediaType) {
+
+		return request.hasEntity() && mediaType.getSubtype().equals(request.getMediaType().getSubtype());
+	}
+
+	private DataPart wrapDataPart(FormDataBodyPart bodyPart) {
+
+		Reader reader = new Reader() {
+
+			@Override
+			@SuppressWarnings("unchecked")
+			public <T> T read(Class<?> clazz) {
+
+				return (T) bodyPart.getEntityAs(clazz);
+			}
+		};
+		org.glassfish.jersey.media.multipart.ContentDisposition cd = bodyPart.getContentDisposition();
+		return new DataPart(reader, bodyPart.getEntity(), bodyPart.getName(), new ContentDisposition(cd.getType(), cd.getParameters(),
+				cd.getFileName(), cd.getCreationDate(), cd.getModificationDate(), cd.getReadDate(), cd.getSize()));
 	}
 }

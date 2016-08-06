@@ -101,72 +101,6 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 		}
 	}
 
-	private void execute(CommandData cmd, Request request, Response response) {
-		try {
-
-			for (Filter f : cmd.getBeforeFilters()) {
-				f.doIt(request, response);
-			}
-
-			// Inject Request and Response if is Available
-			Object newInstance = my(ControllerFactory.class).instantiate(cmd.getCmdClazz());
-
-			if (newInstance instanceof Controller) {
-
-				request.setController((Controller) newInstance);
-				((Controller) newInstance).setRequest(request);
-				((Controller) newInstance).setResponse(response);
-			}
-
-			Object[] parameters = new Object[cmd.getMethod().getParameterCount()];
-			int i = 0;
-			for (Parameter parameter : cmd.getMethod().getParameters()) {
-
-				parameters[i] = resolveParameter(parameter, request, response);
-				i++;
-			}
-			
-			//Validate default parameters
-			if (newInstance instanceof Controller) {
-				
-				try {
-					
-					((Controller) newInstance).validate(parameters);
-				} catch (BeanValidationException e) {
-
-					((Controller) newInstance).badRequest(SimpleResponse.invalidConstraints(e.getVioledConstraints()));
-					return;
-				}
-			}
-			
-			cmd.getMethod().invoke(newInstance, parameters);
-
-			for (Filter f : cmd.getAfterFilters()) {
-				f.doIt(request, response);
-			}
-
-			response.end();
-
-			my(TransactionManager.class).end(request.getTransaction().getId());
-
-		} catch (Throwable t) {
-
-			log.error("Fail execute", t);
-			response.status(Status.INTERNAL_SERVER_ERROR).end();
-		} finally {
-
-			this.response = response;
-
-			try {
-				notifyFinish(response);
-
-			} catch (Exception e) {
-
-				log.error("Fail execute", e);
-			}
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -255,6 +189,72 @@ public class TransactionExecutorImpl implements TransactionExecutor {
 
 			log.error("Error on yield process", e);
 			response.status(Status.INTERNAL_SERVER_ERROR).end();
+		}
+	}
+
+	private void execute(CommandData cmd, Request request, Response response) {
+		try {
+
+			for (Filter f : cmd.getBeforeFilters()) {
+				f.doIt(request, response);
+			}
+
+			// Inject Request and Response if is Available
+			Object newInstance = my(ControllerFactory.class).instantiate(cmd.getCmdClazz());
+
+			if (newInstance instanceof Controller) {
+
+				request.setController((Controller) newInstance);
+				((Controller) newInstance).setRequest(request);
+				((Controller) newInstance).setResponse(response);
+			}
+
+			Object[] parameters = new Object[cmd.getMethod().getParameterCount()];
+			int i = 0;
+			for (Parameter parameter : cmd.getMethod().getParameters()) {
+
+				parameters[i] = resolveParameter(parameter, request, response);
+				i++;
+			}
+
+			// Validate default parameters
+			if (newInstance instanceof Controller) {
+
+				try {
+
+					((Controller) newInstance).validate(parameters);
+				} catch (BeanValidationException e) {
+
+					((Controller) newInstance).badRequest(SimpleResponse.invalidConstraints(e.getVioledConstraints()));
+					return;
+				}
+			}
+
+			cmd.getMethod().invoke(newInstance, parameters);
+
+			for (Filter f : cmd.getAfterFilters()) {
+				f.doIt(request, response);
+			}
+
+			response.end();
+
+			my(TransactionManager.class).end(request.getTransaction().getId());
+
+		} catch (Throwable t) {
+
+			log.error("Fail execute", t);
+			response.status(Status.INTERNAL_SERVER_ERROR).end();
+		} finally {
+
+			this.response = response;
+
+			try {
+				notifyFinish(response);
+
+			} catch (Exception e) {
+
+				log.error("Fail execute", e);
+			}
 		}
 	}
 

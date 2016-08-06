@@ -22,6 +22,7 @@ import org.jspare.core.container.Component;
 import org.jspare.server.controller.CommandData;
 import org.jspare.server.filter.Filter;
 import org.jspare.server.handler.ResourceHandler;
+import org.jspare.server.resource.Resource;
 import org.jspare.server.transport.Status;
 
 /**
@@ -29,6 +30,10 @@ import org.jspare.server.transport.Status;
  *
  * @author pflima
  * @since 30/03/2016
+ */
+/**
+ * @author pflima
+ *
  */
 @Component
 public interface Router {
@@ -63,6 +68,16 @@ public interface Router {
 	 * @return the router
 	 */
 	Router addMapping(Class<?> cmdClazz);
+
+	/**
+	 * @param resource
+	 */
+	void addResource(Resource<?> resource);
+
+	/**
+	 * @param resource
+	 */
+	void addResourceClazz(Class<? extends Resource<?>> resource);
 
 	/**
 	 * Adds the resource handler.
@@ -111,6 +126,16 @@ public interface Router {
 	 * @return the mappings
 	 */
 	List<CommandData> getMappings();
+
+	/**
+	 * @return
+	 */
+	List<Resource<?>> getResources();
+
+	/**
+	 * @return
+	 */
+	List<Class<? extends Resource<?>>> getResourcesClazz();
 
 	/**
 	 * Gets the resource handlers.

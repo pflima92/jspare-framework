@@ -64,13 +64,12 @@ public abstract class Application {
 	 */
 	protected void start() throws InfraException {
 
-		log.info("Loading Application");
+		log.info("Starting Application");
 		load();
 
-		log.info("Starting bootstrap");
 		mySupport();
 
-		log.info("Instantiate and Registry Bundles packages");
+		log.info("Loading Builders");
 		buildAll();
 	}
 

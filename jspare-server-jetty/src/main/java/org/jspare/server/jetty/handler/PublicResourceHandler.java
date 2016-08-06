@@ -30,8 +30,8 @@ import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.jetty.http.HttpMediaType;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.transport.CacheControl;
-import org.jspare.server.transport.Status;
 import org.jspare.server.transport.CacheControl.CacheAccessor;
+import org.jspare.server.transport.Status;
 
 /**
  * The Class PublicResourceHandler.

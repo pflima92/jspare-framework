@@ -52,6 +52,7 @@ import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.process.Inflector;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.model.Resource;
@@ -65,6 +66,7 @@ import org.jspare.server.controller.CommandData;
 import org.jspare.server.exception.RenderableException;
 import org.jspare.server.handler.ResourceHandler;
 import org.jspare.server.mapping.Type;
+import org.jspare.server.resource.ResourceFactory;
 import org.jspare.server.router.Router;
 import org.jspare.server.transaction.TransactionStatus;
 import org.jspare.server.transaction.model.Yield;
@@ -387,6 +389,9 @@ public class JettyServer implements Server {
 		}
 
 		ResourceConfig resourceConfig = new ResourceConfig().registerResources(resources);
+		resourceConfig.register(MultiPartFeature.class);
+		router.getResources().forEach(r -> resourceConfig.register(my(ResourceFactory.class).create(r)));
+		router.getResourcesClazz().forEach(r -> resourceConfig.register(my(ResourceFactory.class).create(r)));
 
 		resourceConfig.register(new ExceptionMapper<RenderableException>() {
 

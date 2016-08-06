@@ -17,6 +17,12 @@ package org.jspare.server.commons;
 
 import java.io.File;
 
+/**
+ * The Interface ServerDefinitions.
+ *
+ * @author pflima
+ * @since 06/08/2016
+ */
 public interface ServerDefinitions extends org.jspare.core.commons.Definitions {
 
 	/** The Constant SERVER_PORT_KEY. */
@@ -31,12 +37,19 @@ public interface ServerDefinitions extends org.jspare.core.commons.Definitions {
 	/** The default port. */
 	int SERVER_REMOTE_DEFAULT = 9080;
 
+	/** The certificate enable. */
 	String CERTIFICATE_ENABLE = "certificate.enable";
 
+	/** The certificate keystore key. */
 	String CERTIFICATE_KEYSTORE_KEY = "certificate.keystore.path";
+
+	/** The certificate keystore path. */
 	String CERTIFICATE_KEYSTORE_PATH = String.format("%s%s%s", "certificate", File.separator, "certificate.keystore.jks");
 
+	/** The certificate keystore password key. */
 	String CERTIFICATE_KEYSTORE_PASSWORD_KEY = "certificate.keystore.password";
+
+	/** The certificate keystore password. */
 	String CERTIFICATE_KEYSTORE_PASSWORD = "password";
 
 	/** The Constant DEFAULT_SESSION_TIMEOUT_KEY. */
@@ -45,9 +58,12 @@ public interface ServerDefinitions extends org.jspare.core.commons.Definitions {
 	/** The Constant DEFAULT_SESSION_TIMEOUT. */
 	Integer SESSION_TIMEOUT_DEFAULT = 20;
 
+	/** The transaction time to live key. */
 	String TRANSACTION_TIME_TO_LIVE_KEY = "server.transaction.live";
 
+	/** The transaction time to live default. */
 	Long TRANSACTION_TIME_TO_LIVE_DEFAULT = 5l;
 
+	/** The yield enable key. */
 	String YIELD_ENABLE_KEY = "server.yield.enable";
 }

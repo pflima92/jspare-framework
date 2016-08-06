@@ -35,21 +35,43 @@ import org.jspare.server.router.Router;
 
 import lombok.extern.slf4j.Slf4j;
 
+/** The Constant log. */
 @Slf4j
 public final class ApplicationServerBuilder extends ApplicationBuilder {
+
+	/**
+	 * Creates the.
+	 *
+	 * @param source
+	 *            the source
+	 * @return the application server builder
+	 */
+	public static ApplicationServerBuilder create(Object source) {
+
+		return new ApplicationServerBuilder(source);
+	}
 
 	/** The controller package. */
 	private final String CONTROLLER_PACKAGE = ".controller";
 
+	/** The source. */
 	private final Object source;
 
 	/** The controllers. */
 	private List<String> controllers;
 
+	/** The resource hanlders clazz. */
 	private List<Class<? extends ResourceHandler>> resourceHanldersClazz;
 
+	/** The resource hanlders. */
 	private List<ResourceHandler> resourceHanlders;
 
+	/**
+	 * Instantiates a new application server builder.
+	 *
+	 * @param source
+	 *            the source
+	 */
 	public ApplicationServerBuilder(Object source) {
 
 		this.source = source;
@@ -58,11 +80,11 @@ public final class ApplicationServerBuilder extends ApplicationBuilder {
 		resourceHanldersClazz = new ArrayList<>();
 	}
 
-	public static ApplicationServerBuilder create(Object source) {
-
-		return new ApplicationServerBuilder(source);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jspare.core.container.ApplicationBuilder#build()
+	 */
 	@Override
 	public void build() {
 
@@ -112,46 +134,104 @@ public final class ApplicationServerBuilder extends ApplicationBuilder {
 
 	}
 
-	public ApplicationServerBuilder port(int port) {
-		putConfig(SERVER_PORT_KEY, String.valueOf(port));
-		return this;
-	}
-
-	public ApplicationServerBuilder remotePort(int port) {
-
-		throw new NotImplementedException();
-	}
-
+	/**
+	 * Certificate.
+	 *
+	 * @param keystorePath
+	 *            the keystore path
+	 * @param keystorePassword
+	 *            the keystore password
+	 * @return the application server builder
+	 */
 	public ApplicationServerBuilder certificate(String keystorePath, String keystorePassword) {
 		putConfig(CERTIFICATE_KEYSTORE_KEY, keystorePath);
 		putConfig(CERTIFICATE_KEYSTORE_PASSWORD_KEY, keystorePassword);
 		return this;
 	}
 
-	public ApplicationServerBuilder yield(boolean enabled) {
-		putConfig(YIELD_ENABLE_KEY, String.valueOf(enabled));
+	/**
+	 * Controllers.
+	 *
+	 * @param clazzControllers
+	 *            the clazz controllers
+	 * @return the application builder
+	 */
+	public ApplicationBuilder controllers(Class<?>... clazzControllers) {
+
+		Arrays.asList(clazzControllers).forEach(clazz -> controllers.add(clazz.getCanonicalName()));
 		return this;
 	}
 
-	public ApplicationServerBuilder resourceHandlers(ResourceHandler... handlers) {
-		resourceHanlders.addAll(Arrays.asList(handlers));
-		return this;
-	}
-
-	public ApplicationServerBuilder resourceHandlers(Class<? extends ResourceHandler> handler) {
-		resourceHanldersClazz.add(handler);
-		return this;
-	}
-
+	/**
+	 * Controllers.
+	 *
+	 * @param optControllers
+	 *            the opt controllers
+	 * @return the application builder
+	 */
 	public ApplicationBuilder controllers(String... optControllers) {
 
 		controllers.addAll(Arrays.asList(optControllers));
 		return this;
 	}
 
-	public ApplicationBuilder controllers(Class<?>... clazzControllers) {
+	/**
+	 * Port.
+	 *
+	 * @param port
+	 *            the port
+	 * @return the application server builder
+	 */
+	public ApplicationServerBuilder port(int port) {
+		putConfig(SERVER_PORT_KEY, String.valueOf(port));
+		return this;
+	}
 
-		Arrays.asList(clazzControllers).forEach(clazz -> controllers.add(clazz.getCanonicalName()));
+	/**
+	 * Remote port.
+	 *
+	 * @param port
+	 *            the port
+	 * @return the application server builder
+	 */
+	public ApplicationServerBuilder remotePort(int port) {
+
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * Resource handlers.
+	 *
+	 * @param handler
+	 *            the handler
+	 * @return the application server builder
+	 */
+	public ApplicationServerBuilder resourceHandlers(Class<? extends ResourceHandler> handler) {
+		resourceHanldersClazz.add(handler);
+		return this;
+	}
+
+	/**
+	 * Resource handlers.
+	 *
+	 * @param handlers
+	 *            the handlers
+	 * @return the application server builder
+	 */
+	public ApplicationServerBuilder resourceHandlers(ResourceHandler... handlers) {
+		resourceHanlders.addAll(Arrays.asList(handlers));
+		return this;
+	}
+
+	/**
+	 * Yield.
+	 *
+	 * @param enabled
+	 *            the enabled
+	 * @return the application server builder
+	 */
+	public ApplicationServerBuilder yield(boolean enabled) {
+		putConfig(YIELD_ENABLE_KEY, String.valueOf(enabled));
 		return this;
 	}
 }

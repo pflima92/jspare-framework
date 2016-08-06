@@ -23,22 +23,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-
-import org.apache.commons.lang.StringUtils;
-import org.jspare.core.serializer.Json;
-import org.jspare.server.Request;
-import org.jspare.server.Response;
-import org.jspare.server.commons.Entity;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.jspare.core.serializer.Json;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
+import org.jspare.server.content.Entity;
 import org.jspare.server.exception.BeanValidationException;
 import org.jspare.server.exception.RenderableException;
 import org.jspare.server.session.SessionContext;
@@ -73,29 +69,6 @@ public abstract class Controller {
 	 */
 	@Setter
 	protected Response response;
-
-	public Optional<String> getHeader(String name) {
-
-		return request.getHeader(name);
-	}
-
-	public <T> T getParameter(String name) {
-
-		return request.getParameter(name);
-	}
-
-	protected Entity entity() {
-
-		return request.getEntity();
-	}
-
-	protected String body() {
-		if (!request.getEntity().hasValue()) {
-
-			return StringUtils.EMPTY;
-		}
-		return request.getEntity().asString();
-	}
 
 	/**
 	 * Bad gateway.
@@ -238,6 +211,16 @@ public abstract class Controller {
 		return request.getTransaction().getContext();
 	}
 
+	public Optional<String> getHeader(String name) {
+
+		return request.getHeader(name);
+	}
+
+	public <T> T getParameter(String name) {
+
+		return request.getParameter(name);
+	}
+
 	/**
 	 * Gets the session.
 	 *
@@ -332,14 +315,6 @@ public abstract class Controller {
 
 	/**
 	 * Success.
-	 */
-	protected void success(byte[] bytes) {
-
-		response.entity(bytes).status(Status.OK).end();
-	}
-
-	/**
-	 * Success.
 	 *
 	 * @param object
 	 *            the object
@@ -422,20 +397,22 @@ public abstract class Controller {
 		response.status(Status.SERVICE_UNAVAILABLE).end();
 	}
 
-	public void validate(Object... objects) throws BeanValidationException{
+	public void validate(Object... objects) throws BeanValidationException {
 
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
 		Set<ConstraintViolation<Object>> resolutions = new HashSet<>();
 		for (Object bean : objects) {
-			if(bean == null) {
-				resolutions.add(ConstraintViolationImpl.forBeanValidation("invalid required parameters", null, "invalid required parameters", null, null, bean, bean, PathImpl.createPathFromString("parameter"), null, ElementType.PARAMETER, bean));
+			if (bean == null) {
+				resolutions
+						.add(ConstraintViolationImpl.forBeanValidation("invalid required parameters", null, "invalid required parameters",
+								null, null, bean, bean, PathImpl.createPathFromString("parameter"), null, ElementType.PARAMETER));
 				continue;
 			}
 			resolutions.addAll(validator.validate(bean));
 		}
-		if(!resolutions.isEmpty()){
-			
+		if (!resolutions.isEmpty()) {
+
 			throw new BeanValidationException(resolutions);
 		}
 	}
@@ -449,5 +426,26 @@ public abstract class Controller {
 	public void yield(String bind) {
 
 		request.getTransaction().getExecutor().yield(request, response, bind);
+	}
+
+	protected String body() {
+		if (!request.getEntity().hasValue()) {
+
+			return StringUtils.EMPTY;
+		}
+		return request.getEntity().asString();
+	}
+
+	protected Entity entity() {
+
+		return request.getEntity();
+	}
+
+	/**
+	 * Success.
+	 */
+	protected void success(byte[] bytes) {
+
+		response.entity(bytes).status(Status.OK).end();
 	}
 }

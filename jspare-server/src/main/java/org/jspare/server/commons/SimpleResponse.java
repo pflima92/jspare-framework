@@ -26,37 +26,78 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * Instantiates a new simple response.
+ *
+ * @param result
+ *            the result
+ * @param message
+ *            the message
+ * @param reasons
+ *            the reasons
+ */
 @Data
 @Accessors(fluent = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class SimpleResponse {
 
-	private String result = "OK";
-	private String message;
-	private List<Reason> reasons;
+	/**
+	 * Invalid constraints.
+	 *
+	 * @param violedConstraints
+	 *            the violed constraints
+	 * @return the simple response
+	 */
+	public static SimpleResponse invalidConstraints(Set<ConstraintViolation<Object>> violedConstraints) {
 
+		SimpleResponse simpleError = new SimpleResponse().result("ERROR").message("Invalid constraints");
+		violedConstraints.forEach(v -> simpleError.reason(new Reason(v.getPropertyPath().toString(), v.getMessage())));
+		return simpleError;
+	}
+
+	/**
+	 * Ok.
+	 *
+	 * @return the simple response
+	 */
 	public static SimpleResponse ok() {
 
 		return new SimpleResponse();
 	}
-	
-	public static SimpleResponse invalidConstraints(Set<ConstraintViolation<Object>> violedConstraints){
-		
-		SimpleResponse simpleError = new SimpleResponse().result("ERROR").message("Invalid constraints");
-		violedConstraints.forEach(v -> simpleError.reason(new Reason(v.getPropertyPath().toString(), v.getMessage())));
-		return simpleError;
-	} 
-	
-	public SimpleResponse reason(Reason reason){
-		
+
+	/** The result. */
+	private String result = "OK";
+
+	/** The message. */
+	private String message;
+
+	/** The reasons. */
+	private List<Reason> reasons;
+
+	/**
+	 * Gets the reasons.
+	 *
+	 * @return the reasons
+	 */
+	public List<Reason> getReasons() {
+
+		if (reasons == null) {
+			reasons = new ArrayList<>();
+		}
+		return reasons;
+	}
+
+	/**
+	 * Reason.
+	 *
+	 * @param reason
+	 *            the reason
+	 * @return the simple response
+	 */
+	public SimpleResponse reason(Reason reason) {
+
 		getReasons().add(reason);
 		return this;
-	}
-	
-	public List<Reason> getReasons(){
-		
-		if(reasons == null) reasons = new ArrayList<>();
-		return reasons;
 	}
 }

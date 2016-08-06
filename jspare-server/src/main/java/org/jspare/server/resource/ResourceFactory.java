@@ -17,8 +17,13 @@ package org.jspare.server.resource;
 
 import org.jspare.core.container.Component;
 
+/**
+ * A factory for creating Resource objects.
+ */
 @Component
 public interface ResourceFactory {
 
 	<T> T create(Resource<T> resource);
+
+	<T> T create(Class<? extends Resource<T>> resource);
 }

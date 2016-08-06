@@ -36,7 +36,7 @@ public class BeanValidationException extends InfraException {
 
 	@Getter
 	private final Set<ConstraintViolation<Object>> violedConstraints;
-	
+
 	public BeanValidationException(Set<ConstraintViolation<Object>> violedConstraints) {
 		super("Invalid bean exception");
 		this.violedConstraints = violedConstraints;

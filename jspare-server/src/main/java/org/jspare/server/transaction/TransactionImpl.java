@@ -98,7 +98,7 @@ public class TransactionImpl implements Transaction {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.transaction.Transaction#getContext()
 	 */
 	@Override
@@ -109,7 +109,7 @@ public class TransactionImpl implements Transaction {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.transaction.Transaction#getExecutor()
 	 */
 	@Override
