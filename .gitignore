@@ -14,3 +14,12 @@ hs_err_pid*
 *.classpath
 .settings/
 */target/*
+jspare-samples/app-sample-svc/bin
+jspare-samples/app-web-mvc/bin
+jspare-server-jetty/bin
+jspare-server-vertx/bin
+jspare-ui-jtwig/bin
+jspare-ui/bin
+jspare-web-microsvc/bin
+jspare-web-mvc/bin
+jspare-web-svc/bin

@@ -16,13 +16,22 @@
 package org.jspare.sample.svc;
 
 import org.jspare.core.exception.InfraException;
-import org.jspare.web.container.Service;
+import org.jspare.server.application.Service;
 
 public class Bootstrap extends Service {
 
 	public static void main(String[] args) throws InfraException {
 
 		new Bootstrap().start();
+	}
+
+	@Override
+	protected void load() {
+
+		super.load();
+
+		// getServer().getRouter().addErrorHandler(Status.NOT_FOUND,
+		// DefaultNotFoundErrorHandler.class);
 	}
 
 }

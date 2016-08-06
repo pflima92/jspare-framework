@@ -17,8 +17,11 @@ package org.jspare.sample.svc.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.jspare.server.content.DataPart;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Mapping;
 import org.jspare.server.mapping.Method;
@@ -30,15 +33,14 @@ public class TestController extends Controller {
 
 	@Method(Type.POST)
 	@Mapping("formUpload")
-	public void upload() {
+	public void upload() throws IOException {
 
-		byte[] image = entity().asBytes();
-		try {
-			FileUtils.writeByteArrayToFile(new File("test.zip"), image);
-		} catch (IOException e) {
+		DataPart bodyDataPart = request.getParameter("file");
+		InputStream is = bodyDataPart.getEntityAs(InputStream.class);
+		String fileName = bodyDataPart.getName();
 
-			error(e);
-		}
+		byte[] image = IOUtils.toByteArray(is);
+		FileUtils.writeByteArrayToFile(new File(fileName), image);
 		success(image);
 	}
 }

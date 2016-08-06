@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import org.jspare.core.collections.MultiValueMap;
 import org.jspare.server.Request;
+import org.jspare.server.content.Entity;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
 import org.jspare.server.session.SessionContext;
@@ -31,12 +32,6 @@ public class VertxRequest implements Request {
 
 	@Override
 	public String getBasePath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getCookie(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -54,7 +49,13 @@ public class VertxRequest implements Request {
 	}
 
 	@Override
-	public Optional<Object> getEntity() {
+	public String getCookie(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Entity getEntity() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -142,5 +143,4 @@ public class VertxRequest implements Request {
 		// TODO Auto-generated method stub
 
 	}
-
 }

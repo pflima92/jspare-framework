@@ -13,9 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.web.container;
+package org.jspare.web.application;
 
 import org.jspare.core.container.ApplicationBuilder;
+import org.jspare.server.application.Service;
 import org.jspare.ui.jtwig.JtwigBundle;
 
 /**

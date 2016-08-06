@@ -141,5 +141,4 @@ public class VertxResponse implements Response {
 			return null;
 		}
 	}
-
 }

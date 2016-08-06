@@ -16,7 +16,7 @@
 package org.jspare.web.sample;
 
 import org.jspare.core.exception.InfraException;
-import org.jspare.web.container.Service;
+import org.jspare.server.application.Service;
 
 public class Bootstrap extends Service {
 

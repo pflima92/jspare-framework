@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jspare.web.container;
+package org.jspare.server.application;
 
 import static org.jspare.core.container.Environment.my;
 
@@ -21,9 +21,7 @@ import org.jspare.core.container.Application;
 import org.jspare.core.container.ApplicationBuilder;
 import org.jspare.core.exception.InfraException;
 import org.jspare.server.Server;
-import org.jspare.server.container.ApplicationServerBuilder;
-import org.jspare.server.jetty.bundle.JettyServerBundle;
-import org.jspare.server.jetty.handler.PublicResourceHandler;
+import org.jspare.server.vertx.bundle.VertxServerBundle;
 
 /**
  * The Class WebBootstrap.
@@ -36,8 +34,7 @@ public abstract class Service extends Application {
 	@Override
 	protected void load() {
 
-		builder(ApplicationBuilder.create().addBundle(JettyServerBundle.class));
-		builder(ApplicationServerBuilder.create(this).resourceHandlers(PublicResourceHandler.class));
+		builder(ApplicationBuilder.create().addBundle(VertxServerBundle.class));
 	}
 
 	@Override
