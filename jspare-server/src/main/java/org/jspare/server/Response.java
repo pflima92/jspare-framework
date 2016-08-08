@@ -18,7 +18,6 @@ package org.jspare.server;
 import java.io.InputStream;
 import java.util.Locale;
 
-import org.jspare.core.collections.MultiValueMap;
 import org.jspare.server.session.SessionContext;
 import org.jspare.server.transaction.Transaction;
 import org.jspare.server.transport.CacheControl;
@@ -44,6 +43,13 @@ public interface Response extends Cloneable {
 	 * @return the response
 	 */
 	Response addCookie(String name, String value);
+	
+	/**
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	Response addHeader(String name, String value);
 
 	/**
 	 * Cache.
@@ -117,14 +123,7 @@ public interface Response extends Cloneable {
 	 * @return the entity
 	 */
 	Object getEntity();
-
-	/**
-	 * Gets the headers.
-	 *
-	 * @return the headers
-	 */
-	MultiValueMap<String, Object> getHeaders();
-
+	
 	/**
 	 * Gets the language.
 	 *

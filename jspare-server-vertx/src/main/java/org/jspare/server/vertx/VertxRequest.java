@@ -15,132 +15,130 @@
  */
 package org.jspare.server.vertx;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import org.jspare.core.collections.MultiValueHashMap;
 import org.jspare.core.collections.MultiValueMap;
-import org.jspare.server.Request;
 import org.jspare.server.content.Entity;
-import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
-import org.jspare.server.session.SessionContext;
-import org.jspare.server.transaction.Transaction;
+import org.jspare.server.transport.DefaultRequest;
 import org.jspare.server.transport.Media;
 
-public class VertxRequest implements Request {
+import io.vertx.core.MultiMap;
+import io.vertx.ext.web.RoutingContext;
+import lombok.Getter;
+
+public class VertxRequest extends DefaultRequest  {
+	
+	@Getter
+	private RoutingContext context;
+
+	public VertxRequest(RoutingContext context) {
+		super(context);
+	}
 
 	@Override
 	public String getBasePath() {
-		// TODO Auto-generated method stub
-		return null;
+		return context.request().absoluteURI();
 	}
 
 	@Override
 	public String getCommandAlias() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Controller getController() {
-		// TODO Auto-generated method stub
-		return null;
+		return context.request().getHeader(HD_ALIAS);
 	}
 
 	@Override
 	public String getCookie(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Entity getEntity() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return context.getCookie(name).getValue();
 	}
 
 	@Override
 	public Optional<String> getHeader(String key) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return Optional.ofNullable(context.request().getHeader(key));
 	}
 
 	@Override
 	public MultiValueMap<String, Object> getHeaders() {
-		// TODO Auto-generated method stub
-		return null;
+
+		MultiValueMap<String, Object> mVmap = new MultiValueHashMap<>();
+		context.request().headers().entries().forEach(mv -> {
+			mVmap.put(mv.getKey(), Arrays.asList(mv.getValue()));
+		});
+		return mVmap;
 	}
 
 	@Override
 	public Map<String, String> getHeadersAsString() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> mVmap = new HashMap<>();
+		context.request().headers().entries().forEach(mv -> {
+			mVmap.put(mv.getKey(), mv.getValue());
+		});
+		return mVmap;
 	}
 
 	@Override
 	public Locale getLocale() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(context.acceptableLocales().isEmpty()) return Locale.getDefault();
+		io.vertx.ext.web.Locale requestLocale = context.acceptableLocales().get(0);
+		return new Locale(String.format("%s%s", requestLocale.language(), requestLocale.country().toUpperCase())); 
 	}
 
 	@Override
 	public Media getMedia() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return (Media) (() -> context.getAcceptableContentType());
 	}
 
 	@Override
-	public <T> T getParameter(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Map<String, Object> getParameters() {
 
-	@Override
-	public <T> Map<String, T> getParameters() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> parameters = new HashMap<>();
+		MultiMap map = context.request().params();
+		map.forEach(mp -> parameters.put(mp.getKey(), mp.getValue()));
+		return parameters;
 	}
 
 	@Override
 	public String getPath() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return context.request().path();
 	}
 
 	@Override
 	public String getRemoteAddr() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public SessionContext getSessionContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getSourceRequest() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Transaction getTransaction() {
-		// TODO Auto-generated method stub
-		return null;
+		return context.request().remoteAddress().toString();
 	}
 
 	@Override
 	public Type getType() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return Type.valueOf(context.request().method().toString().toUpperCase());
 	}
 
 	@Override
-	public void setController(Controller controller) {
-		// TODO Auto-generated method stub
+	protected Entity buildEntity() {
 
+		if(context.getBody().getBytes() == null){
+			
+			return Entity.empty();
+		}
+		return new Entity(context.getBody().getBytes());
+	}
+
+	@Override
+	protected Map<String, Object> buildMapParameters() {
+
+		Map<String, Object> mapParameters = new HashMap<>();
+		context.request().params().forEach(entry -> mapParameters.put(entry.getKey(), entry.getValue()));
+		return mapParameters;
 	}
 }

@@ -71,6 +71,13 @@ public interface Request {
 	 * @return the client resource
 	 */
 	String getCookie(String name);
+	
+	/**
+	 * Gets the source request.
+	 *
+	 * @return the source request
+	 */
+	Object getContext();
 
 	/**
 	 * Gets the entity.
@@ -134,7 +141,7 @@ public interface Request {
 	 *            the generic type
 	 * @return the parameters
 	 */
-	<T> Map<String, T> getParameters();
+	Map<String, Object> getParameters();
 
 	/**
 	 * Gets the path.
@@ -151,13 +158,6 @@ public interface Request {
 	 * @return the session context
 	 */
 	SessionContext getSessionContext();
-
-	/**
-	 * Gets the source request.
-	 *
-	 * @return the source request
-	 */
-	Object getSourceRequest();
 
 	/**
 	 * Gets the transaction.

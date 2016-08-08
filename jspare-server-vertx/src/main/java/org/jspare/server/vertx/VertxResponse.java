@@ -15,17 +15,21 @@
  */
 package org.jspare.server.vertx;
 
-import java.io.InputStream;
-import java.util.Locale;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
-import org.jspare.core.collections.MultiValueMap;
+import org.jspare.server.Request;
 import org.jspare.server.Response;
-import org.jspare.server.session.SessionContext;
-import org.jspare.server.transaction.Transaction;
-import org.jspare.server.transport.CacheControl;
+import org.jspare.server.exception.RenderableException;
+import org.jspare.server.transport.DefaultResponse;
 import org.jspare.server.transport.Media;
 import org.jspare.server.transport.Renderable;
 import org.jspare.server.transport.Status;
+
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.impl.CookieImpl;
 
 /**
  * The Class JettyResponse.
@@ -33,112 +37,74 @@ import org.jspare.server.transport.Status;
  * @author pflima
  * @since 30/03/2016
  */
-public class VertxResponse implements Response {
+public class VertxResponse extends DefaultResponse {
+	
+	private RoutingContext routingContext;
 
-	@Override
-	public Response addCookie(String name, String value) {
-		// TODO Auto-generated method stub
-		return null;
+	public VertxResponse(Request request, RoutingContext routingContext) {
+		super(request);
+		this.routingContext = routingContext;
 	}
 
 	@Override
-	public Response cache(CacheControl cacheControl) {
-		// TODO Auto-generated method stub
-		return null;
+	public Response addCookie(String name, String value) {
+
+		routingContext.addCookie(new CookieImpl(name, value));
+		return this;
 	}
 
 	@Override
 	public void end() {
-		// TODO Auto-generated method stub
+		if (closed) {
+			return;
+		}
+		try {
+			HttpServerResponse response = routingContext.response();
+			response.setStatusCode(status.getCode());
+			response.setStatusMessage(status.name());
+			response.putHeader("Content-type", resolveContentType());
 
+			if (entity != null) {
+				
+				response.end(entity.toString(), StandardCharsets.UTF_8.name());
+				return;
+			}
+			response.end();
+		} finally {
+			closed = true;
+		}
 	}
 
-	@Override
-	public Response entity(byte[] entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private String resolveContentType() {
 
-	@Override
-	public Response entity(InputStream entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Response entity(Object object) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder builder = new StringBuilder();
+		List<Media> itens = Arrays.asList(media); 
+		while(itens.iterator().hasNext()){
+			Media item = itens.iterator().next();
+			builder.append(item.getValue());
+			if(itens.iterator().hasNext()) builder.append(";");
+		}
+		return builder.toString();
 	}
 
 	@Override
 	public Response entity(Renderable view) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Response entity(String entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getEntity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MultiValueMap<String, Object> getHeaders() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Locale getLanguage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SessionContext getSessionContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Transaction getTransaction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Response media(Media... medias) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Response status(Status status) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void yield() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Object clone() {
 		try {
 
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
+			this.entity = view.render(request);
+			return this;
+		} catch (RenderableException e) {
 
-			return null;
+			status(Status.INTERNAL_SERVER_ERROR).end();
+			return this;
 		}
+	}
+
+	@Override
+	public Response addHeader(String name, String value) {
+
+		this.routingContext.response().headers().add(name, value);
+		return this;
 	}
 }

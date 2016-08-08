@@ -15,17 +15,13 @@
  */
 package org.jspare.server.jetty;
 
-import static org.jspare.core.container.Environment.my;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,51 +38,24 @@ import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.jspare.core.collections.MultiValueHashMap;
 import org.jspare.core.collections.MultiValueMap;
-import org.jspare.server.Request;
 import org.jspare.server.content.ContentDisposition;
 import org.jspare.server.content.DataPart;
 import org.jspare.server.content.Entity;
 import org.jspare.server.content.Reader;
-import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;
-import org.jspare.server.session.SessionContext;
-import org.jspare.server.session.SessionManager;
-import org.jspare.server.transaction.Transaction;
-import org.jspare.server.transaction.TransactionManager;
+import org.jspare.server.transport.DefaultRequest;
 import org.jspare.server.transport.Media;
 
 import lombok.Cleanup;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class JettyRequest implements Request {
+public class JettyRequest extends DefaultRequest {
 
 	/** The context. */
-	private final ContainerRequestContext context;
-
 	@Getter
-	@Setter
-	private Controller controller;
-
-	/**
-	 * Gets the session id.
-	 *
-	 * @return the session id
-	 */
-	@Getter
-	private final String sessionId;
-
-	/** The transaction. */
-	private final Transaction transaction;
-
-	/** The parameters. */
-	private final Map<String, Object> parameters;
-
-	/** The entity. */
-	@Getter
-	private final Entity entity;
+	private ContainerRequestContext context;
 
 	/**
 	 * Instantiates a new jetty request.
@@ -95,11 +64,7 @@ public class JettyRequest implements Request {
 	 *            the context
 	 */
 	public JettyRequest(final ContainerRequestContext context) {
-		this.context = context;
-		this.parameters = buidMapParameters();
-		this.entity = buildEntity();
-		this.transaction = buildTransaction();
-		this.sessionId = buildSessionId();
+		super(context);
 	}
 
 	/*
@@ -203,44 +168,6 @@ public class JettyRequest implements Request {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.jspare.server.Request#getParameter(java.lang.String)
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T getParameter(String key) {
-
-		return (T) parameters.get(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getParameters()
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public Map<String, String> getParameters() {
-		Map<String, String> map = context.getPropertyNames().stream()
-				.collect(Collectors.toMap(String::toString, key -> context.getProperty(key).toString()));
-		int size = map.size();
-		size = map.containsKey("password") ? size - 1 : size;
-		Map<String, String> result = new HashMap<>();
-		Iterator<Entry<String, String>> iterator = map.entrySet().iterator();
-		Entry<String, String> entry;
-		for (int i = 0; i < size; i++) {
-			entry = iterator.next();
-			String key = entry.getKey();
-			if (key.equals("password")) {
-				entry = iterator.next();
-			}
-			result.put(entry.getKey(), entry.getValue());
-		}
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
 	 * @see org.jspare.server.Request#getPath()
 	 */
 	@Override
@@ -252,39 +179,6 @@ public class JettyRequest implements Request {
 	public String getRemoteAddr() {
 
 		return getHeader("X-FORWARDED-FOR").orElse(null);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getSessionContext()
-	 */
-	@Override
-	public SessionContext getSessionContext() {
-
-		return my(SessionManager.class).getSessionContext(this.sessionId);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getSourceRequest()
-	 */
-	@Override
-	public Object getSourceRequest() {
-
-		return this.context;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getTransaction()
-	 */
-	@Override
-	public Transaction getTransaction() {
-
-		return this.transaction;
 	}
 
 	/*
@@ -303,7 +197,7 @@ public class JettyRequest implements Request {
 	 *
 	 * @return the map
 	 */
-	private Map<String, Object> buidMapParameters() {
+	protected Map<String, Object> buildMapParameters() {
 
 		Map<String, Object> mapParameters = new HashMap<>();
 		if (context instanceof ContainerRequest) {
@@ -350,7 +244,8 @@ public class JettyRequest implements Request {
 	 *
 	 * @return the string
 	 */
-	private Entity buildEntity() {
+	@Override
+	protected Entity buildEntity() {
 
 		try {
 
@@ -365,41 +260,6 @@ public class JettyRequest implements Request {
 			log.error("No content on  body request", e);
 		}
 		return Entity.empty();
-	}
-
-	/**
-	 * Builds the session id.
-	 *
-	 * @return the string
-	 */
-	private String buildSessionId() {
-
-		String sessionId = getCookie(JettyServer.SESSION_ID_KEY);
-		if (StringUtils.isEmpty(sessionId) || !my(SessionManager.class).renew(sessionId)) {
-
-			SessionContext session = my(SessionManager.class).nextSessionContext();
-			sessionId = session.getSessionId();
-		}
-
-		return sessionId;
-	}
-
-	/**
-	 * Builds the transaction.
-	 *
-	 * @return the transaction
-	 */
-	private Transaction buildTransaction() {
-
-		String tid = context.getHeaderString(HD_TID);
-		Optional<Transaction> transaction = my(TransactionManager.class).getTransaction(tid);
-
-		if (transaction.isPresent()) {
-
-			return transaction.get();
-		}
-
-		return my(TransactionManager.class).registryTransaction();
 	}
 
 	private boolean isType(ContainerRequest request, MediaType mediaType) {

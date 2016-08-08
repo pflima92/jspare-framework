@@ -15,34 +15,21 @@
  */
 package org.jspare.server.jetty;
 
-import static org.jspare.core.commons.Definitions.DEFAULT_CHARSET;
 import static org.jspare.core.container.Environment.factory;
-import static org.jspare.core.container.Environment.my;
 
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
-import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.lang.StringUtils;
-import org.jspare.core.collections.MultiValueHashMap;
-import org.jspare.core.collections.MultiValueMap;
-import org.jspare.core.serializer.Json;
 import org.jspare.server.Request;
 import org.jspare.server.Response;
-import org.jspare.server.exception.NoSuchCallerException;
 import org.jspare.server.exception.RenderableException;
 import org.jspare.server.jetty.http.HttpMediaType;
-import org.jspare.server.session.SessionContext;
 import org.jspare.server.transaction.Transaction;
-import org.jspare.server.transport.CacheControl;
+import org.jspare.server.transport.DefaultResponse;
 import org.jspare.server.transport.Media;
 import org.jspare.server.transport.Renderable;
 import org.jspare.server.transport.Status;
@@ -56,25 +43,7 @@ import lombok.Setter;
  * @author pflima
  * @since 30/03/2016
  */
-public class JettyResponse implements Response {
-
-	/** The Constant MEDIA_TYPE_SEPARATOR. */
-	private static final String MEDIA_TYPE_SEPARATOR = ";";
-
-	/** The status. */
-	private Status status;
-
-	/** The entity. */
-	private Object entity;
-
-	/** The cache control. */
-	private CacheControl cacheControl;
-
-	/** The closed. */
-	private boolean closed;
-
-	/** The request. */
-	private Request request;
+public class JettyResponse extends DefaultResponse {
 
 	/** The response builder. */
 	private ResponseBuilder responseBuilder;
@@ -85,21 +54,8 @@ public class JettyResponse implements Response {
 	 * @param media
 	 *            the new media
 	 */
-
-	/**
-	 * Sets the media.
-	 *
-	 * @param media
-	 *            the new media
-	 */
 	@Setter
-	private Media[] media = { HttpMediaType.ALL };
-
-	/**
-	 * Gets the http response.
-	 *
-	 * @return the http response
-	 */
+	protected Media[] media = { HttpMediaType.ALL };
 
 	/**
 	 * Gets the http response.
@@ -108,21 +64,6 @@ public class JettyResponse implements Response {
 	 */
 	@Getter
 	private javax.ws.rs.core.Response httpResponse;
-
-	/** The transaction. */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#getTransaction()
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#getTransaction()
-	 */
-	@Getter
-	private Transaction transaction;
 
 	/**
 	 * Instantiates a new jetty response.
@@ -133,10 +74,8 @@ public class JettyResponse implements Response {
 	 *            the response builder
 	 */
 	public JettyResponse(Request request, ResponseBuilder responseBuilder) {
-		this.request = request;
+		super(request);
 		this.responseBuilder = responseBuilder;
-		this.transaction = request.getTransaction();
-		this.addCookie(JettyServer.SESSION_ID_KEY, request.getSessionContext().getSessionId());
 	}
 
 	/**
@@ -146,6 +85,7 @@ public class JettyResponse implements Response {
 	 *            the response builder
 	 */
 	public JettyResponse(ResponseBuilder responseBuilder) {
+		super(null);
 		this.responseBuilder = responseBuilder;
 		this.transaction = factory(Transaction.class);
 	}
@@ -164,32 +104,11 @@ public class JettyResponse implements Response {
 		return this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#cache(org.jspare.server.CacheControl)
-	 */
 	@Override
-	public Response cache(CacheControl cacheControl) {
+	public Response addHeader(String name, String value) {
 
-		this.cacheControl = cacheControl;
+		this.responseBuilder.header(name, value);
 		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	public Object clone() {
-		try {
-
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-
-			return null;
-		}
 	}
 
 	/*
@@ -239,49 +158,6 @@ public class JettyResponse implements Response {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.jspare.server.Response#entity(byte[])
-	 */
-	@Override
-	public Response entity(byte[] entity) {
-
-		this.entity = entity;
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#entity(java.io.InputStream)
-	 */
-	@Override
-	public Response entity(InputStream entity) {
-
-		this.entity = entity;
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#entity(java.lang.Object)
-	 */
-	@Override
-	public Response entity(Object object) {
-
-		try {
-
-			String content = my(Json.class).toJSON(object);
-			this.entity(content);
-		} catch (Exception e) {
-
-			status(Status.INTERNAL_SERVER_ERROR).end();
-		}
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
 	 * @see org.jspare.server.Response#entity(org.jspare.server.Renderable)
 	 */
 	@Override
@@ -298,125 +174,5 @@ public class JettyResponse implements Response {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#entity(java.lang.String)
-	 */
-	@Override
-	public Response entity(String entity) {
-
-		this.entity = entity;
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#getEntity()
-	 */
-	@Override
-	public Object getEntity() {
-
-		if (entity instanceof byte[]) {
-
-			return new String((byte[]) entity, DEFAULT_CHARSET);
-		}
-		return entity;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#getHeaders()
-	 */
-	@Override
-	public MultiValueMap<String, Object> getHeaders() {
-
-		MultiValueMap<String, Object> mVmap = new MultiValueHashMap<>();
-		((ContainerRequestContext) request.getSourceRequest()).getHeaders().entrySet().forEach(es -> {
-
-			mVmap.put(es.getKey(), es.getValue().stream().collect(Collectors.toList()));
-		});
-
-		return mVmap;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#getLanguage()
-	 */
-	@Override
-	public Locale getLanguage() {
-
-		return this.request.getLocale();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#getSessionContext()
-	 */
-	@Override
-	public SessionContext getSessionContext() {
-
-		return request.getSessionContext();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#media(org.jspare.server.Media[])
-	 */
-	@Override
-	public Response media(Media... medias) {
-
-		this.media = medias;
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#status(org.jspare.server.Status)
-	 */
-	@Override
-	public Response status(Status status) {
-
-		this.status = status;
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Response#yeld()
-	 */
-	@Override
-	public void yield() {
-
-		this.status = Status.YIELD;
-		end();
-
-		try {
-
-			request.getTransaction().getExecutor().notifyFinish(this);
-		} catch (NoSuchCallerException e) {
-
-			status(Status.INTERNAL_SERVER_ERROR).end();
-		}
-	}
-
-	/**
-	 * Resolve media type.
-	 *
-	 * @return the string
-	 */
-	private String resolveMediaType() {
-
-		List<String> mediaTypes = Arrays.asList(media).stream().map(Media::getValue).collect(Collectors.toList());
-		StringBuilder builerMediaType = new StringBuilder(StringUtils.join(mediaTypes, MEDIA_TYPE_SEPARATOR));
-		return builerMediaType.toString();
-	}
+	
 }

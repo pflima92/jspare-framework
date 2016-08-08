@@ -72,6 +72,7 @@ import org.jspare.server.transaction.TransactionStatus;
 import org.jspare.server.transaction.model.Yield;
 import org.jspare.server.transport.Status;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -199,7 +200,7 @@ public class JettyServer implements Server {
 
 							JettyResponse result = ((JettyResponse) request.getTransaction().getExecutor().consumeResponse());
 
-							// XXX Check this procedure, is not clear.
+							//Use result of yield if has returned or use response defined on transaction
 							return result != null ? result.getHttpResponse() : response.getHttpResponse();
 						}
 
@@ -262,9 +263,6 @@ public class JettyServer implements Server {
 	/** The Constant DEFAULT_ADDRESS. */
 	private final static String DEFAULT_ADDRESS = "127.0.0.1";
 
-	/** The Constant SESSION_ID_KEY. */
-	protected final static String SESSION_ID_KEY = "jsid";
-
 	/** The Constant HTTP. */
 	private final static String HTTP = "http";
 
@@ -278,6 +276,7 @@ public class JettyServer implements Server {
 	private Set<Resource> resources = new HashSet<Resource>();
 
 	/** The name. */
+	@Getter
 	private String name;
 
 	/** The port. */
@@ -291,6 +290,7 @@ public class JettyServer implements Server {
 
 	/** The router. */
 	@Inject
+	@Getter
 	private Router router;
 
 	/**
@@ -311,28 +311,6 @@ public class JettyServer implements Server {
 
 		this.useCertificates = use;
 		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Server#getName()
-	 */
-	@Override
-	public String getName() {
-
-		return this.name;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Server#getRouter()
-	 */
-	@Override
-	public Router getRouter() {
-
-		return this.router;
 	}
 
 	/*
