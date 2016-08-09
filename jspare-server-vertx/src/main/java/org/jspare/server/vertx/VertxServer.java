@@ -137,8 +137,9 @@ public class VertxServer implements Server {
 		httpServerOptions.setReuseAddress(true);
 		if (useCertificates) {
 
-			httpServerOptions.setSsl(true).setKeyStoreOptions(new JksOptions().setPath(CONFIG.get(CERTIFICATE_KEYSTORE_KEY, CERTIFICATE_KEYSTORE_PATH))
-					.setPassword(CONFIG.get(CERTIFICATE_KEYSTORE_PASSWORD_KEY, CERTIFICATE_KEYSTORE_PASSWORD)));
+			httpServerOptions.setSsl(true)
+					.setKeyStoreOptions(new JksOptions().setPath(CONFIG.get(CERTIFICATE_KEYSTORE_KEY, CERTIFICATE_KEYSTORE_PATH))
+							.setPassword(CONFIG.get(CERTIFICATE_KEYSTORE_PASSWORD_KEY, CERTIFICATE_KEYSTORE_PASSWORD)));
 		}
 		serverEngine = vertx.createHttpServer(httpServerOptions);
 	}
@@ -171,7 +172,8 @@ public class VertxServer implements Server {
 		router.getMappings().forEach(m -> ResourceWrapper.handle(resourceConfig, m));
 
 		log.info("Mapping resources");
-		router.getResources().forEach(res -> resourceConfig.route().handler((Handler<RoutingContext>) my(ResourceFactory.class).create(res)));
+		router.getResources()
+				.forEach(res -> resourceConfig.route().handler((Handler<RoutingContext>) my(ResourceFactory.class).create(res)));
 
 		log.info("Mapping routes done");
 	}
@@ -186,13 +188,13 @@ public class VertxServer implements Server {
 				public void handle(RoutingContext context) {
 
 					VertxRequest request = new VertxRequest(context);
-					VertxResponse response = new VertxResponse(request);
+					VertxResponse response = new VertxResponse(request, context);
 
 					log.debug("Receive request for command [{}] alias [{}] - tid [{}]", cmd.getMethod().getName(), cmd.getCommand(),
 							request.getTransaction().getId());
-					
+
 					try {
-						
+
 						if (request.getTransaction().getStatus().is(TransactionStatus.YIELD)) {
 
 							if (request.getEntity().hasValue() && !StringUtils.isEmpty(request.getEntity().asString())) {
@@ -203,28 +205,28 @@ public class VertxServer implements Server {
 
 							request.getTransaction().getExecutor().setCaller(this);
 							request.getTransaction().getExecutor().resume();
-							
+
 							VertxResponse result = ((VertxResponse) request.getTransaction().getExecutor().consumeResponse());
 							if (result != null) {
-								
+
 								result.end();
 								return;
 							}
 							response.end();
 						}
-						
+
 						request.getTransaction().getExecutor().setCaller(this);
 						request.getTransaction().getExecutor().doIt(cmd, request, response);
 
 						log.info("Response for command [{}] - tid [{}] - duration [{}ms]", cmd.getCommand(),
 								request.getTransaction().getId(), Duration.between(request.getTransaction().getStartDateTime(),
 										request.getTransaction().getLastChangeDateTime()).toMillis());
-						
+
 					} catch (InterruptedException e) {
-						
+
 						response.entity(e).status(Status.INTERNAL_SERVER_ERROR).end();
 					}
-					
+
 					((VertxResponse) request.getTransaction().getExecutor().consumeResponse()).end();
 				}
 			});
