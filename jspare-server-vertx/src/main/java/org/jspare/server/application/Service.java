@@ -18,7 +18,7 @@ package org.jspare.server.application;
 import static org.jspare.core.container.Environment.my;
 
 import org.jspare.core.container.Application;
-import org.jspare.core.container.ApplicationBuilder;
+import org.jspare.core.container.EnvironmentBuilder;
 import org.jspare.core.exception.InfraException;
 import org.jspare.server.Server;
 import org.jspare.server.vertx.bundle.VertxServerBundle;
@@ -34,7 +34,7 @@ public abstract class Service extends Application {
 	@Override
 	protected void load() {
 
-		builder(ApplicationBuilder.create().addBundle(VertxServerBundle.class));
+		builder(EnvironmentBuilder.create().addBundle(VertxServerBundle.class));
 	}
 
 	@Override

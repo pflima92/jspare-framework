@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /** The Constant log. */
 @Slf4j
-public class ApplicationBuilder implements Builder {
+public class EnvironmentBuilder implements Builder {
 
 	/** The bundles. */
 	private List<Class<? extends Bundle>> bundles;
@@ -41,7 +41,7 @@ public class ApplicationBuilder implements Builder {
 	/**
 	 * Instantiates a new application builder.
 	 */
-	public ApplicationBuilder() {
+	public EnvironmentBuilder() {
 
 		bundles = new ArrayList<>();
 		clazzComponents = new ArrayList<>();
@@ -53,9 +53,9 @@ public class ApplicationBuilder implements Builder {
 	 *
 	 * @return the application builder
 	 */
-	public static ApplicationBuilder create() {
+	public static EnvironmentBuilder create() {
 
-		return new ApplicationBuilder();
+		return new EnvironmentBuilder();
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class ApplicationBuilder implements Builder {
 	 *            the bundle clazz
 	 * @return the application builder
 	 */
-	public ApplicationBuilder addBundle(Class<? extends Bundle> bundleClazz) {
+	public EnvironmentBuilder addBundle(Class<? extends Bundle> bundleClazz) {
 
 		bundles.add(bundleClazz);
 		return this;
@@ -109,7 +109,7 @@ public class ApplicationBuilder implements Builder {
 	 *            the value
 	 * @return the application builder
 	 */
-	public ApplicationBuilder putConfig(String key, String value) {
+	public EnvironmentBuilder putConfig(String key, String value) {
 		CONFIG.put(key, value, true);
 		return this;
 	}
@@ -121,7 +121,7 @@ public class ApplicationBuilder implements Builder {
 	 *            the package2scan
 	 * @return the application builder
 	 */
-	public ApplicationBuilder scan(String package2scan) {
+	public EnvironmentBuilder scan(String package2scan) {
 
 		String packageFormated = package2scan.endsWith(".*") ? package2scan : String.format("%s.*", package2scan);
 		declaredComponents.add(packageFormated);
@@ -135,7 +135,7 @@ public class ApplicationBuilder implements Builder {
 	 *            the clazz
 	 * @return the application builder
 	 */
-	public ApplicationBuilder registryComponent(String clazz) {
+	public EnvironmentBuilder registryComponent(String clazz) {
 
 		declaredComponents.add(clazz);
 		return this;
@@ -148,7 +148,7 @@ public class ApplicationBuilder implements Builder {
 	 *            the clazz
 	 * @return the application builder
 	 */
-	public ApplicationBuilder registryComponent(Class<?> clazz) {
+	public EnvironmentBuilder registryComponent(Class<?> clazz) {
 
 		clazzComponents.add(clazz);
 		return this;

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jspare.core.container.ApplicationBuilder;
+import org.jspare.core.container.EnvironmentBuilder;
 import org.jspare.core.exception.NotImplementedException;
 import org.jspare.core.scanner.ComponentScanner;
 import org.jspare.server.Server;
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /** The Constant log. */
 @Slf4j
-public final class ApplicationServerBuilder extends ApplicationBuilder {
+public final class ApplicationServerBuilder extends EnvironmentBuilder {
 
 	/**
 	 * Creates the.
@@ -156,7 +156,7 @@ public final class ApplicationServerBuilder extends ApplicationBuilder {
 	 *            the clazz controllers
 	 * @return the application builder
 	 */
-	public ApplicationBuilder controllers(Class<?>... clazzControllers) {
+	public EnvironmentBuilder controllers(Class<?>... clazzControllers) {
 
 		Arrays.asList(clazzControllers).forEach(clazz -> controllers.add(clazz.getCanonicalName()));
 		return this;
@@ -169,7 +169,7 @@ public final class ApplicationServerBuilder extends ApplicationBuilder {
 	 *            the opt controllers
 	 * @return the application builder
 	 */
-	public ApplicationBuilder controllers(String... optControllers) {
+	public EnvironmentBuilder controllers(String... optControllers) {
 
 		controllers.addAll(Arrays.asList(optControllers));
 		return this;

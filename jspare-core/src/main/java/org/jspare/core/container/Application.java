@@ -47,6 +47,9 @@ public abstract class Application {
 
 	protected void load() {
 	}
+	
+	protected void initialize() {
+	}
 
 	/**
 	 * My support.
@@ -65,12 +68,14 @@ public abstract class Application {
 	protected void start() throws InfraException {
 
 		log.info("Starting Application");
-		load();
+		initialize();
 
 		mySupport();
 
 		log.info("Loading Builders");
 		buildAll();
+		
+		load();
 	}
 
 	private void buildAll() {

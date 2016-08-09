@@ -40,8 +40,8 @@ public class ApplicationQualifiedTest extends AbstractApplicationTest {
 	}
 
 	@Override
-	protected ApplicationBuilder toLoad() {
+	protected EnvironmentBuilder toLoad() {
 
-		return new ApplicationBuilder().registryComponent(QualifiedOne.class).registryComponent(QualifiedTwo.class);
+		return new EnvironmentBuilder().registryComponent(QualifiedOne.class).registryComponent(QualifiedTwo.class);
 	}
 }

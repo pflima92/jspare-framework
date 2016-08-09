@@ -15,7 +15,7 @@
  */
 package org.jspare.web.application;
 
-import org.jspare.core.container.ApplicationBuilder;
+import org.jspare.core.container.EnvironmentBuilder;
 import org.jspare.server.application.Service;
 import org.jspare.ui.jtwig.JtwigBundle;
 
@@ -32,6 +32,6 @@ public abstract class ApplicationMvc extends Service {
 
 		super.load();
 
-		builder(ApplicationBuilder.create().addBundle(JtwigBundle.class));
+		builder(EnvironmentBuilder.create().addBundle(JtwigBundle.class));
 	}
 }

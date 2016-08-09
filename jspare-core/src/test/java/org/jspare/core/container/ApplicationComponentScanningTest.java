@@ -40,9 +40,9 @@ public class ApplicationComponentScanningTest extends AbstractApplicationTest {
 	}
 
 	@Override
-	protected ApplicationBuilder toLoad() {
+	protected EnvironmentBuilder toLoad() {
 
-		return ApplicationBuilder.create().scan("org.jspare.core.container.test.application");
+		return EnvironmentBuilder.create().scan("org.jspare.core.container.test.application");
 	}
 
 }

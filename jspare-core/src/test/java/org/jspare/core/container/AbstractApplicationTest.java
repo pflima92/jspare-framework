@@ -27,7 +27,7 @@ public abstract class AbstractApplicationTest {
 		new BootstrapUnitTest().start();
 	}
 
-	protected abstract ApplicationBuilder toLoad();
+	protected abstract EnvironmentBuilder toLoad();
 
 	class BootstrapUnitTest extends Application {
 
