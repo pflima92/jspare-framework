@@ -19,7 +19,7 @@
 	</issueManagement>
 
 	<modules>
-		<module>app-web-mvc</module>
-		<module>app-sample-svc</module>
+		<module>jspare-samples-mvc</module>
+		<module>jspare-samples-svc</module>
 	</modules>
 </project>

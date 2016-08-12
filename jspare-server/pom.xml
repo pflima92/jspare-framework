@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
-		<groupId>org.jspare</groupId>
-		<artifactId>jspare-parent</artifactId>
+		<groupId>org.jspare.framework</groupId>
+		<artifactId>jspare-framework-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
@@ -13,12 +13,6 @@
 	<artifactId>jspare-server</artifactId>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>org.jspare</groupId>
-			<artifactId>jspare-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
 
 		<dependency>
 			<groupId>javax.validation</groupId>

@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jspare</groupId>
-	<artifactId>jspare-parent</artifactId>
+	<groupId>org.jspare.framework</groupId>
+	<artifactId>jspare-framework-parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -14,11 +14,10 @@
 		<url>http://jspare.org/framework</url>
 	</organization>
 	<issueManagement>
-		<url>https://github.com/jspare-framework/framework/issues</url>
+		<url>https://github.com/jspare-projects/jspare-framework/issues</url>
 	</issueManagement>
 
 	<modules>
-		<module>jspare-core</module>
 		<module>jspare-server</module>
 		<module>jspare-server-jetty</module>
 		<module>jspare-server-vertx</module>
@@ -40,6 +39,7 @@
 		<lombok.version>1.16.8</lombok.version>
 		<logback.version>1.1.6</logback.version>
 		<junit.version>4.12</junit.version>
+		<container.version>1.0.0-SNAPSHOT</container.version>
 	</properties>
 
 	<build>
@@ -184,6 +184,13 @@
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		
+		<!-- JSpare Container -->
+		<dependency>
+			<groupId>org.jspare</groupId>
+			<artifactId>jspare-core</artifactId>
+			<version>${container.version}</version>
 		</dependency>
 
 		<!-- Logger Impl -->

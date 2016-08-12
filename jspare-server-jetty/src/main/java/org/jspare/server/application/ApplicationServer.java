@@ -34,18 +34,22 @@ import org.jspare.server.jetty.handler.PublicResourceHandler;
 public abstract class ApplicationServer extends Application {
 
 	@Override
-	protected void load() {
+	protected void initialize() {
 
 		builder(EnvironmentBuilder.create().addBundle(JettyServerBundle.class));
 		builder(ApplicationServerBuilder.create(this).resourceHandlers(PublicResourceHandler.class));
 	}
 
 	@Override
+	protected void load() {
+
+		getServer().start();
+	}
+
+	@Override
 	protected void start() throws InfraException {
 
 		super.start();
-
-		getServer().start();
 	}
 
 	protected Server getServer() {
