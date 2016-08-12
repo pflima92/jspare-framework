@@ -16,7 +16,7 @@
 package org.jspare.web.application;
 
 import org.jspare.core.container.EnvironmentBuilder;
-import org.jspare.server.application.Service;
+import org.jspare.server.application.ApplicationServer;
 import org.jspare.ui.jtwig.JtwigBundle;
 
 /**
@@ -25,7 +25,7 @@ import org.jspare.ui.jtwig.JtwigBundle;
  * @author pflima
  * @since 10/05/2016
  */
-public abstract class ApplicationMvc extends Service {
+public abstract class ApplicationMvc extends ApplicationServer {
 
 	@Override
 	protected void load() {

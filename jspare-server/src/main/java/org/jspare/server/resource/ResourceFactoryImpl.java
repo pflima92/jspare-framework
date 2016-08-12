@@ -22,15 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ResourceFactoryImpl implements ResourceFactory {
 
-	@Override
-	public <T> T create(Resource<T> resource) {
-
-		return resource.generate();
-	}
-
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.resource.ResourceFactory#create(java.lang.Class)
 	 */
 	@Override
@@ -45,5 +39,11 @@ public class ResourceFactoryImpl implements ResourceFactory {
 			log.error("Error on create resource factory", e);
 			throw new InfraRuntimeException(e);
 		}
+	}
+
+	@Override
+	public <T> T create(Resource<T> resource) {
+
+		return resource.generate();
 	}
 }

@@ -18,9 +18,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 public abstract class DefaultRequest implements Request {
-	
+
 	protected Object context;
-	
+
 	@Getter
 	@Setter
 	protected Controller controller;
@@ -44,7 +44,7 @@ public abstract class DefaultRequest implements Request {
 	/** The entity. */
 	@Getter
 	protected Entity entity;
-	
+
 	/**
 	 * Instantiates a new jetty request.
 	 *
@@ -58,22 +58,7 @@ public abstract class DefaultRequest implements Request {
 		this.transaction = buildTransaction();
 		this.sessionId = buildSessionId();
 	}
-	
-	protected abstract Entity buildEntity();
 
-	protected abstract Map<String, Object> buildMapParameters();
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.jspare.server.Request#getSessionContext()
-	 */
-	@Override
-	public SessionContext getSessionContext() {
-
-		return my(SessionManager.class).getSessionContext(this.sessionId);
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 *
@@ -85,7 +70,22 @@ public abstract class DefaultRequest implements Request {
 
 		return (T) parameters.get(key);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.jspare.server.Request#getSessionContext()
+	 */
+	@Override
+	public SessionContext getSessionContext() {
+
+		return my(SessionManager.class).getSessionContext(this.sessionId);
+	}
+
+	protected abstract Entity buildEntity();
+
+	protected abstract Map<String, Object> buildMapParameters();
+
 	/**
 	 * Builds the session id.
 	 *

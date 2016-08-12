@@ -23,7 +23,7 @@ public interface Base64 {
 
 	<T> T fromBase64(String data) throws SerializationException;
 
-	String toBase64(Object instance) throws SerializationException;
-
 	String toBase64(byte[] bytes) throws SerializationException;
+
+	String toBase64(Object instance) throws SerializationException;
 }

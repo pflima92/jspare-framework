@@ -29,7 +29,7 @@ public class JtwigBundle implements Bundle {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.core.container.Bundle#registryComponents()
 	 */
 	@Override

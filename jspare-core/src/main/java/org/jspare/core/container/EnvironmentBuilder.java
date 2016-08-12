@@ -29,6 +29,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EnvironmentBuilder implements Builder {
 
+	/**
+	 * Creates the.
+	 *
+	 * @return the application builder
+	 */
+	public static EnvironmentBuilder create() {
+
+		return new EnvironmentBuilder();
+	}
+
 	/** The bundles. */
 	private List<Class<? extends Bundle>> bundles;
 
@@ -46,16 +56,6 @@ public class EnvironmentBuilder implements Builder {
 		bundles = new ArrayList<>();
 		clazzComponents = new ArrayList<>();
 		declaredComponents = new ArrayList<>();
-	}
-
-	/**
-	 * Creates the.
-	 *
-	 * @return the application builder
-	 */
-	public static EnvironmentBuilder create() {
-
-		return new EnvironmentBuilder();
 	}
 
 	/**
@@ -115,16 +115,15 @@ public class EnvironmentBuilder implements Builder {
 	}
 
 	/**
-	 * Scan one class or package for add to environment of container.
+	 * Registry component.
 	 *
-	 * @param package2scan
-	 *            the package2scan
+	 * @param clazz
+	 *            the clazz
 	 * @return the application builder
 	 */
-	public EnvironmentBuilder scan(String package2scan) {
+	public EnvironmentBuilder registryComponent(Class<?> clazz) {
 
-		String packageFormated = package2scan.endsWith(".*") ? package2scan : String.format("%s.*", package2scan);
-		declaredComponents.add(packageFormated);
+		clazzComponents.add(clazz);
 		return this;
 	}
 
@@ -142,15 +141,16 @@ public class EnvironmentBuilder implements Builder {
 	}
 
 	/**
-	 * Registry component.
+	 * Scan one class or package for add to environment of container.
 	 *
-	 * @param clazz
-	 *            the clazz
+	 * @param package2scan
+	 *            the package2scan
 	 * @return the application builder
 	 */
-	public EnvironmentBuilder registryComponent(Class<?> clazz) {
+	public EnvironmentBuilder scan(String package2scan) {
 
-		clazzComponents.add(clazz);
+		String packageFormated = package2scan.endsWith(".*") ? package2scan : String.format("%s.*", package2scan);
+		declaredComponents.add(packageFormated);
 		return this;
 	}
 }

@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public abstract class DefaultResponse implements Response {
-	
+
 	/** The Constant MEDIA_TYPE_SEPARATOR. */
 	protected static final String MEDIA_TYPE_SEPARATOR = ";";
 
@@ -40,7 +40,7 @@ public abstract class DefaultResponse implements Response {
 
 	/** The request. */
 	protected Request request;
-	
+
 	/**
 	 * Sets the media.
 	 *
@@ -49,17 +49,17 @@ public abstract class DefaultResponse implements Response {
 	 */
 	@Setter
 	protected Media[] media;
-	
+
 	/** The transaction. */
 	@Getter
 	protected Transaction transaction;
-	
+
 	public DefaultResponse(Request request) {
 		this.request = request;
 		this.transaction = request.getTransaction();
 		this.addCookie(SessionManager.SESSION_ID_KEY, request.getSessionContext().getSessionId());
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -71,7 +71,23 @@ public abstract class DefaultResponse implements Response {
 		this.cacheControl = cacheControl;
 		return this;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() {
+		try {
+
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+
+			return null;
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -114,7 +130,7 @@ public abstract class DefaultResponse implements Response {
 		}
 		return this;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -141,7 +157,7 @@ public abstract class DefaultResponse implements Response {
 		}
 		return entity;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -218,21 +234,5 @@ public abstract class DefaultResponse implements Response {
 		List<String> mediaTypes = Arrays.asList(media).stream().map(Media::getValue).collect(Collectors.toList());
 		StringBuilder builerMediaType = new StringBuilder(StringUtils.join(mediaTypes, MEDIA_TYPE_SEPARATOR));
 		return builerMediaType.toString();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	public Object clone() {
-		try {
-
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-
-			return null;
-		}
 	}
 }

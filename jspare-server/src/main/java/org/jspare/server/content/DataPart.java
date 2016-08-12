@@ -20,7 +20,7 @@ import lombok.Data;
 
 /*
  * (non-Javadoc)
- * 
+ *
  * @see java.lang.Object#toString()
  */
 @Data

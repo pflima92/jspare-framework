@@ -47,6 +47,12 @@ public class Base64Impl implements org.jspare.core.serializer.Base64 {
 	}
 
 	@Override
+	public String toBase64(byte[] bytes) throws SerializationException {
+
+		return Base64.getEncoder().encodeToString(bytes);
+	}
+
+	@Override
 	public String toBase64(Object instance) throws SerializationException {
 
 		try {
@@ -61,12 +67,6 @@ public class Base64Impl implements org.jspare.core.serializer.Base64 {
 
 			throw new SerializationException(e);
 		}
-	}
-
-	@Override
-	public String toBase64(byte[] bytes) throws SerializationException {
-
-		return Base64.getEncoder().encodeToString(bytes);
 	}
 
 }

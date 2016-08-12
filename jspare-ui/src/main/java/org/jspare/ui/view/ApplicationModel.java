@@ -65,20 +65,6 @@ public class ApplicationModel {
 	}
 
 	/**
-	 * Gets the path.
-	 *
-	 * @return the path
-	 */
-	private String getPath() {
-		String path = request.getBasePath();
-		if (!path.endsWith(SEPARATOR)) {
-
-			path += SEPARATOR;
-		}
-		return path;
-	}
-
-	/**
 	 * Command.
 	 *
 	 * @param name
@@ -124,6 +110,20 @@ public class ApplicationModel {
 	public String style(String src) {
 
 		return asset(CONFIG.get(STYLES_ROOT_FOLDER_KEY, STYLES_ROOT_FOLDER)) + src;
+	}
+
+	/**
+	 * Gets the path.
+	 *
+	 * @return the path
+	 */
+	private String getPath() {
+		String path = request.getBasePath();
+		if (!path.endsWith(SEPARATOR)) {
+
+			path += SEPARATOR;
+		}
+		return path;
 	}
 
 }

@@ -31,6 +31,9 @@ import com.google.gson.TypeAdapterFactory;
 
 public class JsonImpl implements Json {
 
+	/** The builder. */
+	private static GsonBuilder builder = new GsonBuilder();
+
 	public JsonImpl() {
 
 		try {
@@ -43,9 +46,6 @@ public class JsonImpl implements Json {
 			throw new InfraRuntimeException(e);
 		}
 	}
-
-	/** The builder. */
-	private static GsonBuilder builder = new GsonBuilder();
 
 	@Override
 	public <T> T fromJSON(Object jsonObject, Class<T> clazz) throws SerializationException {

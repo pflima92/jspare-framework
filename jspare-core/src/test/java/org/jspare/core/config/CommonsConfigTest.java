@@ -24,10 +24,10 @@ import org.junit.Test;
 public class CommonsConfigTest {
 
 	@Test
-	public void loadAndGetConfigFromComponentTest() {
+	public void defaultValueTest() {
 
-		CommonsConfig config = my(CommonsConfig.class);
-		assertEnv(config);
+		String value = CONFIG.get("version", "1.0.0");
+		assertEquals("1.0.0", value);
 	}
 
 	@Test
@@ -37,10 +37,10 @@ public class CommonsConfigTest {
 	}
 
 	@Test
-	public void defaultValueTest() {
+	public void loadAndGetConfigFromComponentTest() {
 
-		String value = CONFIG.get("version", "1.0.0");
-		assertEquals("1.0.0", value);
+		CommonsConfig config = my(CommonsConfig.class);
+		assertEnv(config);
 	}
 
 	@Test

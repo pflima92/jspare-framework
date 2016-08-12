@@ -31,7 +31,7 @@ public class ViewContextImpl implements ViewContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.ViewContext#add(java.util.Map)
 	 */
 	@Override
@@ -42,7 +42,7 @@ public class ViewContextImpl implements ViewContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.ViewContext#add(java.lang.String,
 	 * java.lang.Object)
 	 */
@@ -54,7 +54,7 @@ public class ViewContextImpl implements ViewContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.ViewContext#get(java.lang.String)
 	 */
 	@Override
@@ -64,7 +64,7 @@ public class ViewContextImpl implements ViewContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.ViewContext#remove(java.lang.String)
 	 */
 	@Override
@@ -75,7 +75,7 @@ public class ViewContextImpl implements ViewContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.ViewContext#values()
 	 */
 	@Override

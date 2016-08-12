@@ -128,6 +128,13 @@ public interface Router {
 	List<CommandData> getMappings();
 
 	/**
+	 * Gets the resource handlers.
+	 *
+	 * @return the resource handlers
+	 */
+	List<ResourceHandler> getResourceHandlers();
+
+	/**
 	 * @return
 	 */
 	List<Resource<?>> getResources();
@@ -136,13 +143,6 @@ public interface Router {
 	 * @return
 	 */
 	List<Class<? extends Resource<?>>> getResourcesClazz();
-
-	/**
-	 * Gets the resource handlers.
-	 *
-	 * @return the resource handlers
-	 */
-	List<ResourceHandler> getResourceHandlers();
 
 	/**
 	 * Checks if is valid command.

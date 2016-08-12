@@ -31,7 +31,7 @@ import org.jspare.server.jetty.handler.PublicResourceHandler;
  * @author pflima
  * @since 10/05/2016
  */
-public abstract class Service extends Application {
+public abstract class ApplicationServer extends Application {
 
 	@Override
 	protected void load() {

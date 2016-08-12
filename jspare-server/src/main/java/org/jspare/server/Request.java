@@ -56,6 +56,13 @@ public interface Request {
 	String getCommandAlias();
 
 	/**
+	 * Gets the source request.
+	 *
+	 * @return the source request
+	 */
+	Object getContext();
+
+	/**
 	 * Gets the controller when the super class is child of {@link #org
 	 * .jspare.server.controller.Controller}
 	 *
@@ -71,13 +78,6 @@ public interface Request {
 	 * @return the client resource
 	 */
 	String getCookie(String name);
-	
-	/**
-	 * Gets the source request.
-	 *
-	 * @return the source request
-	 */
-	Object getContext();
 
 	/**
 	 * Gets the entity.

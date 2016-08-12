@@ -72,7 +72,7 @@ public class ViewImpl extends MySupport implements View {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.View#add(java.util.Map)
 	 */
 	@Override
@@ -83,7 +83,7 @@ public class ViewImpl extends MySupport implements View {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.View#add(java.lang.String, java.lang.Object)
 	 */
 	@Override
@@ -94,7 +94,7 @@ public class ViewImpl extends MySupport implements View {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.View#content(java.lang.String)
 	 */
 	@Override
@@ -105,7 +105,7 @@ public class ViewImpl extends MySupport implements View {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.View#remove(java.lang.String)
 	 */
 	@Override
@@ -116,7 +116,7 @@ public class ViewImpl extends MySupport implements View {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.server.Renderable#render(org.jspare.server.Request)
 	 */
 	@Override
@@ -147,7 +147,7 @@ public class ViewImpl extends MySupport implements View {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.ui.view.View#route(java.lang.String)
 	 */
 	@Override

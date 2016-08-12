@@ -38,6 +38,38 @@ import lombok.Data;
  */
 public class ToolkitJtwigTest extends MySupport {
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+	@Data
+
+	/**
+	 * Instantiates a new model.
+	 *
+	 * @param name
+	 *            the name
+	 */
+	@AllArgsConstructor
+	public class Model {
+
+		/** The name. */
+		private String name;
+
+		/**
+		 * Gets the custom name.
+		 *
+		 * @param prefix
+		 *            the prefix
+		 * @return the custom name
+		 */
+		public String getCustomName(String prefix) {
+
+			return prefix + " " + name;
+		}
+	}
+
 	/**
 	 * Pre setup.
 	 */
@@ -109,26 +141,6 @@ public class ToolkitJtwigTest extends MySupport {
 	}
 
 	/**
-	 * Import test.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void importTest() throws Exception {
-
-		String resource = "import";
-
-		Map<String, Object> values = new HashMap<>();
-		values.put("name", "jspare");
-		values.put("footer", "powered-by-jtwig");
-
-		Template template = uiTookit.loadTemplate(resource);
-		String output = template.apply(values);
-		Assert.assertEquals("<p>jspare<b>powered-by-jtwig</b></p>", output);
-	}
-
-	/**
 	 * Functions test.
 	 *
 	 * @throws Exception
@@ -147,36 +159,24 @@ public class ToolkitJtwigTest extends MySupport {
 		Assert.assertEquals("teste-prefix teste", output);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Data
-
 	/**
-	 * Instantiates a new model.
+	 * Import test.
 	 *
-	 * @param name
-	 *            the name
+	 * @throws Exception
+	 *             the exception
 	 */
-	@AllArgsConstructor
-	public class Model {
+	@Test
+	public void importTest() throws Exception {
 
-		/** The name. */
-		private String name;
+		String resource = "import";
 
-		/**
-		 * Gets the custom name.
-		 *
-		 * @param prefix
-		 *            the prefix
-		 * @return the custom name
-		 */
-		public String getCustomName(String prefix) {
+		Map<String, Object> values = new HashMap<>();
+		values.put("name", "jspare");
+		values.put("footer", "powered-by-jtwig");
 
-			return prefix + " " + name;
-		}
+		Template template = uiTookit.loadTemplate(resource);
+		String output = template.apply(values);
+		Assert.assertEquals("<p>jspare<b>powered-by-jtwig</b></p>", output);
 	}
 
 }

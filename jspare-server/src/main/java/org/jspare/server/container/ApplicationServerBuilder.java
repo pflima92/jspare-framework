@@ -82,7 +82,7 @@ public final class ApplicationServerBuilder extends EnvironmentBuilder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jspare.core.container.ApplicationBuilder#build()
 	 */
 	@Override

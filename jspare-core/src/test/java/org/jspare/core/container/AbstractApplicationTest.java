@@ -20,15 +20,6 @@ import org.junit.Before;
 
 public abstract class AbstractApplicationTest {
 
-	@Before
-	public void setup() throws InfraException {
-
-		// Simulate static main invocation
-		new BootstrapUnitTest().start();
-	}
-
-	protected abstract EnvironmentBuilder toLoad();
-
 	class BootstrapUnitTest extends Application {
 
 		@Override
@@ -37,4 +28,13 @@ public abstract class AbstractApplicationTest {
 			builder(toLoad());
 		}
 	}
+
+	@Before
+	public void setup() throws InfraException {
+
+		// Simulate static main invocation
+		new BootstrapUnitTest().start();
+	}
+
+	protected abstract EnvironmentBuilder toLoad();
 }

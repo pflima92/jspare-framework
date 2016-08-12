@@ -33,6 +33,11 @@ public abstract class Application {
 		return this;
 	}
 
+	private void buildAll() {
+
+		builders.forEach(b -> b.build());
+	}
+
 	/**
 	 * Exit.
 	 *
@@ -45,10 +50,10 @@ public abstract class Application {
 		System.exit(status);
 	}
 
-	protected void load() {
-	}
-	
 	protected void initialize() {
+	}
+
+	protected void load() {
 	}
 
 	/**
@@ -74,12 +79,7 @@ public abstract class Application {
 
 		log.info("Loading Builders");
 		buildAll();
-		
+
 		load();
-	}
-
-	private void buildAll() {
-
-		builders.forEach(b -> b.build());
 	}
 }

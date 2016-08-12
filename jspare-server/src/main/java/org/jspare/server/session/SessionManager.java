@@ -25,7 +25,7 @@ import org.jspare.core.container.Component;
  */
 @Component
 public interface SessionManager {
-	
+
 	/** The Constant SESSION_ID_KEY. */
 	String SESSION_ID_KEY = "jsid";
 

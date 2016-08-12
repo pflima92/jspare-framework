@@ -137,6 +137,13 @@ public class RouterImpl implements Router {
 		this.resources.add(resource);
 	}
 
+	@Override
+	public void addResourceClazz(Class<? extends Resource<?>> resource) {
+
+		this.resourcesClazz.add(resource);
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -227,6 +234,12 @@ public class RouterImpl implements Router {
 		return this.resources;
 	}
 
+	@Override
+	public List<Class<? extends Resource<?>>> getResourcesClazz() {
+
+		return this.resourcesClazz;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -311,18 +324,5 @@ public class RouterImpl implements Router {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void addResourceClazz(Class<? extends Resource<?>> resource) {
-
-		this.resourcesClazz.add(resource);
-
-	}
-
-	@Override
-	public List<Class<? extends Resource<?>>> getResourcesClazz() {
-
-		return this.resourcesClazz;
 	}
 }

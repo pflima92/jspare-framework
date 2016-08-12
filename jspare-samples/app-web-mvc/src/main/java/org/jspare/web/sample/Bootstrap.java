@@ -16,9 +16,9 @@
 package org.jspare.web.sample;
 
 import org.jspare.core.exception.InfraException;
-import org.jspare.server.application.Service;
+import org.jspare.server.application.ApplicationServer;
 
-public class Bootstrap extends Service {
+public class Bootstrap extends ApplicationServer {
 
 	public static void main(String[] args) throws InfraException {
 

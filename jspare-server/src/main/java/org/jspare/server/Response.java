@@ -43,7 +43,7 @@ public interface Response extends Cloneable {
 	 * @return the response
 	 */
 	Response addCookie(String name, String value);
-	
+
 	/**
 	 * @param name
 	 * @param value
@@ -123,7 +123,7 @@ public interface Response extends Cloneable {
 	 * @return the entity
 	 */
 	Object getEntity();
-	
+
 	/**
 	 * Gets the language.
 	 *
