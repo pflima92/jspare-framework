@@ -1,0 +1,35 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+	<localRepository>{{  path_of_repository }}</localRepository>
+
+	<profiles>
+		<profile>
+			<repositories>
+				<repository>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<id>bintray-jspare-maven</id>
+					<name>bintray</name>
+					<url>http://dl.bintray.com/jspare/maven</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<id>bintray-jspare-maven</id>
+					<name>bintray-plugins</name>
+					<url>http://dl.bintray.com/jspare/maven</url>
+				</pluginRepository>
+			</pluginRepositories>
+			<id>bintray</id>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>bintray</activeProfile>
+	</activeProfiles>
+	
+</settings>
