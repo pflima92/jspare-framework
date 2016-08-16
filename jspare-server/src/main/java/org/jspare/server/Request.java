@@ -19,7 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-import org.jspare.core.collections.MultiValueMap;
+import org.jspare.commons.collections.MultiValueMap;
 import org.jspare.server.content.Entity;
 import org.jspare.server.controller.Controller;
 import org.jspare.server.mapping.Type;

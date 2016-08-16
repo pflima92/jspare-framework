@@ -36,8 +36,8 @@ import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.server.ContainerRequest;
-import org.jspare.core.collections.MultiValueHashMap;
-import org.jspare.core.collections.MultiValueMap;
+import org.jspare.commons.collections.MultiValueHashMap;
+import org.jspare.commons.collections.MultiValueMap;
 import org.jspare.server.content.ContentDisposition;
 import org.jspare.server.content.DataPart;
 import org.jspare.server.content.Entity;
@@ -197,6 +197,7 @@ public class JettyRequest extends DefaultRequest {
 	 *
 	 * @return the map
 	 */
+	@Override
 	protected Map<String, Object> buildMapParameters() {
 
 		Map<String, Object> mapParameters = new HashMap<>();

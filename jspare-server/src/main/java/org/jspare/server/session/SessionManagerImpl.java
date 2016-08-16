@@ -24,8 +24,8 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-import org.jspare.core.collections.TimedHashMap;
-import org.jspare.core.collections.TimedMap;
+import org.jspare.commons.collections.TimedHashMap;
+import org.jspare.commons.collections.TimedMap;
 
 /**
  * The Class SessionManagerImpl.

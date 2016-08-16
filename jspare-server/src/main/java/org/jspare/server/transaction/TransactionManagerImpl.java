@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import org.jspare.core.collections.TimedHashMap;
+import org.jspare.commons.collections.TimedHashMap;
 
 /**
  * The Class TransactionManagerImpl.

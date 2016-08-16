@@ -13,6 +13,12 @@
 	<artifactId>jspare-server</artifactId>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>org.jspare.commons</groupId>
+			<artifactId>jspare-collections</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.validation</groupId>
