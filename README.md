@@ -14,6 +14,6 @@ See documentation [here](http://jspare.org/framework)
 
 ## Project Status
 
-We are active and coding, help us. Send mail to jspare@jspare.org.
+This project has been discontinued, we are focusing our efforts on other projects. Send mail to jspare@jspare.org.
 
 [![Build Status](https://travis-ci.org/jspare-projects/jspare-framework.svg?branch=master)](https://travis-ci.org/jspare-projects/jspare-framework)
